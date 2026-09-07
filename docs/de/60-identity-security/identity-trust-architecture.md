@@ -52,3 +52,21 @@ Das allgemeine Modell lautet:
 `Device UUID → Owner → Deployment → Provisioning Authority → Trust Domain`
 
 Eine höhere Provisioning-Revision ersetzt niemals fehlendes Vertrauen in den Signer.
+
+## Offene Reparatur und offizielle nıu-Attestierung
+
+**DECIDED:** nıu reglementiert nicht, was ein Eigentümer technisch mit seinem Gerät tun darf. Die Sicherheitsgrenze liegt bei der Frage, was die offizielle nıu Trust Domain kryptographisch attestiert.
+
+Öffnen, diagnostizieren, reparieren, reimagen, eigene Software installieren und eigene Trust Roots oder Dienste verwenden sollen grundsätzlich möglich und dokumentierbar sein. Physischer Zugriff oder Kenntnis der offenen Implementierung berechtigen jedoch nicht zur Ausstellung oder Erneuerung offizieller nıu Device Certificates, zur Änderung der Factory Registry oder zur Erzeugung anderer nıu-Attestierungen.
+
+Grundsatz:
+
+> **Anyone may repair or modify the device. Only nıu may attest that a device belongs to the official nıu trust domain.**
+
+Eine unabhängige Reparatur beendet den bestehenden Trust-Status nicht automatisch. Solange der bestehende Identity Anchor intakt ist und die Device Identity weiterhin kryptographisch zuverlässig beweisbar bleibt, besteht kein allein aus der Reparatur abgeleiteter Grund für eine neue Attestierung.
+
+Kann der Identity Anchor nicht mehr zuverlässig bewiesen werden oder muss er ersetzt werden, wird die Wiederherstellung des offiziellen nıu-Trust-Status zu einer Identity-Recovery-/Rezertifizierungsoperation. Für die erste Produktgeneration ist vorgesehen, dass das physische Gerät hierfür an nıu als Hersteller eingesandt wird. nıu prüft Gerät und Identitätszuordnung, führt die erforderlichen Factory-/EOL- und Sicherheitsprüfungen durch und kann anschließend eine neue offizielle Attestierung ausstellen bzw. die Registry kontrolliert aktualisieren.
+
+Die konkrete Semantik beim Austausch eines Secure Elements — insbesondere Beibehaltung oder Änderung von Device UUID, Root Key und einer möglichen Identity Epoch — wird separat entschieden und ist derzeit noch offen.
+
+Der Verlust oder Verzicht auf offiziellen nıu-Trust verhindert nicht den weiteren Betrieb des Eigentümers mit eigener Software, eigener PKI oder eigener Trust Domain.
