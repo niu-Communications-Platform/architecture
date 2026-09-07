@@ -1,4 +1,17 @@
+---
+language: en
+canonical: false
+status: accepted
+date: 2026-09-07
+source: ../de/0001-carrier-is-device-identity-anchor.md
+translation_status: current
+---
+
 # ADR-0001: The carrier is the anchor of physical device identity
+
+[Deutsch — canonical](../de/0001-carrier-is-device-identity-anchor.md) | **English**
+
+> The German version is canonical. This document is a maintained English translation.
 
 **Status:** Accepted  
 **Date:** 2026-09-07
@@ -27,7 +40,3 @@ The carrier is the long-lived physical unit of the product, while compute and st
 ## Validation required
 
 The specific Secure Element/EEPROM components and their factory provisioning/locking process must be validated practically.
-
----
-
-[Canonical German version](../de/0001-carrier-is-device-identity-anchor.md)
