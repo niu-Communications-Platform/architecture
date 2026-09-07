@@ -1,15 +1,15 @@
 ---
 language: en
 canonical: false
-translation_of: ../../../de/50-networking/network-architecture.md
-translation_status: current
 status: current
 last_reviewed: 2026-09-07
+source: ../../de/50-networking/network-architecture.md
+translation_status: current
 ---
 
 # Network Architecture
 
-[Deutsch](../../de/50-networking/network-architecture.md) | **English**
+[Deutsch — canonical](../../de/50-networking/network-architecture.md) | **English**
 
 > The German version is canonical. This document is a maintained English translation.
 
