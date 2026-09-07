@@ -39,19 +39,37 @@ Die Batterie darf die möglichen Außenabmessungen des Produkts nicht unnötig b
 
 **DECIDED:** Der Battery Pack soll nicht lediglich regulatorisch austauschbar sein, sondern als **rapid field-replaceable battery** ausgelegt werden. Der Akkuwechsel ist damit ein bewusstes professionelles Betriebsmerkmal des Beltpacks.
 
-Leitprinzip:
-
 > **Nicht maximale Akkukapazität, sondern maximale Einsatzbereitschaft.**
 
-Ein kompakterer Pack mit ausreichender realer Laufzeit kann einem größeren Pack vorzuziehen sein, wenn ein leerer Pack im laufenden Produktionsalltag schnell und zuverlässig gegen einen geladenen Pack ausgetauscht werden kann. Die Austauschbarkeit wird daher bei der Pack- und Gehäuseauswahl als funktionaler Vorteil und nicht lediglich als regulatorische Mindestanforderung bewertet.
+Ein kompakterer Pack mit ausreichender realer Laufzeit kann einem größeren Pack vorzuziehen sein, wenn ein leerer Pack im Produktionsalltag schnell und zuverlässig gegen einen geladenen Pack ausgetauscht werden kann.
 
-Ziel für die mechanische Produktentwicklung ist ein Akkuwechsel in wenigen Sekunden ohne Öffnen des eigentlichen Gerätegehäuses. Die konkrete Mechanik wird erst zusammen mit dem ausgewählten Serienpack festgelegt. Zu untersuchen sind insbesondere ein von außen zugängliches Batteriefach, eine robuste Klappe oder Verriegelung, sichere Packführung, fehlstecksichere Kontaktierung und Schutz gegen unbeabsichtigtes Lösen im mobilen Betrieb.
+Ziel ist ein Akkuwechsel in wenigen Sekunden ohne Öffnen des eigentlichen Gerätegehäuses. Die konkrete Mechanik wird erst zusammen mit dem ausgewählten Serienpack festgelegt. Zu untersuchen sind insbesondere ein von außen zugängliches Batteriefach, robuste Verriegelung, sichere Packführung, fehlstecksichere Kontaktierung und Schutz gegen unbeabsichtigtes Lösen.
 
-Der schnelle Wechsel darf Wartbarkeit und Langzeitreparierbarkeit nicht verschlechtern. Verschleißteile der Wechselmechanik sollen soweit sinnvoll separat reparierbar oder ersetzbar sein.
+Die Architektur soll Ersatzpacks und externe Einzel-/Mehrfach-Ladelösungen ermöglichen, ohne dass nıu dafür einen eigenen Battery Pack oder ein eigenes BMS entwickelt.
 
-Die Architektur soll außerdem ein mögliches Zubehörsystem aus Ersatzpacks und externen Ladegeräten bzw. Mehrfach-Ladelösungen ermöglichen. Eine solche Ladelösung darf nicht voraussetzen, dass nıu selbst einen Battery Pack oder ein eigenes BMS entwickelt; sie muss die Spezifikationen des ausgewählten Pack-Herstellers einhalten.
+### Kein Hot-Swap
 
-**REVIEW:** Ob ein Akkuwechsel bei eingeschaltetem Gerät ohne Neustart unterstützt werden soll, ist noch nicht entschieden. Eine hierfür erforderliche Energiepufferung wird nur vorgesehen, wenn der betriebliche Nutzen ihren zusätzlichen Bauraum, Aufwand und ihre Kosten rechtfertigt.
+**DECIDED:** Ein unterbrechungsfreier Betrieb während des Akkuwechsels wird nicht unterstützt. Wird der Akku ohne externe Stromversorgung entnommen, darf das Beltpack ausgehen und muss nach Einsetzen eines Packs neu gestartet werden.
+
+Eine Energiepufferung über Sekunden, ein zweiter interner Energiespeicher oder vergleichbare Hot-Swap-Technik wird für diesen Zweck nicht vorgesehen. Der geringe betriebliche Nutzen rechtfertigt den zusätzlichen Bauraum, die Kosten und die technische Komplexität nicht.
+
+Kleine elektrische Hold-up-Kapazitäten, die unabhängig davon für sauberes Power-Down, Spannungsstabilität oder Schutz einzelner Schaltungsteile erforderlich sind, bleiben zulässig. Sie sind ausdrücklich keine Hot-Swap-Funktion.
+
+### Abrupte Akkuentnahme ist ein zulässiger Betriebsfall
+
+**DECIDED:** Der Anwender darf den Akku entnehmen, ohne zuvor einen geordneten Software-Shutdown auszuführen. Das System muss diesen abrupten Verlust der Versorgung als normalen, beherrschten Fehlerfall tolerieren. Funktional entspricht dies einem Hard-Off bzw. einem sonstigen plötzlichen Power Loss.
+
+Daraus folgen Anforderungen an System-, Storage-, Provisioning- und OTA-Architektur:
+
+- wiederholter abrupter Power Loss darf das Gerät nicht dauerhaft beschädigen oder unbootbar machen;
+- kritische persistente Zustände müssen atomar, transaktional oder anderweitig power-loss-sicher aktualisiert werden;
+- häufige und nicht notwendige Schreibvorgänge auf eMMC/Flash sind zu vermeiden;
+- ein unterbrochener OTA-Vorgang darf das Gerät nicht bricken; A/B-Update, Validierung und Rollback müssen Power Loss berücksichtigen;
+- Factory-/Device-Identity darf nicht ausschließlich von flüchtigem oder leicht korrumpierbarem SBC-Storage abhängen;
+- nach erneutem Einschalten muss das Gerät selbstständig in einen definierten und konsistenten Zustand zurückkehren;
+- Hard-Power-Loss-Toleranz wird praktisch und wiederholt validiert.
+
+Der normale POWER-Shutdown bleibt die bevorzugte geordnete Ausschaltmethode. Die Robustheit des Produkts darf jedoch nicht davon abhängen, dass der Anwender sie vor jedem Akkuwechsel verwendet.
 
 ## Wartbarkeit und Austausch
 
@@ -119,7 +137,7 @@ Für die Vorauswahl sind insbesondere zwei Klassen interessant:
 - etwa **19 Wh** als besonders kompakte Klasse
 - etwa **25 Wh** als kompakte Klasse mit zusätzlicher Laufzeitreserve
 
-Größere Packs bleiben möglich, müssen ihren zusätzlichen Bauraum und ihr Gewicht jedoch durch einen realen Produktnutzen rechtfertigen. Bei vergleichbarer Systemtauglichkeit erhält die kleinere Lösung zusätzliches Gewicht in der Bewertung, wenn die fehlende Kapazität durch den schnellen Feldwechsel praktisch kompensiert werden kann.
+Größere Packs bleiben möglich, müssen ihren zusätzlichen Bauraum und ihr Gewicht jedoch durch einen realen Produktnutzen rechtfertigen.
 
 ## Referenzkandidat: vri BASE LINE
 
