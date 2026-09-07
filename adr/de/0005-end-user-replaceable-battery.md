@@ -3,10 +3,12 @@ language: de
 canonical: true
 status: accepted
 date: 2026-09-07
-translation: ../../en/0005-end-user-replaceable-battery.md
+translation: ../en/0005-end-user-replaceable-battery.md
 ---
 
 # ADR-0005: Der Akku ist durch den Endnutzer austauschbar
+
+**Deutsch (kanonisch)** | [English](../en/0005-end-user-replaceable-battery.md)
 
 ## Status
 
