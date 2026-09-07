@@ -1,10 +1,6 @@
 ---
-language: en
-canonical: false
 status: accepted
 date: 2026-09-07
-source: ../de/0002-network-handover-session-model.md
-translation_status: current
 ---
 
 # ADR-0002: Network handover separates transport switching from Mumble session switching
