@@ -3,9 +3,12 @@ language: de
 canonical: true
 status: current
 last_reviewed: 2026-09-07
+translation: ../../en/40-audio/audio-architecture.md
 ---
 
 # Audioarchitektur
+
+**Deutsch (kanonisch)** | [English](../../en/40-audio/audio-architecture.md)
 
 ## Anforderungen
 
