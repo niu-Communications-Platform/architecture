@@ -32,6 +32,8 @@ German is the canonical language of the architecture documentation.
 
 New architecture documentation and new ADRs are written in substance first in the canonical German version. The English version is then derived from it as a maintained translation.
 
+**Changes to canonical German documentation must update the corresponding English translation in the same change set. If this is deliberately not possible, the English version must explicitly be marked with `translation_status: outdated`.**
+
 Code, APIs, identifiers, schemas and technical interface names remain English unless there is a specific reason otherwise.
 
 ### Required language metadata
