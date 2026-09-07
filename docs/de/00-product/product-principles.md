@@ -32,6 +32,22 @@ Es existieren drei Ebenen:
 
 Die Plattform soll vollständig Open Source und reproduzierbar baubar sein, soweit Dritt-Lizenzen dies zulassen. Offenheit der Implementierung bedeutet nicht Offenlegung privater Trust-Schlüssel und nicht das Recht, sich als offizieller nıu-Dienst auszugeben.
 
+### Digitale Souveränität umfasst die Hardware
+
+Digitale Souveränität endet nicht beim Zugriff auf den Quellcode oder beim Self-Hosting. Der Eigentümer soll das Produkt verstehen, diagnostizieren, reparieren, wiederherstellen und mit eigener Software oder eigenen Trust Domains weiterbetreiben können.
+
+Daraus folgt als Produktziel:
+
+**Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation.**
+
+nıu veröffentlicht deshalb soweit technisch und lizenzrechtlich möglich die Informationen und Werkzeuge, die eine qualifizierte unabhängige Fehleranalyse und Reparatur ermöglichen. Dazu gehören insbesondere Hardware- und Schnittstelleninformationen, Diagnoseverfahren, Reparaturanleitungen, relevante Testpunkte und Sollwerte, Kalibrierungs- und Recovery-Verfahren sowie offene Diagnosetools.
+
+Die Offenheit von Diagnose und Reparatur wird strikt von der offiziellen nıu Trust Domain getrennt:
+
+> **Diagnostics are open. Trust issuance is not.**
+
+Eine Reparatur oder Modifikation durch den Eigentümer oder einen unabhängigen Reparaturbetrieb beendet nicht allein deshalb den offiziellen nıu-Trust-Status. Solange die bestehende kryptographische Geräteidentität weiterhin zuverlässig beweisbar ist, bleibt sie grundsätzlich erhalten. Ist der Identity Anchor nicht mehr zuverlässig beweisbar oder muss er ersetzt werden, ist für die erneute Aufnahme bzw. Bestätigung innerhalb der offiziellen nıu Trust Domain ein kontrollierter nıu-Rezertifizierungsprozess erforderlich.
+
 ### Zukunftsfähigkeit ohne Feature Stuffing
 
 Günstige Hardware-Reserven werden vorgesehen, wenn sie spätere Sackgassen vermeiden. Nicht jede Reserve wird sofort als Produktfeature implementiert.
