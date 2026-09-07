@@ -3,9 +3,12 @@ language: de
 canonical: true
 status: current
 last_reviewed: 2026-09-07
+translation: ../../en/70-provisioning-lifecycle/provisioning-lifecycle.md
 ---
 
 # Provisioning, Ownership und Lifecycle
+
+**Deutsch (kanonisch)** | [English](../../en/70-provisioning-lifecycle/provisioning-lifecycle.md)
 
 ## Grundsatz
 
