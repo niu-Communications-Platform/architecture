@@ -3,9 +3,12 @@ language: de
 canonical: true
 status: current
 last_reviewed: 2026-09-07
+translation: ../../en/50-networking/network-architecture.md
 ---
 
 # Netzwerkarchitektur
+
+**Deutsch (kanonisch)** | [English](../../en/50-networking/network-architecture.md)
 
 ## Transportklassen
 
