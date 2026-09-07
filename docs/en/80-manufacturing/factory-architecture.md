@@ -1,12 +1,3 @@
----
-language: en
-canonical: false
-status: current
-last_reviewed: 2026-09-07
-source: ../../de/80-manufacturing/factory-architecture.md
-translation_status: current
----
-
 # Factory and Manufacturing Architecture
 
 [Deutsch — canonical](../../de/80-manufacturing/factory-architecture.md) | **English**
