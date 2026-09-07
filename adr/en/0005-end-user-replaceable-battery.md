@@ -1,10 +1,6 @@
 ---
-language: en
-canonical: false
 status: accepted
 date: 2026-09-07
-source: ../de/0005-end-user-replaceable-battery.md
-translation_status: current
 ---
 
 # ADR-0005: The battery is replaceable by the end user
