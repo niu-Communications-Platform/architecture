@@ -1,9 +1,6 @@
 ---
-language: de
-canonical: true
 status: accepted
 date: 2026-09-07
-translation: ../en/0001-carrier-is-device-identity-anchor.md
 ---
 
 # ADR-0001: Der Carrier ist der Anker der physischen Geräteidentität
