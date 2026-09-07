@@ -1,11 +1,3 @@
----
-language: de
-canonical: true
-status: current
-last_reviewed: 2026-09-07
-translation: ../../en/20-hardware/repairability-sustainability.md
----
-
 # Reparierbarkeit und Ressourcenschonung
 
 **Deutsch (kanonisch)** | [English](../../en/20-hardware/repairability-sustainability.md)
