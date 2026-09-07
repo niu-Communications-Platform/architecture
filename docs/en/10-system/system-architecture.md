@@ -1,12 +1,3 @@
----
-language: en
-canonical: false
-status: current
-last_reviewed: 2026-09-07
-source: ../../de/10-system/system-architecture.md
-translation_status: current
----
-
 # System Architecture
 
 [Deutsch — canonical](../../de/10-system/system-architecture.md) | **English**
