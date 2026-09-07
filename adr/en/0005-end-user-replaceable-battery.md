@@ -3,11 +3,15 @@ language: en
 canonical: false
 status: accepted
 date: 2026-09-07
-source: ../../de/0005-end-user-replaceable-battery.md
+source: ../de/0005-end-user-replaceable-battery.md
 translation_status: current
 ---
 
 # ADR-0005: The battery is replaceable by the end user
+
+[Deutsch — canonical](../de/0005-end-user-replaceable-battery.md) | **English**
+
+> The German version is canonical. This document is a maintained English translation.
 
 ## Status
 
