@@ -1,4 +1,17 @@
+---
+language: en
+canonical: false
+status: accepted
+date: 2026-09-07
+source: ../de/0003-open-source-trust-domains.md
+translation_status: current
+---
+
 # ADR-0003: Open source and trust domains are separate
+
+[Deutsch — canonical](../de/0003-open-source-trust-domains.md) | **English**
+
+> The German version is canonical. This document is a maintained English translation.
 
 **Status:** Accepted  
 **Date:** 2026-09-07
@@ -25,7 +38,3 @@ This preserves self-hosting, forks, repairability and continued operation indepe
 - Device PKI, Service PKI and Firmware Signing remain separate.
 - Trademark rights and software licensing are handled separately.
 - Base/Cloud protocols must not rely on security by obscurity.
-
----
-
-[Canonical German version](../de/0003-open-source-trust-domains.md)
