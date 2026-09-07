@@ -16,6 +16,8 @@ Die Hardwarearchitektur soll die Lebensdauer des Beltpacks maximieren und verhin
 
 **DECIDED:** Bauteilreparatur wird bevorzugt, wenn sie sinnvoll ist. Modultausch wird bevorzugt, wenn Bauteilreparatur unverhältnismäßigen Arbeits-, Energie-, Geräte- oder Schadensaufwand verursacht.
 
+**DECIDED:** Diagnose- und Reparaturwissen wird nicht künstlich als Herstellergeheimnis behandelt. Qualifizierte unabhängige Reparatur soll durch öffentlich verfügbare Dokumentation und Werkzeuge praktisch möglich sein.
+
 ## Reparaturebenen
 
 ### Level 1 — End User Replaceable
@@ -89,6 +91,50 @@ Anforderungen gemäß ADR-0005 umfassen insbesondere:
 - verpolungssicherer Stecker
 - kein Software-Pairing, das kompatible Ersatzakkus behindert
 - Battery-Learning-/Health-State kann nach Austausch korrekt neu initialisiert werden
+
+## Offene Diagnose- und Reparaturdokumentation
+
+Die Reparierbarkeit des Produkts soll nicht nur konstruktiv vorhanden, sondern für Dritte praktisch nutzbar sein. nıu plant deshalb eine ausführliche, öffentlich verfügbare und über die Produktlebensdauer gepflegte Fehleranalyse- und Reparaturdokumentation.
+
+Soweit für das jeweilige Produkt sinnvoll und rechtlich möglich, umfasst sie insbesondere:
+
+- Öffnungs-, Demontage- und Montageanleitungen
+- Beschreibung der Baugruppen und ihrer Funktionen
+- Schaltpläne und relevante Hardware-/Schnittstelleninformationen
+- Steckerbelegungen, Testpunkte und erwartete Messwerte
+- Boot-, Recovery- und Reimaging-Verfahren
+- offene Diagnosewerkzeuge und Hardware-Selbsttests
+- symptomorientierte Fehlersuchbäume
+- Austauschverfahren für Service- und Verschleißkomponenten
+- Board-Level-Diagnose- und Reparaturhinweise
+- Kalibrierungsverfahren nach relevanten Reparaturen
+- abschließende Funktions- und Sicherheitstests
+- Ersatzteilinformationen und, wo sinnvoll, Spezifikationen kompatibler Drittanbieterkomponenten
+- bekannte Fehlerbilder und daraus gewonnene Reparaturhinweise
+
+Die Repair Knowledge Base soll mit den Erfahrungen aus Fertigung, RMA und Feldbetrieb weiterentwickelt werden. Wiederkehrende Fehlerbilder werden mit reproduzierbaren Diagnose- und Reparaturpfaden dokumentiert, statt ausschließlich internes Servicewissen zu bleiben.
+
+## Gemeinsame Diagnosebasis für Factory und Repair
+
+Hardware-Selbsttests und Diagnoseprimitiven sollen soweit sinnvoll gemeinsam für Factory EOL, nıu RMA und unabhängige Reparatur verwendet werden. Die technische Diagnose selbst ist nicht an geheime Factory Credentials zu koppeln.
+
+Beispiele sind die Erreichbarkeit von Audio-Codecs, Audio-Loopback-/Pegeltests, Display- und Tastenprüfung, USB-Enumeration und VBUS-Prüfung, Netzwerkdiagnose sowie die Erreichbarkeit des Secure Elements.
+
+Privilegierte Operationen innerhalb der offiziellen nıu Trust Domain bleiben davon getrennt. Ein öffentliches Diagnosetool darf Hardware prüfen, ohne dadurch nıu Device Certificates, Factory-Registry-Einträge oder andere nıu-Attestierungen erzeugen zu können.
+
+Grundsatz:
+
+> **Diagnostics are open. Trust issuance is not.**
+
+## Reparatur und nıu-Trust-Status
+
+Das Öffnen, Diagnostizieren, Reparieren oder Modifizieren eines Geräts durch seinen Eigentümer oder einen unabhängigen Reparaturbetrieb führt nicht allein zum Verlust des offiziellen nıu-Trust-Status.
+
+Bleiben Carrier Identity und kryptographischer Identity Anchor intakt und zuverlässig beweisbar, bleibt die bestehende Device Identity grundsätzlich erhalten. Dies gilt beispielsweise für den Austausch von Akku, Display, Tasten, Speaker, Mikrofonen, SBC/Storage oder reparierbaren Carrier-Komponenten, sofern der Identity Anchor nicht betroffen ist.
+
+Ist der Identity Anchor nicht mehr zuverlässig beweisbar oder muss er ersetzt werden, darf ein offener Recovery- oder Reparaturprozess nicht selbstständig neue offizielle nıu-Attestierungen erzeugen. Die Wiederherstellung des offiziellen nıu-Trust-Status erfordert dann einen kontrollierten nıu-Rezertifizierungsprozess. Für die erste Produktgeneration ist vorgesehen, dass das physische Gerät hierfür an nıu als Hersteller eingesandt und geprüft wird.
+
+Diese Grenze beschränkt nicht die weitere Nutzung des Eigentümers mit eigener Software oder eigener Trust Domain.
 
 ## Kalibrierung und Reparatur
 
