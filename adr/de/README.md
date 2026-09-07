@@ -6,10 +6,10 @@ Die ADRs dokumentieren einzelne Architekturentscheidungen und vor allem deren Be
 
 ## Inhaltsverzeichnis
 
-- [ADR-0001: Der Carrier ist der Anker der physischen Geräteidentität](0001-carrier-is-device-identity-anchor.md)
-- [ADR-0002: Netzwerk-Handover trennt Transport- und Mumble-Sessionwechsel](0002-network-handover-session-model.md)
-- [ADR-0003: Open Source und Trust Domain sind getrennt](0003-open-source-trust-domains.md)
-- [ADR-0004: Native Mumble-Kommunikation, SIP als Interoperabilitätsschicht](0004-mumble-native-sip-interoperability.md)
+- [`ADR-0001:` Der Carrier ist der Anker der physischen Geräteidentität](0001-carrier-is-device-identity-anchor.md)
+- [`ADR-0002:` Netzwerk-Handover trennt Transport- und Mumble-Sessionwechsel](0002-network-handover-session-model.md)
+- [`ADR-0003:` Open Source und Trust Domain sind getrennt](0003-open-source-trust-domains.md)
+- [`ADR-0004:` Native Mumble-Kommunikation, SIP als Interoperabilitätsschicht](0004-mumble-native-sip-interoperability.md)
 
 ## Schema
 
