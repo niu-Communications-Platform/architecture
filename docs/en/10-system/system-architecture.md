@@ -26,30 +26,21 @@ Hardware and the operating system report actual capabilities. Profiles and provi
 
 Hardware detection on Linux should primarily use Device Tree (`/proc/device-tree/model`, `compatible`).
 
-A Capability Profile may include, among other things:
-
-- playback/capture channels
-- TDM slots
-- split-ear capability
-- independent outputs
-- USB/Bluetooth audio
-- board/PCB revision
-
-Profiles declare requirements; the Provisioning Authority or Device Agent validates compatibility.
+A Capability Profile may include playback/capture channels, TDM slots, split-ear capability, independent outputs, USB/Bluetooth audio, and board/PCB revision. Profiles declare requirements; the Provisioning Authority or Device Agent validates compatibility.
 
 ### Device Agent
 
-A platform-wide device component called `niu-device-agent` is planned. Areas of responsibility:
+A platform-wide `niu-device-agent` is planned for Identity, Enrollment, Capabilities, Provisioning, Health, OTA, and Registry Heartbeat. Talkkonnect remains primarily the intercom engine and should not become the general device manager.
 
-- Identity
-- Enrollment
-- Capabilities
-- Provisioning
-- Health
-- OTA
-- Registry Heartbeat
+## Hard power-loss tolerance
 
-Talkkonnect remains primarily the intercom engine and should not become the general device manager.
+**DECIDED:** Abrupt loss of power is an allowed operating and failure condition, particularly for rapid removal of the replaceable battery, hard-off, and unexpected supply loss.
+
+The system must be designed so repeated hard power loss does not permanently damage device identity or critical configuration and the device autonomously returns to a consistent state on the next boot.
+
+This requires power-loss-safe persistent state changes, minimized unnecessary flash/eMMC writes, A/B OTA with validation and rollback even when interrupted, no exclusive storage of indispensable Factory/Identity data on SBC storage, defined recovery paths for damaged runtime/cache data, and repeated practical power-cut testing including adverse timing during configuration and update operations.
+
+Orderly shutdown remains the normal path, but product integrity must not depend on it.
 
 ## Architecture phase
 
