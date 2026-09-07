@@ -25,13 +25,43 @@ Deutsch ist die kanonische Sprache der Architekturdokumentation.
 - `docs/de/` enthält die kanonische beschreibende Architekturdokumentation.
 - `adr/de/` enthält die kanonischen Architecture Decision Records.
 - `docs/en/` und `adr/en/` enthalten gepflegte englische Übersetzungen.
-- Englische und deutsche Fassungen verlinken gegenseitig aufeinander.
+- Englische und deutsche Fassungen verlinken sichtbar und gegenseitig aufeinander.
 - Bei Abweichungen ist die kanonische deutsche Fassung maßgeblich.
-- Englische Übersetzungen sollen ihre deutsche Quelle und den Übersetzungsstatus in den Dokumentmetadaten ausweisen, soweit diese Konvention im jeweiligen Bereich verwendet wird.
 
 Neue Architekturdokumentation und neue ADRs werden inhaltlich zuerst in der kanonischen deutschen Fassung erstellt. Die englische Fassung wird daraus als gepflegte Übersetzung abgeleitet.
 
 Code, APIs, Bezeichner, Schemas und technische Schnittstellennamen bleiben grundsätzlich englisch, sofern kein sachlicher Grund dagegenspricht.
+
+### Verbindliche Sprachmetadaten
+
+Für gepaarte Fachseiten unter `docs/` gilt:
+
+Deutsche Fassung:
+
+```yaml
+language: de
+canonical: true
+status: current
+last_reviewed: YYYY-MM-DD
+translation: <relativer Pfad zur englischen Fassung>
+```
+
+Englische Fassung:
+
+```yaml
+language: en
+canonical: false
+status: current
+last_reviewed: YYYY-MM-DD
+source: <relativer Pfad zur deutschen Fassung>
+translation_status: current
+```
+
+Für ADRs gilt dasselbe Sprach-/Canonical-Modell; statt `last_reviewed` wird das ADR-Datum über `date: YYYY-MM-DD` geführt. `translation_status` darf bei Bedarf `current`, `outdated` oder `not-translated` sein.
+
+Die Pfade in `translation` und `source` müssen tatsächlich auf das jeweilige Gegenstück zeigen. Zusätzlich müssen beide Dokumente über einen sichtbaren Markdown-Link gegenseitig erreichbar sein. Metadaten allein ersetzen diesen Sprachlink nicht.
+
+Der Workflow `.github/workflows/validate-docs.yml` führt `scripts/validate-docs.py` aus und prüft diese maschinell überprüfbaren Konventionen bei Pushes auf `main` und bei Pull Requests.
 
 ## Repository-Bereiche
 
@@ -92,8 +122,8 @@ Wenn ein neues Dokument hinzugefügt wird:
 2. die relevante deutsche Navigation aktualisieren, wenn das Dokument von dieser Ebene aus auffindbar sein soll;
 3. die gepflegte englische Übersetzung anlegen oder aktualisieren;
 4. die entsprechende englische Navigation aktualisieren;
-5. Verknüpfungen zwischen kanonischer Fassung und Übersetzung erhalten;
-6. sicherstellen, dass die englische Fassung als Übersetzung und die deutsche Fassung als kanonisch gekennzeichnet ist.
+5. Metadaten und sichtbare Sprachlinks zwischen kanonischer Fassung und Übersetzung setzen;
+6. den Dokumentations-Validator erfolgreich durchlaufen lassen.
 
 Die Navigation muss die tatsächliche Repository-Hierarchie widerspiegeln. Einträge für Verzeichnisse verlinken auf Verzeichnisse; Einträge für einzelne Dokumente auf Dokumente.
 
