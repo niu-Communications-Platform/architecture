@@ -12,60 +12,57 @@ This document defines how architecture knowledge is organized in this repository
 
 The repository is the authoritative source for documented architecture decisions and the technical documentation structure.
 
-Before changing navigation, directory structure, ADR numbering or document relationships, the current repository state must be inspected. Such structures should not be reconstructed from earlier discussions, external notes or historical snapshots.
-
-Git history preserves the evolution of the architecture. Existing accepted decisions are not silently rewritten when direction changes later; where appropriate, they are explicitly superseded by a new decision.
+Before changing navigation, directory structure, ADR numbering or document relationships, the current repository state must be inspected. Git history preserves the evolution of the architecture. Existing accepted decisions are not silently rewritten when direction changes later; where appropriate, they are explicitly superseded by a new decision.
 
 ## Languages
 
 German is the canonical language of the architecture documentation.
 
 - `README.md` is the English public entry point of the repository.
-- `README.de.md` is its canonical German counterpart and is linked from `README.md`.
+- `README.de.md` is its canonical German counterpart.
 - `DOCUMENTATION.md` is the maintained English translation of these conventions.
-- `DOCUMENTATION.de.md` is the canonical German version of these conventions.
+- `DOCUMENTATION.de.md` is the canonical German version.
 - `docs/de/` contains canonical descriptive architecture documentation.
 - `adr/de/` contains canonical Architecture Decision Records.
 - `docs/en/` and `adr/en/` contain maintained English translations.
 - English and German versions visibly link to each other in both directions.
-- In case of discrepancies, the canonical German version prevails.
+- In case of discrepancies, the German version prevails.
 
-New architecture documentation and new ADRs are written in substance first in the canonical German version. The English version is then derived from it as a maintained translation.
+New architecture documentation and new ADRs are written in substance first in German. The English version is then derived from it as a maintained translation. When a German document changes, its English translation should be maintained alongside it.
 
-**Changes to canonical German documentation must update the corresponding English translation in the same change set. If this is deliberately not possible, the English version must explicitly be marked with `translation_status: outdated`.**
+The repository structure already carries the language information unambiguously. Therefore `language`, `canonical`, `translation`, `source`, and `translation_status` are not duplicated as metadata.
+
+Likewise, descriptive documentation does not use a generic `status: current` or a manually maintained `last_reviewed`. The current repository state and its change history are provided by Git.
 
 Code, APIs, identifiers, schemas and technical interface names remain English unless there is a specific reason otherwise.
 
-### Required language metadata
+## ADR metadata
 
-For paired documentation pages under `docs/`:
-
-German version:
+ADRs may carry metadata when it represents independent domain information. In particular, these fields are useful:
 
 ```yaml
-language: de
-canonical: true
-status: current
-last_reviewed: YYYY-MM-DD
-translation: <relative path to the English version>
+---
+status: accepted
+date: YYYY-MM-DD
+---
 ```
 
-English version:
+`status` describes the decision state, for example `proposed`, `accepted`, `superseded`, or `rejected`. `date` is the decision date, not the file modification date.
 
-```yaml
-language: en
-canonical: false
-status: current
-last_reviewed: YYYY-MM-DD
-source: <relative path to the German version>
-translation_status: current
-```
+## Validation
 
-ADRs use the same language/canonical model, with `date: YYYY-MM-DD` instead of `last_reviewed`. `translation_status` may be `current`, `outdated`, or `not-translated` where required.
+The workflow `.github/workflows/validate-docs.yml` runs `scripts/validate-docs.py`.
 
-The paths in `translation` and `source` must resolve to the actual counterpart. Both documents must additionally contain a visible Markdown link to each other; metadata alone does not replace the language link.
+The validator checks only robust invariants that can be determined objectively from the current repository state:
 
-The workflow `.github/workflows/validate-docs.yml` runs `scripts/validate-docs.py` and checks these machine-verifiable conventions on pushes to `main` and on pull requests.
+- every German document under `docs/` and `adr/` has an English counterpart;
+- every English document has a German counterpart;
+- both versions visibly link to each other;
+- ADR numbers are unique within each language;
+- German and English ADR filenames match pairwise;
+- ADRs contain a domain-relevant `status` and a valid `date`.
+
+The validator does not try to determine whether the two language versions are semantically identical. Maintaining the translation is an editorial responsibility.
 
 ## Repository areas
 
@@ -73,7 +70,7 @@ The workflow `.github/workflows/validate-docs.yml` runs `scripts/validate-docs.p
 
 Descriptive architecture: how the platform is structured, which responsibilities exist, and how subsystems interact.
 
-The numbered directories are topic areas, not individual documents:
+The numbered directories are topic areas rather than individual documents:
 
 - `00-product/` — product model and architecture principles
 - `10-system/` — system-level architecture and boundaries
@@ -86,9 +83,7 @@ The numbered directories are topic areas, not individual documents:
 - `80-manufacturing/` — manufacturing, factory provisioning and EOL
 - `90-ux-ui/` — product interaction and UX/UI principles
 
-A topic directory may contain multiple documents. The language-level `docs/*/README.md` pages primarily navigate these topic areas and should not imply that a topic area is identical to a single document.
-
-New top-level numbered topic areas should only be introduced when the subject does not reasonably fit an existing area and is expected to contain a distinct body of architecture documentation.
+A topic directory may contain multiple documents. New numbered top-level topic areas should only be introduced when the subject does not reasonably fit an existing area and is expected to contain a distinct body of architecture documentation.
 
 ### `adr/`
 
@@ -96,15 +91,13 @@ Architecture Decision Records document consequential architecture decisions and 
 
 Use an ADR when real alternatives existed and the chosen direction constrains or shapes future architecture, implementation or product behaviour.
 
-ADR numbers are repository-wide, sequential and never reused for a different decision. Before assigning a new ADR number, inspect the current ADR directories and use the next free number.
+ADR numbers are repository-wide, sequential and never reused for a different decision. Before assigning a new ADR number, inspect the current ADR set and use the next free number.
 
 A later change to an accepted decision is documented through a new ADR that explicitly supersedes the previous one where applicable. Historical ADRs remain in the repository.
 
 ### `validation/`
 
-Validation plans, architecture gates, experiments and evidence used to verify assumptions or candidate designs belong here.
-
-An unvalidated candidate should not be presented as an accepted architecture decision merely because it appears in a validation document.
+Validation plans, architecture gates, experiments and evidence used to verify assumptions or candidate designs belong here. An unvalidated candidate does not become an accepted architecture decision merely because it appears in a validation document.
 
 ### `archive/`
 
@@ -112,9 +105,7 @@ Historical snapshots and superseded consolidated material that remains useful fo
 
 ## Architecture documentation versus product repositories
 
-This repository contains platform-wide architecture and decisions that affect multiple components or define the common product model.
-
-Product-specific implementation details belong in the corresponding product repository unless they establish or constrain platform-wide architecture.
+This repository contains platform-wide architecture and decisions that affect multiple components or define the common product model. Product-specific implementation details belong in the corresponding product repository unless they establish or constrain platform-wide architecture.
 
 ## Navigation
 
@@ -123,17 +114,17 @@ README files serve as human-readable navigation rather than duplicate architectu
 When adding a new document:
 
 1. create the canonical German version first in the appropriate existing topic area;
-2. update the relevant German navigation if the document should be discoverable from that level;
-3. create or update the maintained English translation;
+2. update the relevant German navigation if needed;
+3. create the maintained English translation;
 4. update the corresponding English navigation;
-5. add metadata and visible language links between canonical source and translation;
+5. add visible language links between both versions;
 6. make sure the documentation validator passes.
 
-Navigation must reflect the actual repository hierarchy. Directory-level entries link to directories; document-level entries link to documents.
+Navigation must reflect the actual repository hierarchy.
 
 ## Document status
 
-Documentation should clearly distinguish established architecture from unresolved work. Existing conventions such as `DECIDED`, `OPEN`, `P0 REVIEW`, ADR status fields and translation status should be used consistently so that candidates are not presented as settled facts.
+Documentation should clearly distinguish established architecture from unresolved work. Markers such as `DECIDED`, `OPEN`, and `P0 REVIEW` are used in the text where they carry an actual domain meaning.
 
 ## Structural changes
 
