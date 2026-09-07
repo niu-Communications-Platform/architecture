@@ -1,12 +1,3 @@
----
-language: en
-canonical: false
-status: current
-last_reviewed: 2026-09-07
-source: ../../de/20-hardware/repairability-sustainability.md
-translation_status: current
----
-
 # Repairability and Resource Conservation
 
 [Deutsch — canonical](../../de/20-hardware/repairability-sustainability.md) | **English**
