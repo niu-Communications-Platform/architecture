@@ -35,6 +35,24 @@ Die bisherige Gehäusegröße von ungefähr **120 × 80 × 35 mm ist eine Obergr
 
 Die Batterie darf die möglichen Außenabmessungen des Produkts nicht unnötig bestimmen. Energieinhalt wird gegen Bauraum, Gewicht, elektrische Effizienz und reale Einsatzdauer optimiert; maximale Kapazität ist kein Selbstzweck.
 
+## Schneller Akkuwechsel als Produktmerkmal
+
+**DECIDED:** Der Battery Pack soll nicht lediglich regulatorisch austauschbar sein, sondern als **rapid field-replaceable battery** ausgelegt werden. Der Akkuwechsel ist damit ein bewusstes professionelles Betriebsmerkmal des Beltpacks.
+
+Leitprinzip:
+
+> **Nicht maximale Akkukapazität, sondern maximale Einsatzbereitschaft.**
+
+Ein kompakterer Pack mit ausreichender realer Laufzeit kann einem größeren Pack vorzuziehen sein, wenn ein leerer Pack im laufenden Produktionsalltag schnell und zuverlässig gegen einen geladenen Pack ausgetauscht werden kann. Die Austauschbarkeit wird daher bei der Pack- und Gehäuseauswahl als funktionaler Vorteil und nicht lediglich als regulatorische Mindestanforderung bewertet.
+
+Ziel für die mechanische Produktentwicklung ist ein Akkuwechsel in wenigen Sekunden ohne Öffnen des eigentlichen Gerätegehäuses. Die konkrete Mechanik wird erst zusammen mit dem ausgewählten Serienpack festgelegt. Zu untersuchen sind insbesondere ein von außen zugängliches Batteriefach, eine robuste Klappe oder Verriegelung, sichere Packführung, fehlstecksichere Kontaktierung und Schutz gegen unbeabsichtigtes Lösen im mobilen Betrieb.
+
+Der schnelle Wechsel darf Wartbarkeit und Langzeitreparierbarkeit nicht verschlechtern. Verschleißteile der Wechselmechanik sollen soweit sinnvoll separat reparierbar oder ersetzbar sein.
+
+Die Architektur soll außerdem ein mögliches Zubehörsystem aus Ersatzpacks und externen Ladegeräten bzw. Mehrfach-Ladelösungen ermöglichen. Eine solche Ladelösung darf nicht voraussetzen, dass nıu selbst einen Battery Pack oder ein eigenes BMS entwickelt; sie muss die Spezifikationen des ausgewählten Pack-Herstellers einhalten.
+
+**REVIEW:** Ob ein Akkuwechsel bei eingeschaltetem Gerät ohne Neustart unterstützt werden soll, ist noch nicht entschieden. Eine hierfür erforderliche Energiepufferung wird nur vorgesehen, wenn der betriebliche Nutzen ihren zusätzlichen Bauraum, Aufwand und ihre Kosten rechtfertigt.
+
 ## Wartbarkeit und Austausch
 
 **DECIDED:** Der komplette Battery Pack ist eine vom Endanwender austauschbare Funktionseinheit.
@@ -65,6 +83,7 @@ Der Serienpack soll möglichst folgende Eigenschaften bereitstellen:
 - dokumentierte Systemkommunikation, bevorzugt über eine etablierte Schnittstelle wie SMBus oder I²C, sofern dies keine unnötige proprietäre Abhängigkeit erzeugt
 - geeignete Status-/Fuel-Gauge-Informationen für Batteriestand, Health und Diagnose
 - serienfähiger, verriegelbarer und fehlstecksicherer Steckverbinder
+- für regelmäßigen Feldwechsel geeignete und dokumentierte Steck-/Kontaktzyklen
 - dokumentierte Lebensdauer und Temperaturbereiche
 - vollständige für Integration, Transport und Produktkonformität erforderliche Dokumentation
 - langfristige Serien- und Ersatzteilverfügbarkeit
@@ -93,14 +112,14 @@ Das interne BMS des Packs und die Power-Architektur des Beltpacks sollen klare V
 
 Die endgültige Mindestenergie in Wh ist noch nicht festgelegt.
 
-**REVIEW:** Ziel ist eine für professionelle Einsätze sinnvolle Schichtlaufzeit bei möglichst kleinem Gerät. Die Auswahl soll auf einem realistischen Leistungsbudget und anschließend auf Messungen am Radxa-/Carrier-Prototyp beruhen, nicht auf maximal möglicher Akkukapazität.
+**REVIEW:** Ziel ist eine für professionelle Einsätze sinnvolle Laufzeit bei möglichst kleinem Gerät. Durch den schnellen Feldwechsel muss ein einzelner Pack nicht zwangsläufig eine maximale Schichtdauer abdecken. Die Auswahl soll auf einem realistischen Leistungsbudget und anschließend auf Messungen am Radxa-/Carrier-Prototyp beruhen, nicht auf maximal möglicher Akkukapazität.
 
 Für die Vorauswahl sind insbesondere zwei Klassen interessant:
 
 - etwa **19 Wh** als besonders kompakte Klasse
 - etwa **25 Wh** als kompakte Klasse mit zusätzlicher Laufzeitreserve
 
-Größere Packs bleiben möglich, müssen ihren zusätzlichen Bauraum und ihr Gewicht jedoch durch einen realen Produktnutzen rechtfertigen.
+Größere Packs bleiben möglich, müssen ihren zusätzlichen Bauraum und ihr Gewicht jedoch durch einen realen Produktnutzen rechtfertigen. Bei vergleichbarer Systemtauglichkeit erhält die kleinere Lösung zusätzliches Gewicht in der Bewertung, wenn die fehlende Kapazität durch den schnellen Feldwechsel praktisch kompensiert werden kann.
 
 ## Referenzkandidat: vri BASE LINE
 
@@ -136,7 +155,7 @@ Nach öffentlich verfügbaren Herstellerangaben sind derzeit insbesondere intere
 - 800 Zyklen bei DOD 80 % laut Hersteller
 - Hersteller nennt UN38.3, IEC62133:2017 und UL62133
 
-Die endgültige Wahl zwischen 1S und 2S erfolgt ausdrücklich nicht allein nach Kapazität. Zu bewerten sind Gesamtwirkungsgrad der Systemversorgung, notwendige Power-Conversion, reale Lastprofile, Laufzeit, USB-Host-Leistungsreserve, Thermik, Gewicht, Bauraum und Wartbarkeit.
+Die endgültige Wahl zwischen 1S und 2S erfolgt ausdrücklich nicht allein nach Kapazität. Zu bewerten sind Gesamtwirkungsgrad der Systemversorgung, notwendige Power-Conversion, reale Lastprofile, Laufzeit, USB-Host-Leistungsreserve, Thermik, Gewicht, Bauraum, Wartbarkeit und Geschwindigkeit des Feldwechsels.
 
 ## Fragen für das Hersteller-Gespräch
 
@@ -151,19 +170,23 @@ Für ein erstes technisches Gespräch mit VRI bzw. einem alternativen Pack-Herst
 7. Lassen sich reduzierte Ladegrenzen/Battery-Care sinnvoll realisieren und über welche Schnittstelle?
 8. Welche Fuel-Gauge-/Health-/Cycle-Daten sind über SMBus bzw. I²C verfügbar und wie sind sie dokumentiert?
 9. Wie verhält sich der Pack nach physischem Austausch gegenüber dem Host; sind Pairing, Initialisierung oder spezielle Lernvorgänge erforderlich?
-10. Ist der bestehende Pack mechanisch für regelmäßigen Endanwenderwechsel geeignet, insbesondere hinsichtlich Stecker, Kabel, Zugentlastung und Steckzyklen?
+10. Ist der bestehende Pack mechanisch und hinsichtlich der Steckzyklen für regelmäßigen schnellen Endanwenderwechsel geeignet?
 11. Welche Anforderungen stellt der Hersteller an mechanische Befestigung, Stoß-/Vibrationsschutz, Belüftung und thermische Umgebung?
 12. Welche vollständigen Prüf-, Transport- und Konformitätsunterlagen werden für die Integration in unser Endprodukt bereitgestellt?
 13. Welche Serienverfügbarkeit, Product-Lifecycle-Zusagen, MOQ und Preisstaffeln sind möglich?
 14. Wie wird eine Ersatzteilversorgung über die regulatorisch und kommerziell erforderliche Lebensdauer sichergestellt?
 15. Können Muster der 1S/21700- und 2S/18650-Varianten für mechanische und elektrische Prototypentests bereitgestellt werden?
 16. Falls ein Standardpack nahezu, aber nicht vollständig passt: Welche Anpassungen sind möglich, ohne die Vorteile einer bereits entwickelten und zertifizierten BASE-LINE-Lösung unnötig aufzugeben?
+17. Welche mechanische Kontaktierung bzw. welcher Steckverbinder ist für häufigen Feldwechsel empfehlenswert, falls der am Standardpack vorhandene Anschluss dafür nicht optimal ist?
+18. Gibt es eine Herstellerlösung oder empfohlene Architektur zum externen Laden einzelner bzw. mehrerer Packs außerhalb des Beltpacks?
 
 ## Entscheidungsregel
 
-Der bevorzugte Battery Pack ist nicht der Pack mit der höchsten Kapazität, sondern der kleinste serienreife Pack, der mit ausreichender Reserve die realen elektrischen, thermischen, Laufzeit-, Wartbarkeits- und Lebensdaueranforderungen des Beltpacks erfüllt.
+Der bevorzugte Battery Pack ist nicht der Pack mit der höchsten Kapazität, sondern der kleinste serienreife Pack, der mit ausreichender Reserve die realen elektrischen, thermischen, Laufzeit-, Wartbarkeits- und Lebensdaueranforderungen des Beltpacks erfüllt. Ein schneller und robuster Feldwechsel ist Teil dieser Bewertung.
 
 > **Battery capacity is a requirement, not a design goal. Product size, serviceability and reliable runtime are optimized together.**
+
+> **Nicht maximale Akkukapazität, sondern maximale Einsatzbereitschaft.**
 
 ## Quellen / Herstellerinformationen
 
