@@ -3,9 +3,12 @@ language: de
 canonical: true
 status: current
 last_reviewed: 2026-09-07
+translation: ../../en/60-identity-security/identity-trust-architecture.md
 ---
 
 # Identity- und Trust-Architektur
+
+**Deutsch (kanonisch)** | [English](../../en/60-identity-security/identity-trust-architecture.md)
 
 ## Vier Identitäten
 
