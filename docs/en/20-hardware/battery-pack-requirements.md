@@ -37,6 +37,24 @@ The current enclosure target of approximately **120 × 80 × 35 mm is a maximum 
 
 The battery should not unnecessarily dictate the product's external dimensions. Energy content is optimized against volume, weight, electrical efficiency, and real operating time; maximum capacity is not a goal in itself.
 
+## Rapid battery replacement as a product feature
+
+**DECIDED:** The battery pack shall not merely satisfy regulatory replaceability requirements. It shall be designed as a **rapid field-replaceable battery**, making battery replacement an intentional professional operating feature of the beltpack.
+
+Guiding principle:
+
+> **Optimize for operational availability, not maximum battery capacity.**
+
+A more compact pack with sufficient real runtime may be preferable to a larger pack if an empty pack can be replaced quickly and reliably by a charged pack during production work. Replaceability is therefore evaluated as a functional product advantage rather than merely a regulatory minimum.
+
+The mechanical product-development target is battery replacement within a few seconds without opening the main device enclosure. The exact mechanism will only be defined together with the selected production pack. Concepts to investigate include an externally accessible battery compartment, robust door or latch, secure pack guidance, keyed/polarity-safe contacts, and protection against accidental release during mobile operation.
+
+Rapid replacement must not reduce long-term serviceability. Wear parts of the replacement mechanism should be separately repairable or replaceable where reasonable.
+
+The architecture should also permit an accessory ecosystem consisting of spare packs and external single- or multi-pack charging solutions. Such a charger must not require nıu to develop its own battery pack or BMS; it must comply with the selected battery manufacturer's specifications.
+
+**REVIEW:** Hot battery replacement while the device remains powered is not yet decided. Energy buffering required for this feature shall only be introduced if its operational benefit justifies the additional volume, complexity, and cost.
+
 ## Serviceability and replacement
 
 **DECIDED:** The complete battery pack is an end-user-replaceable functional unit.
@@ -67,6 +85,7 @@ The production pack should preferably provide:
 - documented system communication, preferably via an established interface such as SMBus or I²C where this does not create unnecessary proprietary dependency
 - suitable status/fuel-gauge information for state of charge, health, and diagnostics
 - production-grade locking and keyed connector
+- documented connector/contact mating-cycle capability suitable for regular field replacement
 - documented lifetime and temperature ranges
 - complete documentation required for integration, transport, and product conformity
 - long-term production and spare-part availability
@@ -95,14 +114,14 @@ The pack's internal BMS and the beltpack power architecture shall have clear res
 
 The final minimum energy requirement in Wh has not yet been defined.
 
-**REVIEW:** The objective is useful professional shift runtime with the smallest reasonable device. Selection shall be based on a realistic power budget followed by measurements on the Radxa/carrier prototype, not on maximizing battery capacity.
+**REVIEW:** The objective is useful professional runtime with the smallest reasonable device. Because the battery is rapidly field-replaceable, a single pack does not necessarily need to cover the maximum possible shift duration. Selection shall be based on a realistic power budget followed by measurements on the Radxa/carrier prototype, not on maximizing battery capacity.
 
 For initial evaluation, two classes are particularly interesting:
 
 - approximately **19 Wh** as an especially compact class
 - approximately **25 Wh** as a compact class with additional runtime reserve
 
-Larger packs remain possible but must justify their additional volume and weight through real product benefit.
+Larger packs remain possible but must justify their additional volume and weight through real product benefit. Where system suitability is otherwise comparable, the smaller solution receives additional weight in the evaluation if its lower capacity can be practically compensated by rapid field replacement.
 
 ## Reference candidate: vri BASE LINE
 
@@ -138,7 +157,7 @@ Based on currently published manufacturer information, two variants are particul
 - 800 cycles at DOD 80% according to the manufacturer
 - manufacturer lists UN38.3, IEC62133:2017, and UL62133
 
-The final 1S versus 2S choice will explicitly not be based on capacity alone. Overall system power-conversion efficiency, required conversion topology, real load profiles, runtime, USB-host power reserve, thermal behavior, weight, volume, and serviceability must be evaluated together.
+The final 1S versus 2S choice will explicitly not be based on capacity alone. Overall system power-conversion efficiency, required conversion topology, real load profiles, runtime, USB-host power reserve, thermal behavior, weight, volume, serviceability, and field-replacement speed must be evaluated together.
 
 ## Questions for the manufacturer discussion
 
@@ -153,19 +172,23 @@ The first technical discussion with VRI or another battery pack manufacturer sho
 7. Can reduced charge limits/Battery Care be implemented sensibly, and through which interface?
 8. Which fuel-gauge/health/cycle data are available via SMBus or I²C and how are they documented?
 9. How does the pack behave toward the host after physical replacement; are pairing, initialization, or special learning procedures required?
-10. Is the existing pack mechanically suitable for regular end-user replacement, especially regarding connector, cable, strain relief, and mating cycles?
+10. Is the existing pack mechanically suitable, including connector mating-cycle capability, for regular rapid end-user replacement?
 11. What requirements apply to mechanical mounting, shock/vibration protection, ventilation, and thermal environment?
 12. Which complete test, transport, and conformity documents are supplied for integration into our end product?
 13. What production availability, product-lifecycle commitments, MOQ, and volume pricing are possible?
 14. How can spare-part availability be ensured over the required regulatory and commercial lifetime?
 15. Can samples of the 1S/21700 and 2S/18650 variants be supplied for mechanical and electrical prototype testing?
 16. If a standard pack is close but not ideal, which adaptations are possible without unnecessarily losing the advantages of an already developed and certified BASE LINE solution?
+17. Which mechanical contact or connector solution is recommended for frequent field replacement if the standard pack connector is not optimal for that purpose?
+18. Does the manufacturer offer or recommend a solution for externally charging individual or multiple packs outside the beltpack?
 
 ## Decision rule
 
-The preferred battery pack is not the pack with the highest capacity. It is the smallest production-ready pack that, with sufficient margin, satisfies the beltpack's real electrical, thermal, runtime, serviceability, and lifetime requirements.
+The preferred battery pack is not the pack with the highest capacity. It is the smallest production-ready pack that, with sufficient margin, satisfies the beltpack's real electrical, thermal, runtime, serviceability, and lifetime requirements. Fast and robust field replacement is part of this evaluation.
 
 > **Battery capacity is a requirement, not a design goal. Product size, serviceability and reliable runtime are optimized together.**
+
+> **Optimize for operational availability, not maximum battery capacity.**
 
 ## Sources / manufacturer information
 
