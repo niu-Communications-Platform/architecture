@@ -1,12 +1,3 @@
----
-language: en
-canonical: false
-status: current
-last_reviewed: 2026-09-07
-source: ../../de/50-networking/network-architecture.md
-translation_status: current
----
-
 # Network Architecture
 
 [Deutsch — canonical](../../de/50-networking/network-architecture.md) | **English**
