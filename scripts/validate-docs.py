@@ -3,8 +3,10 @@
 
 from __future__ import annotations
 
+import argparse
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -185,11 +187,71 @@ def check_adr_numbers() -> None:
             error(f"English ADR has no canonical German counterpart: {name}")
 
 
+def changed_files(base_ref: str) -> set[str]:
+    try:
+        output = subprocess.check_output(
+            ["git", "diff", "--name-only", f"{base_ref}...HEAD"],
+            cwd=ROOT,
+            text=True,
+            stderr=subprocess.STDOUT,
+        )
+    except subprocess.CalledProcessError as exc:
+        error(f"Could not determine changed files against {base_ref}: {exc.output.strip()}")
+        return set()
+    return {line.strip() for line in output.splitlines() if line.strip()}
+
+
+def check_translation_changes(base_ref: str) -> None:
+    """Require changed canonical DE docs/ADRs to update EN or mark EN outdated."""
+    changed = changed_files(base_ref)
+
+    for base in ("docs", "adr"):
+        prefix = f"{base}/de/"
+        for de_path in sorted(path for path in changed if path.startswith(prefix) and path.endswith(".md")):
+            rel = de_path[len(prefix):]
+            en_path = f"{base}/en/{rel}"
+
+            # README navigation pages have no translation_status metadata. Their
+            # counterpart therefore has to be part of the same change set.
+            if rel == "README.md":
+                if en_path not in changed:
+                    error(f"{de_path} changed, so {en_path} must be updated in the same change set")
+                continue
+
+            if en_path in changed:
+                continue
+
+            en_file = ROOT / en_path
+            if not en_file.exists():
+                # The structural pair validator reports the missing file.
+                continue
+
+            status = frontmatter(read(en_file)).get("translation_status")
+            if status != "outdated":
+                error(
+                    f"{de_path} changed without updating {en_path}; "
+                    "update the English translation in the same change set or mark it translation_status: outdated"
+                )
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--base-ref",
+        help="Git base ref used to validate that changed German documents update their English counterparts",
+    )
+    return parser.parse_args()
+
+
 def main() -> int:
+    args = parse_args()
+
     check_root_pair()
     paired_files("docs")
     paired_files("adr")
     check_adr_numbers()
+    if args.base_ref:
+        check_translation_changes(args.base_ref)
 
     if ERRORS:
         print("Documentation validation FAILED:\n")
