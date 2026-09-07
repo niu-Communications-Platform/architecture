@@ -1,15 +1,15 @@
 ---
 language: en
 canonical: false
-translation_of: ../../../de/70-provisioning-lifecycle/provisioning-lifecycle.md
-translation_status: current
 status: current
 last_reviewed: 2026-09-07
+source: ../../de/70-provisioning-lifecycle/provisioning-lifecycle.md
+translation_status: current
 ---
 
 # Provisioning, Ownership and Lifecycle
 
-[Deutsch](../../de/70-provisioning-lifecycle/provisioning-lifecycle.md) | **English**
+[Deutsch — canonical](../../de/70-provisioning-lifecycle/provisioning-lifecycle.md) | **English**
 
 > The German version is canonical. This document is a maintained English translation.
 
