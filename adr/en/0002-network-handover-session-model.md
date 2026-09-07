@@ -1,4 +1,17 @@
+---
+language: en
+canonical: false
+status: accepted
+date: 2026-09-07
+source: ../de/0002-network-handover-session-model.md
+translation_status: current
+---
+
 # ADR-0002: Network handover separates transport switching from Mumble session switching
+
+[Deutsch — canonical](../de/0002-network-handover-session-model.md) | **English**
+
+> The German version is canonical. This document is a maintained English translation.
 
 **Status:** Accepted  
 **Date:** 2026-09-07
@@ -27,7 +40,3 @@ This limits the unavoidable intercom interruption to the session reconnect witho
 ## Validation required
 
 Practical measurements with internal Wi-Fi, USB Wi-Fi and USB Ethernet under different Mumble network conditions.
-
----
-
-[Canonical German version](../de/0002-network-handover-session-model.md)
