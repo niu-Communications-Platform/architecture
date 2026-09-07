@@ -1,96 +1,110 @@
-# Dokumentations- und Repository-Konventionen
+# Documentation and Repository Conventions
 
-Dieses Dokument definiert, wie Architekturwissen in diesem Repository organisiert wird. Die Konventionen gelten für alle Mitwirkenden und sollen sicherstellen, dass Entscheidungen, beschreibende Architektur, Validierungsarbeit und historisches Material langfristig nachvollziehbar bleiben.
+**English** | [Deutsch — canonical](DOCUMENTATION.de.md)
 
-## Maßgebliche Quelle
+> This is the maintained English translation. The German version is canonical.
 
-Das Repository ist die maßgebliche Quelle für dokumentierte Architekturentscheidungen und die technische Dokumentationsstruktur.
+This document defines how architecture knowledge is organized in this repository. The conventions apply to all contributors and are intended to keep decisions, descriptive architecture, validation work and historical material traceable over time.
 
-Vor Änderungen an Navigation, Verzeichnisstruktur, ADR-Nummerierung oder Dokumentbeziehungen ist der aktuelle Stand des Repositorys zu prüfen. Solche Strukturen sollen nicht aus früheren Diskussionen, externen Notizen oder historischen Snapshots rekonstruiert werden.
+> **The public entry language is English. The canonical documentation language is German.**
 
-Die Git-Historie bewahrt die Entwicklung der Architektur. Bestehende akzeptierte Entscheidungen werden bei einer späteren Richtungsänderung nicht stillschweigend umgeschrieben, sondern gegebenenfalls ausdrücklich durch eine neue Entscheidung ersetzt.
+## Authoritative source
 
-## Sprachen
+The repository is the authoritative source for documented architecture decisions and the technical documentation structure.
 
-Deutsch ist die kanonische Sprache der Architekturdokumentation.
+Before changing navigation, directory structure, ADR numbering or document relationships, the current repository state must be inspected. Such structures should not be reconstructed from earlier discussions, external notes or historical snapshots.
 
-- `docs/de/` enthält die kanonische beschreibende Architekturdokumentation.
-- `adr/de/` enthält die kanonischen Architecture Decision Records.
-- `docs/en/` und `adr/en/` enthalten gepflegte englische Übersetzungen.
-- Bei Abweichungen ist die kanonische deutsche Fassung maßgeblich.
-- Englische Übersetzungen sollen ihre deutsche Quelle und den Übersetzungsstatus in den Dokumentmetadaten ausweisen, soweit diese Konvention im jeweiligen Bereich verwendet wird.
+Git history preserves the evolution of the architecture. Existing accepted decisions are not silently rewritten when direction changes later; where appropriate, they are explicitly superseded by a new decision.
 
-Code, APIs, Bezeichner, Schemas und technische Schnittstellennamen bleiben grundsätzlich englisch, sofern kein sachlicher Grund dagegenspricht.
+## Languages
 
-## Repository-Bereiche
+German is the canonical language of the architecture documentation.
+
+- `README.md` is the English public entry point of the repository.
+- `README.de.md` is its canonical German counterpart and is linked from `README.md`.
+- `DOCUMENTATION.md` is the maintained English translation of these conventions.
+- `DOCUMENTATION.de.md` is the canonical German version of these conventions.
+- `docs/de/` contains canonical descriptive architecture documentation.
+- `adr/de/` contains canonical Architecture Decision Records.
+- `docs/en/` and `adr/en/` contain maintained English translations.
+- English and German versions link to each other.
+- In case of discrepancies, the canonical German version prevails.
+- English translations should identify their German source and translation status in document metadata where that convention is used.
+
+New architecture documentation and new ADRs are written in substance first in the canonical German version. The English version is then derived from it as a maintained translation.
+
+Code, APIs, identifiers, schemas and technical interface names remain English unless there is a specific reason otherwise.
+
+## Repository areas
 
 ### `docs/`
 
-Beschreibende Architektur: Aufbau der Plattform, Verantwortlichkeiten und Zusammenspiel der Subsysteme.
+Descriptive architecture: how the platform is structured, which responsibilities exist, and how subsystems interact.
 
-Die nummerierten Verzeichnisse sind Themenbereiche und keine einzelnen Dokumente:
+The numbered directories are topic areas, not individual documents:
 
-- `00-product/` — Produktmodell und Architekturprinzipien
-- `10-system/` — Systemarchitektur und Systemgrenzen
-- `20-hardware/` — plattformweite Hardwarearchitektur und produktübergreifende Hardwareprinzipien
-- `30-software/` — gemeinsame Softwarearchitektur, Dienste und Abstraktionen
-- `40-audio/` — Audioarchitektur und Routing
-- `50-networking/` — Netzwerk, Transportauswahl und Handover
-- `60-identity-security/` — Geräteidentität, Sicherheit, PKI und Trust
-- `70-provisioning-lifecycle/` — Provisioning, Ownership und Lifecycle
-- `80-manufacturing/` — Fertigung, Factory Provisioning und EOL
-- `90-ux-ui/` — Produktbedienung und UX-/UI-Prinzipien
+- `00-product/` — product model and architecture principles
+- `10-system/` — system-level architecture and boundaries
+- `20-hardware/` — platform-wide hardware architecture and cross-product hardware principles
+- `30-software/` — shared software architecture, services and abstractions
+- `40-audio/` — audio architecture and routing
+- `50-networking/` — networking, transport selection and handover
+- `60-identity-security/` — device identity, security, PKI and trust
+- `70-provisioning-lifecycle/` — provisioning, ownership and lifecycle
+- `80-manufacturing/` — manufacturing, factory provisioning and EOL
+- `90-ux-ui/` — product interaction and UX/UI principles
 
-Ein Themenverzeichnis kann mehrere Dokumente enthalten. Die sprachbezogenen `docs/*/README.md`-Seiten navigieren primär zu diesen Themenbereichen und sollen nicht den Eindruck erwecken, dass ein Themenbereich mit einem einzelnen Dokument identisch ist.
+A topic directory may contain multiple documents. The language-level `docs/*/README.md` pages primarily navigate these topic areas and should not imply that a topic area is identical to a single document.
 
-Neue nummerierte Themenbereiche auf dieser Ebene sollen nur entstehen, wenn ein Thema nicht sinnvoll in einen bestehenden Bereich passt und voraussichtlich einen eigenständigen Bestand an Architekturdokumentation benötigt.
+New top-level numbered topic areas should only be introduced when the subject does not reasonably fit an existing area and is expected to contain a distinct body of architecture documentation.
 
 ### `adr/`
 
-Architecture Decision Records dokumentieren folgenreiche Architekturentscheidungen und ihre Begründung.
+Architecture Decision Records document consequential architecture decisions and their rationale.
 
-Ein ADR ist sinnvoll, wenn echte Alternativen bestanden und die gewählte Richtung zukünftige Architektur, Implementierung oder Produktverhalten einschränkt oder prägt.
+Use an ADR when real alternatives existed and the chosen direction constrains or shapes future architecture, implementation or product behaviour.
 
-ADR-Nummern gelten repositoryweit, werden fortlaufend vergeben und niemals für eine andere Entscheidung wiederverwendet. Vor Vergabe einer neuen ADR-Nummer ist der aktuelle Bestand der ADR-Verzeichnisse zu prüfen und die nächste freie Nummer zu verwenden.
+ADR numbers are repository-wide, sequential and never reused for a different decision. Before assigning a new ADR number, inspect the current ADR directories and use the next free number.
 
-Eine spätere Änderung einer akzeptierten Entscheidung wird durch ein neues ADR dokumentiert, das die frühere Entscheidung gegebenenfalls ausdrücklich ersetzt. Historische ADRs verbleiben im Repository.
+A later change to an accepted decision is documented through a new ADR that explicitly supersedes the previous one where applicable. Historical ADRs remain in the repository.
 
 ### `validation/`
 
-Validierungspläne, Architecture Gates, Experimente und Nachweise zur Überprüfung von Annahmen oder Designkandidaten gehören hierher.
+Validation plans, architecture gates, experiments and evidence used to verify assumptions or candidate designs belong here.
 
-Ein noch nicht validierter Kandidat wird nicht allein dadurch zu einer akzeptierten Architekturentscheidung, dass er in einem Validierungsdokument genannt wird.
+An unvalidated candidate should not be presented as an accepted architecture decision merely because it appears in a validation document.
 
 ### `archive/`
 
-Historische Snapshots und abgelöstes konsolidiertes Material, das für die Nachvollziehbarkeit weiterhin nützlich ist, gehört hierher. Archivmaterial ist gegenüber aktuellen Inhalten in `docs/` und `adr/` nicht maßgeblich.
+Historical snapshots and superseded consolidated material that remains useful for traceability belong here. Archive material is not authoritative over current `docs/` and `adr/` content.
 
-## Architekturdokumentation und Produkt-Repositories
+## Architecture documentation versus product repositories
 
-Dieses Repository enthält plattformweite Architektur und Entscheidungen, die mehrere Komponenten betreffen oder das gemeinsame Produktmodell definieren.
+This repository contains platform-wide architecture and decisions that affect multiple components or define the common product model.
 
-Produktspezifische Implementierungsdetails gehören grundsätzlich in das jeweilige Produkt-Repository, sofern sie keine plattformweite Architektur festlegen oder einschränken.
+Product-specific implementation details belong in the corresponding product repository unless they establish or constrain platform-wide architecture.
 
 ## Navigation
 
-README-Dateien dienen als menschenlesbare Navigation und nicht als duplizierte Architekturspezifikation.
+README files serve as human-readable navigation rather than duplicate architecture specifications.
 
-Wenn ein neues Dokument hinzugefügt wird:
+When adding a new document:
 
-1. nach Möglichkeit im passenden bestehenden Themenbereich ablegen;
-2. die relevante deutsche Navigation aktualisieren, wenn das Dokument von dieser Ebene aus auffindbar sein soll;
-3. die gepflegte englische Übersetzung anlegen oder aktualisieren, soweit vorgesehen;
-4. die entsprechende englische Navigation aktualisieren;
-5. Verknüpfungen zwischen kanonischer Fassung und Übersetzung erhalten, soweit die Metadatenkonventionen dies unterstützen.
+1. create the canonical German version first in the appropriate existing topic area;
+2. update the relevant German navigation if the document should be discoverable from that level;
+3. create or update the maintained English translation;
+4. update the corresponding English navigation;
+5. preserve links between canonical and translated documents;
+6. ensure the English version is marked as a translation and the German version as canonical.
 
-Die Navigation muss die tatsächliche Repository-Hierarchie widerspiegeln. Einträge für Verzeichnisse verlinken auf Verzeichnisse; Einträge für einzelne Dokumente auf Dokumente.
+Navigation must reflect the actual repository hierarchy. Directory-level entries link to directories; document-level entries link to documents.
 
-## Dokumentstatus
+## Document status
 
-Die Dokumentation soll klar zwischen festgelegter Architektur und offenen Punkten unterscheiden. Bestehende Kennzeichnungen wie `DECIDED`, `OPEN`, `P0 REVIEW`, ADR-Statusfelder und Übersetzungsstatus werden konsistent verwendet, damit Kandidaten nicht als bereits entschiedene Fakten erscheinen.
+Documentation should clearly distinguish established architecture from unresolved work. Existing conventions such as `DECIDED`, `OPEN`, `P0 REVIEW`, ADR status fields and translation status should be used consistently so that candidates are not presented as settled facts.
 
-## Strukturelle Änderungen
+## Structural changes
 
-Die Repository-Struktur ist selbst Teil der langfristigen Wartbarkeit des Projekts. Vor dem Umbenennen, Verschieben oder Umwidmen eines etablierten Verzeichnisses oder Navigationsbereichs sind bestehende Inhalte und Referenzen zu prüfen und die beabsichtigte Informationsarchitektur zu erhalten.
+Repository structure is itself part of the project's long-term maintainability. Before renaming, moving or repurposing an established directory or navigation category, existing content and references must be checked and the intended information architecture preserved.
 
-Ziel ist ein Repository, das verständlich bleibt, ohne auf das Gedächtnis einzelner Mitwirkender oder auf externe Gesprächsverläufe angewiesen zu sein.
+The objective is a repository that remains understandable without relying on the memory of any individual contributor or on external conversation history.
