@@ -18,6 +18,8 @@ The hardware architecture shall maximize the service life of the beltpack and pr
 
 **DECIDED:** Component-level repair is preferred where reasonable. Module replacement is preferred where component-level repair would require disproportionate labor, energy, equipment or risk of damage.
 
+**DECIDED:** Diagnostic and repair knowledge is not artificially treated as a manufacturer secret. Qualified independent repair should be practically possible through publicly available documentation and tools.
+
 ## Repair levels
 
 ### Level 1 — End User Replaceable
@@ -91,6 +93,50 @@ Requirements according to ADR-0005 include in particular:
 - polarity-safe connector
 - no software pairing that obstructs compatible replacement batteries
 - Battery Learning/Health State can be correctly reinitialized after replacement
+
+## Open diagnostics and repair documentation
+
+The product's repairability should not merely exist by design; it should be practically usable by third parties. nıu therefore plans comprehensive, publicly available fault-analysis and repair documentation that is maintained throughout the product lifecycle.
+
+Where appropriate and legally possible for the respective product, it includes in particular:
+
+- opening, disassembly, and assembly instructions
+- descriptions of assemblies and their functions
+- schematics and relevant hardware/interface information
+- connector pinouts, test points, and expected measurements
+- boot, recovery, and reimaging procedures
+- open diagnostic tools and hardware self-tests
+- symptom-oriented troubleshooting trees
+- replacement procedures for service and wear components
+- board-level diagnostic and repair guidance
+- calibration procedures after relevant repairs
+- final functional and safety tests
+- spare-part information and, where appropriate, specifications for compatible third-party components
+- known failure modes and repair guidance derived from them
+
+The Repair Knowledge Base should evolve with experience from manufacturing, RMA, and field operation. Recurring failure modes are documented with reproducible diagnostic and repair paths instead of remaining exclusively internal service knowledge.
+
+## Shared diagnostic foundation for Factory and Repair
+
+Where sensible, hardware self-tests and diagnostic primitives should be shared between Factory EOL, nıu RMA, and independent repair. Technical diagnostics themselves must not depend on secret Factory Credentials.
+
+Examples include audio codec reachability, audio loopback/level tests, display and button tests, USB enumeration and VBUS tests, network diagnostics, and Secure Element reachability.
+
+Privileged operations within the official nıu Trust Domain remain separate. A public diagnostic tool may test hardware without thereby being able to issue nıu Device Certificates, create Factory Registry entries, or produce other nıu attestations.
+
+Principle:
+
+> **Diagnostics are open. Trust issuance is not.**
+
+## Repair and nıu trust status
+
+Opening, diagnosing, repairing, or modifying a device by its owner or an independent repair shop does not by itself cause the loss of official nıu trust status.
+
+If Carrier Identity and the cryptographic Identity Anchor remain intact and can still be reliably proven, the existing Device Identity is generally preserved. This applies, for example, to replacement of the battery, display, buttons, speaker, microphones, SBC/storage, or repairable carrier components, provided that the Identity Anchor is not affected.
+
+If the Identity Anchor can no longer be reliably proven or must be replaced, an open recovery or repair process must not be able to create new official nıu attestations by itself. Restoring official nıu trust status then requires a controlled nıu recertification process. For the first product generation, the physical device is intended to be sent to nıu as the manufacturer for inspection and recertification.
+
+This boundary does not restrict the owner's continued use of the device with custom software or a custom Trust Domain.
 
 ## Calibration and repair
 
