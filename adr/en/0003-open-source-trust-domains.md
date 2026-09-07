@@ -1,10 +1,6 @@
 ---
-language: en
-canonical: false
 status: accepted
 date: 2026-09-07
-source: ../de/0003-open-source-trust-domains.md
-translation_status: current
 ---
 
 # ADR-0003: Open source and trust domains are separate
