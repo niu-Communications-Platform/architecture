@@ -1,12 +1,3 @@
----
-language: en
-canonical: false
-status: current
-last_reviewed: 2026-09-07
-source: ../../de/00-product/product-principles.md
-translation_status: current
----
-
 # Product Principles
 
 [Deutsch — canonical](../../de/00-product/product-principles.md) | **English**
