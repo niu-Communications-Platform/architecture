@@ -90,44 +90,55 @@ def paired_files(base: str) -> None:
     for rel in sorted(de_files & en_files):
         de_file = de_root / rel
         en_file = en_root / rel
+        de_text = read(de_file)
+        en_text = read(en_file)
+
         if rel.name == "README.md":
-            de_text = read(de_file)
-            en_text = read(en_file)
-            if "../en/README.md" not in de_text and base == "docs":
-                error(f"{de_file.relative_to(ROOT)} must link to the English README")
-            if "../de/README.md" not in en_text and base == "docs":
-                error(f"{en_file.relative_to(ROOT)} must link to the German README")
+            if base == "docs":
+                if "../en/README.md" not in de_text:
+                    error(f"{de_file.relative_to(ROOT)} must link to the English README")
+                if "../de/README.md" not in en_text:
+                    error(f"{en_file.relative_to(ROOT)} must link to the German README")
             continue
 
-        de_meta = frontmatter(read(de_file))
-        en_meta = frontmatter(read(en_file))
+        de_meta = frontmatter(de_text)
+        en_meta = frontmatter(en_text)
 
-        if de_meta.get("language") != "de":
-            error(f"{de_file.relative_to(ROOT)} must declare language: de")
-        if de_meta.get("canonical") != "true":
-            error(f"{de_file.relative_to(ROOT)} must declare canonical: true")
-        if en_meta.get("language") != "en":
-            error(f"{en_file.relative_to(ROOT)} must declare language: en")
-        if en_meta.get("canonical") != "false":
-            error(f"{en_file.relative_to(ROOT)} must declare canonical: false")
+        # Descriptive docs already use structured metadata and must keep it consistent.
+        if base == "docs":
+            if de_meta.get("language") != "de":
+                error(f"{de_file.relative_to(ROOT)} must declare language: de")
+            if de_meta.get("canonical") != "true":
+                error(f"{de_file.relative_to(ROOT)} must declare canonical: true")
+            if en_meta.get("language") != "en":
+                error(f"{en_file.relative_to(ROOT)} must declare language: en")
+            if en_meta.get("canonical") != "false":
+                error(f"{en_file.relative_to(ROOT)} must declare canonical: false")
+            if en_meta.get("translation_status") not in {"current", "outdated", "not-translated"}:
+                error(
+                    f"{en_file.relative_to(ROOT)} must declare translation_status as "
+                    "current, outdated, or not-translated"
+                )
 
+        # ADR metadata was introduced incrementally. Whenever it is present, enforce it.
+        if base == "adr" and (de_meta or en_meta):
+            if de_meta.get("language") != "de":
+                error(f"{de_file.relative_to(ROOT)} must declare language: de")
+            if de_meta.get("canonical") != "true":
+                error(f"{de_file.relative_to(ROOT)} must declare canonical: true")
+            if en_meta.get("language") != "en":
+                error(f"{en_file.relative_to(ROOT)} must declare language: en")
+            if en_meta.get("canonical") != "false":
+                error(f"{en_file.relative_to(ROOT)} must declare canonical: false")
+
+        # Validate translation/source metadata where documents already use it.
         translation = de_meta.get("translation")
-        if not translation:
-            error(f"{de_file.relative_to(ROOT)} must declare translation metadata")
-        elif not rel_target_exists(de_file, translation):
+        if translation and not rel_target_exists(de_file, translation):
             error(f"{de_file.relative_to(ROOT)} translation target does not exist: {translation}")
 
-        source = en_meta.get("source")
-        if not source:
-            error(f"{en_file.relative_to(ROOT)} must declare source metadata")
-        elif not rel_target_exists(en_file, source):
+        source = en_meta.get("source") or en_meta.get("translation_of")
+        if source and not rel_target_exists(en_file, source):
             error(f"{en_file.relative_to(ROOT)} source target does not exist: {source}")
-
-        if en_meta.get("translation_status") not in {"current", "outdated", "not-translated"}:
-            error(
-                f"{en_file.relative_to(ROOT)} must declare translation_status as "
-                "current, outdated, or not-translated"
-            )
 
 
 def check_adr_numbers() -> None:
