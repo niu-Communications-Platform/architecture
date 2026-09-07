@@ -1,4 +1,14 @@
+---
+language: de
+canonical: true
+status: accepted
+date: 2026-09-07
+translation: ../en/0002-network-handover-session-model.md
+---
+
 # ADR-0002: Netzwerk-Handover trennt Transport- und Mumble-Sessionwechsel
+
+**Deutsch (kanonisch)** | [English](../en/0002-network-handover-session-model.md)
 
 **Status:** Accepted  
 **Datum:** 2026-09-07
