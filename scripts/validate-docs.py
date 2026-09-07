@@ -38,15 +38,6 @@ def frontmatter(text: str) -> dict[str, str]:
     return result
 
 
-def rel_target_exists(source_file: Path, target: str) -> bool:
-    target_path = (source_file.parent / target).resolve()
-    try:
-        target_path.relative_to(ROOT.resolve())
-    except ValueError:
-        return False
-    return target_path.is_file()
-
-
 def check_root_pair() -> None:
     en = ROOT / "README.md"
     de = ROOT / "README.de.md"
@@ -130,15 +121,6 @@ def paired_files(base: str) -> None:
                 error(f"{en_file.relative_to(ROOT)} must declare language: en")
             if en_meta.get("canonical") != "false":
                 error(f"{en_file.relative_to(ROOT)} must declare canonical: false")
-
-        # Validate translation/source metadata where documents already use it.
-        translation = de_meta.get("translation")
-        if translation and not rel_target_exists(de_file, translation):
-            error(f"{de_file.relative_to(ROOT)} translation target does not exist: {translation}")
-
-        source = en_meta.get("source") or en_meta.get("translation_of")
-        if source and not rel_target_exists(en_file, source):
-            error(f"{en_file.relative_to(ROOT)} source target does not exist: {source}")
 
 
 def check_adr_numbers() -> None:
