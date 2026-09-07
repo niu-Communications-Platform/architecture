@@ -8,7 +8,9 @@ This directory contains the maintained English translation of the **canonical Ge
 
 - [`00-Product Principles`](00-product/product-principles.md) — product model, guiding principles, digital sovereignty, openness, Open Diagnostics/Open Repair, Capability ≠ Feature, and manufacturability
 - [`10-System Architecture`](10-system/system-architecture.md) — repository boundaries, Capability Layer, Device Agent, and architecture phase
-- [`20-Hardware`](20-hardware/) — platform-wide hardware principles and cross-product hardware decisions, including repairability, resource conservation, and open fault-analysis and repair documentation
+- [`20-Hardware`](20-hardware/) — platform-wide hardware principles and cross-product hardware decisions
+  - [`Repairability and Sustainability`](20-hardware/repairability-sustainability.md) — repair granularity, resource conservation, and open fault-analysis and repair documentation
+  - [`Production Battery Pack Requirements`](20-hardware/battery-pack-requirements.md) — manufacturer pack rather than in-house battery development, replaceability, compactness, operating requirements, and current VRI reference candidates
 - `30-software/` — shared software architecture, services, and abstractions; currently no dedicated document
 - [`40-Audio Architecture`](40-audio/audio-architecture.md) — audio endpoints, routing, additional feeds, TDM target architecture, and fallbacks
 - [`50-Network Architecture`](50-networking/network-architecture.md) — transport classes, Network Manager, health model, and handover
