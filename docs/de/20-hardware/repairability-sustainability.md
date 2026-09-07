@@ -3,6 +3,7 @@ language: de
 canonical: true
 status: current
 last_reviewed: 2026-09-07
+translation: ../../../en/20-hardware/repairability-sustainability.md
 ---
 
 # Reparierbarkeit und Ressourcenschonung
@@ -30,7 +31,7 @@ Komponenten, deren Austausch der Endnutzer sicher selbst durchführen können so
 - Akku
 - ggf. Gürtelclip und einfache mechanische Teile
 
-Der Akku ist gemäß ADR-0004 verbindlich als End-User Replaceable Unit auszulegen.
+Der Akku ist gemäß ADR-0005 verbindlich als End-User Replaceable Unit auszulegen.
 
 ### Level 2 — Service Replaceable Module
 
@@ -85,7 +86,7 @@ Die Entscheidung ist anhand realer Mechanik, Platzbedarf, BOM, Montage und erwar
 
 Der Akku ist eine erwartbare Verschleißkomponente und darf die Lebensdauer des Produkts nicht begrenzen.
 
-Anforderungen gemäß ADR-0004 umfassen insbesondere:
+Anforderungen gemäß ADR-0005 umfassen insbesondere:
 
 - Endnutzer kann den vollständigen Akku austauschen
 - kein Löten
