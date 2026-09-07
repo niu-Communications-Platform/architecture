@@ -3,9 +3,12 @@ language: de
 canonical: true
 status: current
 last_reviewed: 2026-09-07
+translation: ../../en/80-manufacturing/factory-architecture.md
 ---
 
 # Factory- und Fertigungsarchitektur
+
+**Deutsch (kanonisch)** | [English](../../en/80-manufacturing/factory-architecture.md)
 
 ## Skalierungsziel
 
