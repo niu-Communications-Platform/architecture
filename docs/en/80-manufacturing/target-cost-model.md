@@ -6,108 +6,99 @@
 
 ## Purpose
 
-This document defines the first economic target-cost framework for the nıu Communications Platform beltpack. It is a target-cost model, not yet a supplier quotation.
+This document defines the economic target-cost framework for the nıu Communications Platform beltpack. It is a target-cost model, not yet a supplier quotation.
 
 ## Manufacturing premise
 
-**DECIDED:** `Made in Germany` shall be pursued as a hard premise for series manufacturing. In particular, Carrier PCBA, enclosure manufacturing, and final assembly/EOL should be performed in Germany where economically viable.
-
-This does not require every component to originate in Germany. SBCs, semiconductors, displays, battery cells/packs, and other components may be sourced internationally. The objective is a credible German manufacturing and value-add architecture for the finished product.
-
-Major manufacturing steps shall not be moved abroad reflexively for cost reasons. The premise will only be reconsidered if credible German quotations demonstrate that target price, quality, and margin cannot be achieved simultaneously.
+**DECIDED:** `Made in Germany` shall be pursued as a hard premise for series manufacturing. Carrier PCBA, enclosure manufacturing, and final assembly/EOL should in particular be performed in Germany where economically viable. Individual components may be sourced internationally. Major manufacturing steps shall only be reconsidered after credible German quotations demonstrate that target price, quality, and margin cannot be achieved simultaneously.
 
 ## Sales and price
 
 **CANDIDATE:** Current target selling price is **EUR 189 net**, or **EUR 224.91 gross** at 19% German VAT.
 
-**Direct-to-customer sales are the economic base case.** Physical retail is not a fixed product requirement. Dealer/distributor margins are therefore excluded from the primary target-cost ceiling and require a separate channel model before indirect distribution is committed.
+**DECIDED:** Direct-to-customer sales are the economic base case. Physical retail and classic distribution are not assumed. Any later indirect channel requires its own margin model.
 
-## Margin definition
+## Margin definition and cost gates
 
-The target is at least approximately **50% gross margin** on net DTC selling price.
+| Gate | COGS | Gross margin at EUR 189 net | Meaning |
+|---|---:|---:|---|
+| **TARGET** | **≤ EUR 75** | **≥60.3%** | preferred development target |
+| **ACCEPTABLE** | **>75 to 80** | **57.7–60.3%** | normal target range |
+| **LIMIT** | **>80 to 94.50** | **50.0–57.7%** | economically possible, active optimization required |
+| **FAIL** | **>94.50** | **<50%** | EUR 189 DTC target is not viable |
 
-At EUR 189 net:
+**DECIDED:** EUR 94.50 is the economic ceiling, not the sourcing budget. EUR 75–80 is the development range; ≤EUR 75 is preferred.
 
-- COGS ceiling at exactly 50% gross margin: **EUR 94.50**
-- this is an economic ceiling, not a sourcing target
-- internal COGS target: approximately **EUR 75–80**
-- EUR 80 COGS yields EUR 109 gross profit / ~57.7% gross margin
-- EUR 75 COGS yields EUR 114 gross profit / ~60.3% gross margin
+## Subsystem cost budgets
 
-The headroom to EUR 94.50 is required for real-world series variation and risk.
-
-## Preliminary target-cost BOM
-
-The following are engineering targets for four-digit series volumes and must ultimately be replaced by RFQs.
-
-| Cost block | Target EUR/unit | Classification |
+| Subsystem / cost block | Target EUR/unit | Rule |
 |---|---:|---|
-| Radxa ZERO 3W, suitable RAM/eMMC configuration | 18–24 | public 1GB/8GB-eMMC pricing is already around USD 22; series RFQ required |
-| 2× TLV320AIC3204 | 5–7 | current distributor 1k pricing roughly EUR 2.6–3.5 each depending on packaging |
-| Secure Element | 0.6–1.0 | ATECC608 family volume pricing below EUR 1 publicly visible; final TrustFLEX profile open |
-| Speaker amplifier | 0.7–1.2 | TAS2505 class |
-| USB hub/host control, power switching, ESD | 3–5 | exact hub/Type-C/power path open |
-| Power path, charger, DC/DC, monitoring | 4–7 | high uncertainty until battery pack is fixed |
-| GPIO/PWM/NVM, clocking, passives | 2–4 | engineering allowance |
-| 1.3–1.5 inch display | 2–4 | production LCD, not maker module |
-| internal mics, speaker, LEDs, controls | 3–5 | engineering allowance |
-| audio/USB/power connectors and mechanical small parts | 3–5 | engineering allowance |
-| bare Carrier PCB | 1.5–3 | RFQ required |
-| German SMT/THT assembly + AOI | 4–7 | RFQ required; DFM for automation |
-| ~19 Wh production battery | 12–18 | target assumption only; VRI quotation decisive |
-| injection-moulded enclosure + clip/battery mechanics | 5–9 | tooling NRE separate |
-| German final assembly, EOL, provisioning, packing | 5–8 | highly dependent on DFMA and test automation |
-| product packaging + cardboard insert/print | 2–3 | premium but material-efficient DTC packaging |
-| **Target COGS** | **approx. 75–80** | overall target; upper bounds must not simply be summed |
+| **Compute** | **18–22** | Radxa ZERO 3W incl. suitable RAM/eMMC; >22 triggers review |
+| **Carrier Core + Audio** | **13–17** | 2× codec, speaker amp, Secure Element, GPIO/PWM/NVM, clocking, major passives |
+| **Power + USB** | **8–11** | charger/power path/DC-DC/monitoring, USB hub/host control, VBUS protection, ESD |
+| **Human Interface + internal audio mechanics** | **7–10** | display, LEDs, controls, internal mics/speaker and related small parts |
+| **External connectors / I/O mechanics** | **3–5** | audio, USB and power connectors plus justified I/O mechanics |
+| **Carrier PCB + German assembly/AOI** | **6–9** | bare PCB plus SMT/THT manufacturing; DFM minimizes manual work |
+| **Standard battery pack** | **12–16** | target for ~19 Wh class; supplier RFQ decisive; >18 triggers review |
+| **Enclosure + clip + battery mechanics** | **5–8** | German production injection-moulding target; tooling NRE separate |
+| **German final assembly + EOL + provisioning + packing** | **5–7** | requires DFMA and automated test |
+| **Product packaging** | **2–3** | high-quality compact DTC packaging incl. insert/print |
 
-## Why ranges must not simply be added
+These budgets are not independent worst-case ranges to be summed. They will progressively be replaced by real MPN, EMS, and supplier prices. A subsystem overrun must be visibly compensated elsewhere rather than silently increasing total COGS.
 
-This is target costing, not a finished BOM. Several positions overlap or depend on open architecture choices. At design freeze, each item will be replaced by a concrete BOM/manufacturing line and the total must be driven against the EUR 75–80 target.
+## Architecture cost-review rule
 
-## Additional economic items
+**DECIDED:** Cost control is part of architecture.
 
-Series release must additionally account for scrap/rework, incoming/EOL testing, warranty/RMA reserve, inbound freight, customs where applicable, packaging/manufacturing scrap, fulfillment where used, DTC payment fees, and transparent treatment of tooling/NRE and certification/development costs.
+Every new hardware feature or relevant hardware change shall answer at least: incremental material cost at 1k/5k/10k; added PCB area/layers/connectors/cables/mechanics; added German manual assembly time; added EOL/calibration/service effort; whether it creates another product/manufacturing variant; which subsystem budget it consumes; and what measurable product value justifies the cost and complexity.
+
+**Capability ≠ Feature** therefore also applies economically.
+
+## Preliminary component anchors
+
+Until RFQs are available: Radxa ZERO 3W target EUR 18–22; two TLV320AIC3204 roughly EUR 5–7 combined; Secure Element roughly EUR 0.6–1.0; speaker amp roughly EUR 0.7–1.2; Standard battery target EUR 12–16; packaging EUR 2–3. False cent-level precision is avoided until the schematic and MPN BOM exist.
+
+## Reserve and complete series economics
+
+Headroom between development target and the EUR 94.50 ceiling is not a free feature budget. It covers scrap/rework, test, warranty/RMA reserve, inbound freight/customs where relevant, manufacturing/packaging scrap, supplier variance, and second-source effects.
+
+Fulfillment, DTC payment fees, shipping subsidies and similar selling costs remain visible in the unit-economics model even where accounting definitions do not classify all of them as manufacturing COGS. Tooling, certification and development/NRE are tracked separately, with an amortized full-cost view before series release.
 
 ## Enclosure
 
-A custom injection-moulded enclosure manufactured in Germany appears economically plausible. Public German case studies show series prices in the low single-digit euro range at meaningful volumes, with five-digit tooling costs.
+German custom injection moulding remains economically plausible; tooling is separate NRE. Prototype/pilot may use additive methods.
 
-Prototype/pilot and series may use different manufacturing methods. Injection moulding is released only after sufficient mechanical validation.
+**DECIDED:** The main enclosure shall not be enlarged merely to accommodate a hypothetical largest Extended Battery Pack. Additional battery capacity should use the same beltpack hardware and, where possible, a pack geometry that protrudes farther externally.
 
 ## Packaging
 
-Packaging is a real COGS item. Current German public examples at around 1,000 units show custom printed cardboard packaging in roughly the EUR 1–3 range depending on construction, before any additional insert elements.
-
-**TARGET:** approximately **EUR 2–3** for a high-quality compact largely paper/cardboard product package including insert and required printed materials.
-
-For DTC, the separate question of whether the product package itself is shippable or requires an outer shipping carton must also be costed.
+**TARGET:** EUR 2–3 for a high-quality compact mostly paper/cardboard product package including insert and required printed materials. DTC shipping packaging is costed separately where required.
 
 ## DFMA rule for Made in Germany
 
-Made in Germany becomes economical primarily through **Design for Manufacturing and Assembly**, not by squeezing the manufacturer later.
+> **Made in Germany becomes economical through Design for Manufacturing and Assembly, not by squeezing the manufacturer later.**
 
-Architecture targets therefore include few PCBs/cables, SMT over manual work where sensible, minimal hand soldering, keyed assembly, few fasteners, integrated enclosure functions where they remove assembly, automated EOL testing and provisioning, test points/Factory Mode from the start, low variant count, and no second beltpack manufacturing line for Standard versus Extended batteries.
+Architecture targets include few PCBs/cables, SMT over manual work where sensible, minimal hand soldering, keyed assembly, few fasteners, integrated enclosure functions where they eliminate assembly, automated EOL/provisioning, test points and Factory Mode from the start, low variant count, and no second beltpack manufacturing line for Standard versus Extended batteries.
 
-## Distribution rule
+## Cost maturity through the project
 
-**DECIDED:** The product is economically planned first as a direct-sales product. Physical retail or classic distribution is not assumed.
-
-Future dealers remain possible, but any dealer channel receives its own margin model and must not silently be funded from the same EUR 189 DTC economics.
+The model evolves from target costing to actual cost: architecture budgets → real schematic/MPN BOM → measured prototype/pilot assembly/test/rework → German supplier RFQs → pre-series landed COGS → series-release DTC unit economics including payment, fulfillment, warranty and an NRE-amortization view.
 
 ## Next cost gates
 
 1. Fix Radxa RAM/eMMC series configuration and obtain manufacturer/distributor RFQ.
-2. Ask VRI for 1k/5k/10k price tiers for Standard and possible Extended battery family.
-3. Convert Carrier architecture into real MPN-level BOM as schematics mature.
+2. Ask VRI for 1k/5k/10k pricing for Standard and possible Extended battery family.
+3. Convert Carrier architecture into a real MPN BOM and check it against subsystem budgets.
 4. German EMS RFQ for 500/1k/5k/10k including material, AOI, test and box build.
-5. German enclosure RFQ including tooling and 1k/5k/10k unit prices plus assembly optimization.
-6. Packaging RFQ at 1k/5k/10k including insert.
-7. Update target-cost model after every RFQ.
+5. German enclosure RFQ including tooling and 1k/5k/10k pricing plus assembly optimization.
+6. Packaging RFQ at 1k/5k/10k including insert and shipping concept.
+7. Update target-cost model after each RFQ.
+8. Build complete DTC unit economics before series release.
 
 ## Gate
 
 At EUR 189 net:
 
-> **EUR 94.50 COGS is the 50% margin ceiling. EUR 75–80 is the development target.**
+> **TARGET ≤EUR 75. ACCEPTABLE ≤EUR 80. LIMIT EUR 94.50. Above that, EUR 189 net is not viable at 50% gross margin.**
 
-The Made-in-Germany premise remains economically viable while credible series quotations demonstrate that the product can be manufactured within this corridor with sufficient quality, warranty, and sourcing reserve.
+The Made-in-Germany premise remains economically viable while credible series quotations demonstrate manufacturing within this corridor with sufficient quality, warranty, and sourcing reserve.
