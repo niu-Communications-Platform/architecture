@@ -14,7 +14,9 @@
 - Factory/Device Identity
 - Factory-/Recovery-Grundsätze
 - zentrale Software-Komponentengrenzen
-- mechanischer und elektrischer Akkuwechsel durch den Endnutzer gemäß ADR-0004
+- mechanischer und elektrischer Akkuwechsel durch den Endnutzer
+- schneller Feldwechsel des Akkus ohne Hot-Swap-Anforderung
+- Hard-Power-Loss-Toleranz für Storage, Konfiguration und OTA
 - Repairability-Granularity und Entscheidung über mechanisch belastete I/O-Tochterplatinen
 
 ## Praktisch zu validieren
@@ -28,8 +30,12 @@
 - [ ] paralleles USB Audio + USB Ethernet/Wi-Fi
 - [ ] Network Handover mit Messung der Intercom-Unterbrechung
 - [ ] Power-Path / Battery Care / Thermik / Laufzeit
-- [ ] Endnutzer kann vollständigen Akku mit zulässigen Werkzeugen sicher entfernen und ersetzen
+- [ ] Endnutzer kann vollständigen Akku in wenigen Sekunden sicher entfernen und ersetzen
 - [ ] Akkuwechsel erfordert weder Löten noch Wärme/Lösungsmittel und beschädigt Gerät/Akku nicht
+- [ ] Akkuentnahme ohne vorherigen Shutdown ist zulässig und führt beim nächsten Start zu einem konsistenten System
+- [ ] wiederholte automatisierte Hard-Power-Cut-Zyklen im normalen Betrieb ohne dauerhafte Korruption
+- [ ] gezielte Power-Cuts während persistenter Konfigurationsänderungen mit konsistentem Recovery
+- [ ] Power-Cuts in kritischen OTA-Phasen; A/B-System bleibt boot- und rollbackfähig
 - [ ] kompatibler Ersatzakku funktioniert ohne Software-Pairing oder künstliche Einschränkung
 - [ ] Battery-Health-/Learning-State verhält sich nach Akkuwechsel korrekt
 - [ ] mechanische Entscheidung zu austauschbaren I/O-/Connector-Boards abgeschlossen
