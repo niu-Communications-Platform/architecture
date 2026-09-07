@@ -3,9 +3,12 @@ language: de
 canonical: true
 status: current
 last_reviewed: 2026-09-07
+translation: ../../en/00-product/product-principles.md
 ---
 
 # Produktprinzipien
+
+**Deutsch (kanonisch)** | [English](../../en/00-product/product-principles.md)
 
 ## Produktmodell
 
