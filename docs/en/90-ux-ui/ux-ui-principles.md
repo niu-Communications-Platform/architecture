@@ -1,15 +1,15 @@
 ---
 language: en
 canonical: false
-translation_of: ../../../de/90-ux-ui/ux-ui-principles.md
-translation_status: current
 status: current
 last_reviewed: 2026-09-07
+source: ../../de/90-ux-ui/ux-ui-principles.md
+translation_status: current
 ---
 
 # UX/UI Principles
 
-[Deutsch](../../de/90-ux-ui/ux-ui-principles.md) | **English**
+[Deutsch — canonical](../../de/90-ux-ui/ux-ui-principles.md) | **English**
 
 > The German version is canonical. This document is a maintained English translation.
 
