@@ -1,12 +1,3 @@
----
-language: en
-canonical: false
-status: current
-last_reviewed: 2026-09-07
-source: ../../de/90-ux-ui/ux-ui-principles.md
-translation_status: current
----
-
 # UX/UI Principles
 
 [Deutsch — canonical](../../de/90-ux-ui/ux-ui-principles.md) | **English**
