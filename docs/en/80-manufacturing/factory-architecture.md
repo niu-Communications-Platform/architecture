@@ -1,15 +1,15 @@
 ---
 language: en
 canonical: false
-translation_of: ../../../de/80-manufacturing/factory-architecture.md
-translation_status: current
 status: current
 last_reviewed: 2026-09-07
+source: ../../de/80-manufacturing/factory-architecture.md
+translation_status: current
 ---
 
 # Factory and Manufacturing Architecture
 
-[Deutsch](../../de/80-manufacturing/factory-architecture.md) | **English**
+[Deutsch — canonical](../../de/80-manufacturing/factory-architecture.md) | **English**
 
 > The German version is canonical. This document is a maintained English translation.
 
