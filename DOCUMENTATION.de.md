@@ -30,6 +30,8 @@ Deutsch ist die kanonische Sprache der Architekturdokumentation.
 
 Neue Architekturdokumentation und neue ADRs werden inhaltlich zuerst in der kanonischen deutschen Fassung erstellt. Die englische Fassung wird daraus als gepflegte Übersetzung abgeleitet.
 
+**Änderungen an kanonischer deutscher Dokumentation müssen die zugehörige englische Übersetzung im selben Änderungssatz aktualisieren. Ist dies bewusst nicht möglich, muss die englische Fassung ausdrücklich mit `translation_status: outdated` gekennzeichnet werden.**
+
 Code, APIs, Bezeichner, Schemas und technische Schnittstellennamen bleiben grundsätzlich englisch, sofern kein sachlicher Grund dagegenspricht.
 
 ### Verbindliche Sprachmetadaten
