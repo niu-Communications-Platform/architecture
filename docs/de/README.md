@@ -8,7 +8,9 @@ Diese Verzeichnisstruktur ist die **kanonische technische und produktbezogene Do
 
 - [`00-Produktprinzipien`](00-product/product-principles.md) — Produktmodell, Leitprinzipien, digitale Souveränität, Offenheit, Open Diagnostics/Open Repair, Capability ≠ Feature und Serienfähigkeit
 - [`10-Systemarchitektur`](10-system/system-architecture.md) — Repository-Grenzen, Capability Layer, Device Agent und Architekturphase
-- [`20-Hardware`](20-hardware/) — plattformweite Hardwareprinzipien und produktübergreifende Hardwareentscheidungen, einschließlich Reparierbarkeit, Ressourcenschonung sowie offener Fehleranalyse- und Reparaturdokumentation
+- [`20-Hardware`](20-hardware/) — plattformweite Hardwareprinzipien und produktübergreifende Hardwareentscheidungen
+  - [`Reparierbarkeit und Nachhaltigkeit`](20-hardware/repairability-sustainability.md) — Reparaturgranularität, Ressourcenschonung sowie offene Fehleranalyse- und Reparaturdokumentation
+  - [`Anforderungen an den serienreifen Battery Pack`](20-hardware/battery-pack-requirements.md) — Herstellerpack statt Eigenentwicklung, Austauschbarkeit, Kompaktheit, Betriebsanforderungen und aktuelle VRI-Referenzkandidaten
 - `30-software/` — gemeinsame Softwarearchitektur, Dienste und Abstraktionen; derzeit noch ohne eigene Fachseite
 - [`40-Audioarchitektur`](40-audio/audio-architecture.md) — Audioendpunkte, Routing, zusätzliche Feeds, TDM-Zielarchitektur und Fallbacks
 - [`50-Netzwerkarchitektur`](50-networking/network-architecture.md) — Transportklassen, Network Manager, Health-Modell und Handover
