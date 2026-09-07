@@ -6,6 +6,15 @@ Dieses Repository enthält die produktübergreifende Systemarchitektur, Produkte
 
 Die **deutsche Dokumentation ist die kanonische Quelle** für Architektur- und Produktentscheidungen. Die englische Dokumentation wird als gepflegte Übersetzung für Austausch, Zusammenarbeit und eine spätere internationale Community geführt. Bei Abweichungen gilt die deutsche Fassung.
 
+## Direkt einsteigen
+
+- **[Architekturdokumentation — Deutsch / kanonisch](docs/de/README.md)**
+- **[Architekturdokumentation — English](docs/en/README.md)**
+- **[Architecture Decision Records (ADRs) — Deutsch / kanonisch](adr/de/README.md)**
+- **[Architecture Decision Records (ADRs) — English](adr/en/README.md)**
+- **[Validierung und Architecture Gates](validation/)**
+- **[Historische Snapshots und Quellenmaterial](archive/)**
+
 ## Aufgabe dieses Repositories
 
 Dieses Repository beschreibt die plattformweite Architektur und insbesondere die Gründe hinter den Entscheidungen. Die konkrete Implementierung der Produkte liegt später in eigenen Repositories wie `beltpack`, `base`, `cloud` und `factory-tools`.
@@ -14,12 +23,12 @@ Dieses Repository beschreibt die plattformweite Architektur und insbesondere die
 
 ## Dokumentationsmodell
 
-- `docs/de/` — kanonische deutsche Architekturdokumentation
-- `docs/en/` — gepflegte englische Übersetzung
-- `adr/de/` — kanonische Architecture Decision Records
-- `adr/en/` — gepflegte englische ADR-Übersetzungen
-- `validation/` — Architecture Gates, offene Fragen und Prototyp-Validierung
-- `archive/` — historische Snapshots und erhaltenes Quellenmaterial
+- [`docs/de/`](docs/de/README.md) — kanonische deutsche Architekturdokumentation
+- [`docs/en/`](docs/en/README.md) — gepflegte englische Übersetzung
+- [`adr/de/`](adr/de/README.md) — kanonische Architecture Decision Records
+- [`adr/en/`](adr/en/README.md) — gepflegte englische ADR-Übersetzungen
+- [`validation/`](validation/) — Architecture Gates, offene Fragen und Prototyp-Validierung
+- [`archive/`](archive/) — historische Snapshots und erhaltenes Quellenmaterial
 
 ## Entscheidungsstatus
 
