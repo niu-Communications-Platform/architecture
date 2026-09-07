@@ -3,12 +3,15 @@
 
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ERRORS: list[str] = []
+TRANSLATION_STATES = {"current", "outdated", "not-translated"}
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def error(message: str) -> None:
@@ -38,26 +41,87 @@ def frontmatter(text: str) -> dict[str, str]:
     return result
 
 
+def relative_target(source: Path, target: Path) -> str:
+    return Path(os.path.relpath(target, source.parent)).as_posix()
+
+
+def has_markdown_link(text: str, target: str) -> bool:
+    return re.search(r"\]\(" + re.escape(target) + r"(?:#[^)]+)?\)", text) is not None
+
+
 def check_root_pair() -> None:
     en = ROOT / "README.md"
     de = ROOT / "README.de.md"
     en_text = read(en)
     de_text = read(de)
-    if en_text and "README.de.md" not in en_text:
-        error("README.md must link to canonical README.de.md")
-    if de_text and "README.md" not in de_text:
-        error("README.de.md must link back to README.md")
+    if en_text and not has_markdown_link(en_text, "README.de.md"):
+        error("README.md must visibly link to canonical README.de.md")
+    if de_text and not has_markdown_link(de_text, "README.md"):
+        error("README.de.md must visibly link back to README.md")
 
     en_doc = ROOT / "DOCUMENTATION.md"
     de_doc = ROOT / "DOCUMENTATION.de.md"
     en_doc_text = read(en_doc)
     de_doc_text = read(de_doc)
-    if en_doc_text and "DOCUMENTATION.de.md" not in en_doc_text:
-        error("DOCUMENTATION.md must link to canonical DOCUMENTATION.de.md")
-    if de_doc_text and "DOCUMENTATION.md" not in de_doc_text:
-        error("DOCUMENTATION.de.md must link back to DOCUMENTATION.md")
+    if en_doc_text and not has_markdown_link(en_doc_text, "DOCUMENTATION.de.md"):
+        error("DOCUMENTATION.md must visibly link to canonical DOCUMENTATION.de.md")
+    if de_doc_text and not has_markdown_link(de_doc_text, "DOCUMENTATION.md"):
+        error("DOCUMENTATION.de.md must visibly link back to DOCUMENTATION.md")
     if en_doc_text and "German version is canonical" not in en_doc_text:
         error("DOCUMENTATION.md must explicitly state that the German version is canonical")
+
+
+def validate_pair(base: str, de_file: Path, en_file: Path) -> None:
+    de_text = read(de_file)
+    en_text = read(en_file)
+    de_meta = frontmatter(de_text)
+    en_meta = frontmatter(en_text)
+
+    de_rel = de_file.relative_to(ROOT)
+    en_rel = en_file.relative_to(ROOT)
+    de_to_en = relative_target(de_file, en_file)
+    en_to_de = relative_target(en_file, de_file)
+
+    if de_meta.get("language") != "de":
+        error(f"{de_rel} must declare language: de")
+    if de_meta.get("canonical") != "true":
+        error(f"{de_rel} must declare canonical: true")
+    if de_meta.get("translation") != de_to_en:
+        error(f"{de_rel} must declare translation: {de_to_en}")
+
+    if en_meta.get("language") != "en":
+        error(f"{en_rel} must declare language: en")
+    if en_meta.get("canonical") != "false":
+        error(f"{en_rel} must declare canonical: false")
+    if en_meta.get("source") != en_to_de:
+        error(f"{en_rel} must declare source: {en_to_de}")
+    if en_meta.get("translation_status") not in TRANSLATION_STATES:
+        error(f"{en_rel} must declare a valid translation_status")
+
+    if not has_markdown_link(de_text, de_to_en):
+        error(f"{de_rel} must visibly link to its English translation")
+    if not has_markdown_link(en_text, en_to_de):
+        error(f"{en_rel} must visibly link to its canonical German source")
+
+    if base == "docs":
+        if not de_meta.get("status"):
+            error(f"{de_rel} must declare status")
+        if not en_meta.get("status"):
+            error(f"{en_rel} must declare status")
+        if not DATE_RE.match(de_meta.get("last_reviewed", "")):
+            error(f"{de_rel} must declare last_reviewed: YYYY-MM-DD")
+        if not DATE_RE.match(en_meta.get("last_reviewed", "")):
+            error(f"{en_rel} must declare last_reviewed: YYYY-MM-DD")
+
+    if base == "adr":
+        if not de_meta.get("status"):
+            error(f"{de_rel} must declare status")
+        if not en_meta.get("status"):
+            error(f"{en_rel} must declare status")
+        if not DATE_RE.match(de_meta.get("date", "")):
+            error(f"{de_rel} must declare date: YYYY-MM-DD")
+        if not DATE_RE.match(en_meta.get("date", "")):
+            error(f"{en_rel} must declare date: YYYY-MM-DD")
 
 
 def paired_files(base: str) -> None:
@@ -81,46 +145,19 @@ def paired_files(base: str) -> None:
     for rel in sorted(de_files & en_files):
         de_file = de_root / rel
         en_file = en_root / rel
-        de_text = read(de_file)
-        en_text = read(en_file)
 
         if rel.name == "README.md":
-            if base == "docs":
-                if "../en/README.md" not in de_text:
-                    error(f"{de_file.relative_to(ROOT)} must link to the English README")
-                if "../de/README.md" not in en_text:
-                    error(f"{en_file.relative_to(ROOT)} must link to the German README")
+            de_text = read(de_file)
+            en_text = read(en_file)
+            de_to_en = relative_target(de_file, en_file)
+            en_to_de = relative_target(en_file, de_file)
+            if not has_markdown_link(de_text, de_to_en):
+                error(f"{de_file.relative_to(ROOT)} must visibly link to the English README")
+            if not has_markdown_link(en_text, en_to_de):
+                error(f"{en_file.relative_to(ROOT)} must visibly link to the German README")
             continue
 
-        de_meta = frontmatter(de_text)
-        en_meta = frontmatter(en_text)
-
-        # Descriptive docs already use structured metadata and must keep it consistent.
-        if base == "docs":
-            if de_meta.get("language") != "de":
-                error(f"{de_file.relative_to(ROOT)} must declare language: de")
-            if de_meta.get("canonical") != "true":
-                error(f"{de_file.relative_to(ROOT)} must declare canonical: true")
-            if en_meta.get("language") != "en":
-                error(f"{en_file.relative_to(ROOT)} must declare language: en")
-            if en_meta.get("canonical") != "false":
-                error(f"{en_file.relative_to(ROOT)} must declare canonical: false")
-            if en_meta.get("translation_status") not in {"current", "outdated", "not-translated"}:
-                error(
-                    f"{en_file.relative_to(ROOT)} must declare translation_status as "
-                    "current, outdated, or not-translated"
-                )
-
-        # ADR metadata was introduced incrementally. Whenever it is present, enforce it.
-        if base == "adr" and (de_meta or en_meta):
-            if de_meta.get("language") != "de":
-                error(f"{de_file.relative_to(ROOT)} must declare language: de")
-            if de_meta.get("canonical") != "true":
-                error(f"{de_file.relative_to(ROOT)} must declare canonical: true")
-            if en_meta.get("language") != "en":
-                error(f"{en_file.relative_to(ROOT)} must declare language: en")
-            if en_meta.get("canonical") != "false":
-                error(f"{en_file.relative_to(ROOT)} must declare canonical: false")
+        validate_pair(base, de_file, en_file)
 
 
 def check_adr_numbers() -> None:
