@@ -1,10 +1,6 @@
 ---
-language: en
-canonical: false
 status: accepted
 date: 2026-09-07
-source: ../de/0004-mumble-native-sip-interoperability.md
-translation_status: current
 ---
 
 # ADR-0004: Mumble as the native real-time voice protocol, SIP as an interoperability layer
