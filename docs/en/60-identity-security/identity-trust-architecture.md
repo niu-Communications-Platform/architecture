@@ -1,15 +1,15 @@
 ---
 language: en
 canonical: false
-translation_of: ../../../de/60-identity-security/identity-trust-architecture.md
-translation_status: current
 status: current
 last_reviewed: 2026-09-07
+source: ../../de/60-identity-security/identity-trust-architecture.md
+translation_status: current
 ---
 
 # Identity and Trust Architecture
 
-[Deutsch](../../de/60-identity-security/identity-trust-architecture.md) | **English**
+[Deutsch — canonical](../../de/60-identity-security/identity-trust-architecture.md) | **English**
 
 > The German version is canonical. This document is a maintained English translation.
 
