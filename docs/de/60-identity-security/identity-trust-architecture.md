@@ -22,6 +22,24 @@ Der Carrier enthält bzw. bindet:
 
 SBC-/Storage-Tausch erhält die physische Geräteidentität. Carrier-Tausch erzeugt ein neues physisches Gerät. Friendly Identity und Profile können im RMA-Prozess auf ein Ersatzgerät übertragen werden.
 
+### Minimale persistente Identifikatoren
+
+**DECIDED:** Eine neue persistente ID wird nur eingeführt, wenn sie eine eigenständige semantische Frage beantwortet, die keine bestehende ID oder ohnehin erforderliche Eigenschaft beantworten kann.
+
+Für die Factory/Device Identity werden auf Produktebene drei unterschiedliche Größen benötigt:
+
+- **Device UUID — who:** dauerhafte maschinenlesbare Identität des physischen Geräts.
+- **Serial Number — human reference:** menschenlesbare Gerätekennung für Produktlabel, Support, Service und Dokumentation.
+- **Device Root Key — proof:** kryptographischer Nachweis der behaupteten Device Identity; der private Schlüssel verbleibt im Secure Element.
+
+Diese Größen sind nicht austauschbar und speichern nicht lediglich dieselbe Information mehrfach. Hardware Revision, Variant, Manufacturing Data, Calibration Data, MAC-Adressen, Secure-Element-Seriennummern und gegebenenfalls vorhandene NVM-Chip-UIDs sind Eigenschaften oder technische Diagnosewerte, aber keine zusätzlichen Device Identities.
+
+**DECIDED:** Eine separate `Carrier Physical ID` wird derzeit nicht eingeführt. Sie würde im aktuellen Modell keine ausreichend eigenständige Funktion erfüllen und insbesondere keinen zusätzlichen kryptographischen Identitätsnachweis liefern.
+
+Die bestehende Serial Number soll sinnvollerweise zusätzlich zum äußeren Produktlabel dauerhaft auf dem Carrier angebracht werden. Dadurch steht bei einer physischen Reparatur dieselbe bereits erforderliche Information auch direkt am identitätstragenden Bauteil zur Verfügung, ohne einen weiteren Identifier und eine weitere Registry-Zuordnung einzuführen.
+
+Eine technisch ohnehin vorhandene UID eines EEPROMs/NVMs oder Secure Elements darf als Diagnose- oder Fertigungsattribut erfasst werden. Sie wird nicht allein deshalb Bestandteil des Device-Identity-Modells. Falls die spätere Fertigung eine eigenständige PCB-/Panel-Serialisierung für Traceability tatsächlich benötigt, wird diese aufgrund dieses konkreten Fertigungszwecks eingeführt und nicht vorsorglich als Security Anchor.
+
 ## Secure Element
 
 **CANDIDATE:** Microchip ATECC608C-TFLXTLS / TrustFLEX.
@@ -68,5 +86,7 @@ Eine unabhängige Reparatur beendet den bestehenden Trust-Status nicht automatis
 Kann der Identity Anchor nicht mehr zuverlässig bewiesen werden oder muss er ersetzt werden, wird die Wiederherstellung des offiziellen nıu-Trust-Status zu einer Identity-Recovery-/Rezertifizierungsoperation. Für die erste Produktgeneration ist vorgesehen, dass das physische Gerät hierfür an nıu als Hersteller eingesandt wird. nıu prüft Gerät und Identitätszuordnung, führt die erforderlichen Factory-/EOL- und Sicherheitsprüfungen durch und kann anschließend eine neue offizielle Attestierung ausstellen bzw. die Registry kontrolliert aktualisieren.
 
 Die konkrete Semantik beim Austausch eines Secure Elements — insbesondere Beibehaltung oder Änderung von Device UUID, Root Key und einer möglichen Identity Epoch — wird separat entschieden und ist derzeit noch offen.
+
+**DECIDED:** Für seltene Mehrfachausfälle wird keine zusätzliche persistente Hardware-ID allein mit dem Ziel eingeführt, die bisherige Device UUID unter allen Umständen retten zu können. Sind beispielsweise Secure Element und Carrier-NVM gleichzeitig ausgefallen, können Seriennummer, permanente Carrier-Markierung, Factory-/Manufacturing-Daten, Kalibrierungsdaten und Reparaturhistorie als forensische Evidenz dienen. Reicht die Zuordnung nicht mit ausreichender Sicherheit aus, wird die alte Device UUID nicht neu attestiert; stattdessen erhält das Gerät eine neue Device Identity und kann über den Replace-Device-Prozess wieder dem gewünschten Deployment zugeordnet werden.
 
 Der Verlust oder Verzicht auf offiziellen nıu-Trust verhindert nicht den weiteren Betrieb des Eigentümers mit eigener Software, eigener PKI oder eigener Trust Domain.
