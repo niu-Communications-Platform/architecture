@@ -3,10 +3,12 @@ language: de
 canonical: true
 status: accepted
 date: 2026-09-07
-translation: ../../en/0004-mumble-native-sip-interoperability.md
+translation: ../en/0004-mumble-native-sip-interoperability.md
 ---
 
 # ADR-0004: Mumble als natives Echtzeit-Sprachprotokoll, SIP als Interoperabilitätsschicht
+
+**Deutsch (kanonisch)** | [English](../en/0004-mumble-native-sip-interoperability.md)
 
 ## Status
 
