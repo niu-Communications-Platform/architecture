@@ -2,210 +2,81 @@
 
 **Deutsch (kanonisch)** | [English](../../en/20-hardware/battery-pack-requirements.md)
 
-## Zweck
+## Grundsatz
 
-Dieses Dokument beschreibt die Anforderungen an den serienreifen, austauschbaren Battery Pack des nıu Communications Platform Beltpacks und dient zugleich als technische Gesprächsgrundlage für Batteriehersteller.
+**DECIDED:** nıu entwickelt weder Batteriezellen noch Battery Pack oder dessen internes BMS selbst. Eingesetzt wird ein serienreifer, dokumentierter Pack eines spezialisierten Herstellers. Der Carrier übernimmt nur die erforderliche Systemintegration.
 
-**DECIDED:** nıu entwickelt weder die Batteriezellen noch den Battery Pack oder dessen internes Batteriemanagement selbst. Eingesetzt werden soll eine serienreife, dokumentierte und für das Produkt geeignete Batterieeinheit eines spezialisierten Herstellers mit integriertem Schutz-/Batteriemanagement.
+## Produkt- und Mechanikziel
 
-Der Carrier integriert den Battery Pack in das Gesamtsystem. Welche Lade-, Power-Path-, Mess- und Systemfunktionen außerhalb des Packs erforderlich sind, wird erst nach Auswahl und technischer Abstimmung des Packs festgelegt.
+Das Beltpack ist ein professionelles mobiles IP-Intercom-/Audio-Gerät. Die bisher diskutierten ungefähr **120 × 80 × 35 mm sind eine Obergrenze, kein auszufüllender Bauraum**. Das Produkt soll bei Erhalt von Robustheit, Wartbarkeit, Thermik und Bedienbarkeit so kompakt wie sinnvoll werden.
 
-## Produktkontext
+## Rapid field-replaceable battery
 
-Das Beltpack ist ein professionelles, tragbares IP-Intercom- und Audio-Gerät für Live-Produktion, Veranstaltungen und vergleichbare mobile Anwendungen.
-
-Wesentliche Verbraucher sind voraussichtlich:
-
-- ARM-SBC; Serienkandidat Radxa ZERO 3W / RK3566
-- internes und gegebenenfalls zusätzliches USB-WLAN bzw. USB-Ethernet
-- zwei Audio-Codecs und analoge Audio-Frontends
-- interner Lautsprecher und Verstärker
-- Farbdisplay
-- Bedienelemente und RGB-Statusanzeigen
-- Secure Element, Carrier-NVM und weitere Peripherie
-- USB-Host-Schnittstelle für USB Audio, Ethernet, HID und weitere unterstützte Geräte
-
-Das Gerät besitzt einen separaten USB-C-Power-Eingang und einen davon getrennten USB-C-Accessory-/Host-Port.
-
-## Mechanische Zielsetzung
-
-Die bisherige Gehäusegröße von ungefähr **120 × 80 × 35 mm ist eine Obergrenze und kein auszufüllender Bauraum**.
-
-**DECIDED:** Das Produkt soll bei Erhalt von Robustheit, Wartbarkeit, thermischer Beherrschbarkeit und guter Bedienbarkeit so kompakt wie sinnvoll werden. Ein kleinerer Battery Pack ist daher ausdrücklich erwünscht, wenn die erforderliche Laufzeit und Leistungsreserve erreicht werden.
-
-Die Batterie darf die möglichen Außenabmessungen des Produkts nicht unnötig bestimmen. Energieinhalt wird gegen Bauraum, Gewicht, elektrische Effizienz und reale Einsatzdauer optimiert; maximale Kapazität ist kein Selbstzweck.
-
-## Schneller Akkuwechsel als Produktmerkmal
-
-**DECIDED:** Der Battery Pack soll nicht lediglich regulatorisch austauschbar sein, sondern als **rapid field-replaceable battery** ausgelegt werden. Der Akkuwechsel ist damit ein bewusstes professionelles Betriebsmerkmal des Beltpacks.
+**DECIDED:** Der komplette Pack ist nicht nur regulatorisch austauschbar, sondern als **rapid field-replaceable battery** ein bewusstes professionelles Produktmerkmal.
 
 > **Nicht maximale Akkukapazität, sondern maximale Einsatzbereitschaft.**
 
-Ein kompakterer Pack mit ausreichender realer Laufzeit kann einem größeren Pack vorzuziehen sein, wenn ein leerer Pack im Produktionsalltag schnell und zuverlässig gegen einen geladenen Pack ausgetauscht werden kann.
-
-Ziel ist ein Akkuwechsel in wenigen Sekunden ohne Öffnen des eigentlichen Gerätegehäuses. Die konkrete Mechanik wird erst zusammen mit dem ausgewählten Serienpack festgelegt. Zu untersuchen sind insbesondere ein von außen zugängliches Batteriefach, robuste Verriegelung, sichere Packführung, fehlstecksichere Kontaktierung und Schutz gegen unbeabsichtigtes Lösen.
-
-Die Architektur soll Ersatzpacks und externe Einzel-/Mehrfach-Ladelösungen ermöglichen, ohne dass nıu dafür einen eigenen Battery Pack oder ein eigenes BMS entwickelt.
+Ziel ist ein Wechsel in wenigen Sekunden ohne Öffnen des eigentlichen Gerätegehäuses, mit robuster Verriegelung, sicherer Führung, fehlstecksicherer Kontaktierung und Schutz gegen unbeabsichtigtes Lösen. Ersatzpacks und externe Einzel-/Mehrfach-Ladelösungen sollen möglich sein.
 
 ### Kein Hot-Swap
 
-**DECIDED:** Ein unterbrechungsfreier Betrieb während des Akkuwechsels wird nicht unterstützt. Wird der Akku ohne externe Stromversorgung entnommen, darf das Beltpack ausgehen und muss nach Einsetzen eines Packs neu gestartet werden.
+**DECIDED:** Unterbrechungsfreier Betrieb während des Akkuwechsels wird nicht unterstützt. Ohne externe Versorgung darf das Gerät beim Entfernen des Packs ausgehen. Sekundenlange Energiepufferung oder ein zweiter Energiespeicher wird dafür nicht vorgesehen. Kleine Hold-up-Kapazitäten für elektrische Stabilität bleiben zulässig.
 
-Eine Energiepufferung über Sekunden, ein zweiter interner Energiespeicher oder vergleichbare Hot-Swap-Technik wird für diesen Zweck nicht vorgesehen. Der geringe betriebliche Nutzen rechtfertigt den zusätzlichen Bauraum, die Kosten und die technische Komplexität nicht.
+### Abrupte Akkuentnahme
 
-Kleine elektrische Hold-up-Kapazitäten, die unabhängig davon für sauberes Power-Down, Spannungsstabilität oder Schutz einzelner Schaltungsteile erforderlich sind, bleiben zulässig. Sie sind ausdrücklich keine Hot-Swap-Funktion.
+**DECIDED:** Akkuentnahme ohne vorherigen Software-Shutdown ist ein zulässiger Betriebsfall. Das System muss wiederholten Hard Power Loss tolerieren. Kritische persistente Zustände, Provisioning und A/B-OTA müssen power-loss-sicher sein; unnötige Flash-Schreibvorgänge werden minimiert; Device Identity hängt nicht allein am SBC-Storage. Nach Neustart kehrt das Gerät selbstständig in einen definierten Zustand zurück. Dies wird praktisch wiederholt getestet.
 
-### Abrupte Akkuentnahme ist ein zulässiger Betriebsfall
+## Kapazitätsfamilie ohne Beltpack-Varianten
 
-**DECIDED:** Der Anwender darf den Akku entnehmen, ohne zuvor einen geordneten Software-Shutdown auszuführen. Das System muss diesen abrupten Verlust der Versorgung als normalen, beherrschten Fehlerfall tolerieren. Funktional entspricht dies einem Hard-Off bzw. einem sonstigen plötzlichen Power Loss.
+**DECIDED:** Die Batterie-Schnittstelle soll nach Möglichkeit mehrere Kapazitätsklassen unterstützen, **ohne unterschiedliche Beltpack-Hardwarevarianten zu erzeugen**. Mehr Kapazität ist eine Akkuoption, keine zweite Beltpack-Variante.
 
-Daraus folgen Anforderungen an System-, Storage-, Provisioning- und OTA-Architektur:
+Das Zielbild ist ein einziges Beltpack mit identischer Carrier-, Firmware- und Hauptgehäuse-Architektur. Ein kompakter Standardakku kann im Lieferumfang enthalten sein; ein Akku mit deutlich höherer Kapazität kann als Zubehör angeboten werden, sofern dies ohne relevante zusätzliche Systemkomplexität möglich ist.
 
-- wiederholter abrupter Power Loss darf das Gerät nicht dauerhaft beschädigen oder unbootbar machen;
-- kritische persistente Zustände müssen atomar, transaktional oder anderweitig power-loss-sicher aktualisiert werden;
-- häufige und nicht notwendige Schreibvorgänge auf eMMC/Flash sind zu vermeiden;
-- ein unterbrochener OTA-Vorgang darf das Gerät nicht bricken; A/B-Update, Validierung und Rollback müssen Power Loss berücksichtigen;
-- Factory-/Device-Identity darf nicht ausschließlich von flüchtigem oder leicht korrumpierbarem SBC-Storage abhängen;
-- nach erneutem Einschalten muss das Gerät selbstständig in einen definierten und konsistenten Zustand zurückkehren;
-- Hard-Power-Loss-Toleranz wird praktisch und wiederholt validiert.
+Designziele für eine solche Packfamilie:
 
-Der normale POWER-Shutdown bleibt die bevorzugte geordnete Ausschaltmethode. Die Robustheit des Produkts darf jedoch nicht davon abhängen, dass der Anwender sie vor jedem Akkuwechsel verwendet.
+- gleiche elektrische Host-Schnittstelle und Pinbelegung;
+- bevorzugt gleiche Spannungsklasse und gleiche grundlegende Power-Architektur;
+- gleiches bzw. kompatibles Kommunikations-/Fuel-Gauge-Modell;
+- gleiche mechanische Kontakt- und Verriegelungszone;
+- automatische korrekte Behandlung unterschiedlicher Kapazitäten ohne Firmwarevarianten;
+- keine andere Carrier-Platine und keine andere Beltpack-SKU nur wegen der Akkukapazität;
+- ein größerer Pack darf nach außen stärker auftragen, statt das Hauptgerät für den größten Akku zu dimensionieren;
+- **die Unterstützung eines Extended Packs darf die Abmessungen des Beltpacks bei eingesetztem Standardakku nicht unnötig erhöhen.**
 
-## Wartbarkeit und Austausch
+**CANDIDATE:** Ein Standardpack um etwa **19 Wh** ist aufgrund seiner Kompaktheit derzeit besonders interessant. Für einen optionalen Extended Pack ist nicht automatisch die nächstgrößere 25-Wh-Klasse optimal. Eine deutlichere Kapazitätssteigerung, beispielsweise ungefähr **30–35 Wh**, kann als Zubehör produktseitig sinnvoller sein, sofern ein Hersteller eine elektrisch und mechanisch kompatible Lösung anbietet.
 
-**DECIDED:** Der komplette Battery Pack ist eine vom Endanwender austauschbare Funktionseinheit.
+Die konkreten Kapazitäten sind **nicht entschieden**. Insbesondere wird keine universelle 1S/2S-Unterstützung allein für mehrere Akkuoptionen vorgesehen. Wenn unterschiedliche Kapazitäten zusätzliche Wandler, verschiedene Beltpack-Gehäuse, zusätzliche Firmwarepfade oder sonstige relevante Komplexität erfordern, ist ein einzelner optimaler Pack einer Packfamilie vorzuziehen.
 
-Erforderlich sind insbesondere:
+## Pack-Anforderungen
 
-- kein Löten beim Batteriewechsel
-- kein Einsatz von Wärme oder Lösungsmitteln
-- sicherer mechanischer Zugang
-- verpolungssicherer bzw. fehlstecksicherer Anschluss
-- keine Software-Paarung, die einen kompatiblen Ersatzakku künstlich verhindert
-- nach dem Wechsel vollständige Wiederherstellung des normalen Gerätebetriebs
-- definierter Reset bzw. Neuaufbau batteriebezogener Lern-/Health-Daten, sodass ein neuer Akku nicht den Alterungszustand seines Vorgängers erbt
-- langfristig verfügbare Ersatzpacks bzw. eine belastbare Ersatzteilstrategie
+Der Serienpack soll insbesondere integrierte Schutz-/BMS-Funktionen, Temperaturüberwachung, dokumentierte Lade-/Entladegrenzen, ausreichende Dauer-/Spitzenstromfähigkeit, dokumentierte Kommunikation soweit sinnvoll, Fuel-Gauge-Daten, robuste fehlstecksichere Kontakte mit geeigneter Steckzyklenzahl sowie vollständige Integrations-, Konformitäts- und Lifecycle-Dokumentation bieten. Es gibt keine künstliche Software-Paarung oder proprietäre Batteriearchitektur allein zur Kundenbindung. Nach Packwechsel werden batteriespezifische Health-/Learning-Daten korrekt neu aufgebaut.
 
-Das Produkt soll keine proprietäre Batteriearchitektur allein zur Kundenbindung erhalten.
+## Betrieb und Power-Architektur
 
-## Technische Anforderungen an den Pack
-
-Der Serienpack soll möglichst folgende Eigenschaften bereitstellen:
-
-- industrietaugliche Lithium-Ionen-Batterieeinheit
-- integrierte Schutz- und Batteriemanagementfunktionen
-- Temperaturüberwachung
-- Schutz gegen relevante Über-/Unterspannungs-, Überstrom- und Kurzschlusszustände
-- dokumentierte Lade- und Entladegrenzen
-- ausreichende Dauer- und Spitzenstromfähigkeit für das Beltpack einschließlich definierter USB-Host-Last
-- dokumentierte Systemkommunikation, bevorzugt über eine etablierte Schnittstelle wie SMBus oder I²C, sofern dies keine unnötige proprietäre Abhängigkeit erzeugt
-- geeignete Status-/Fuel-Gauge-Informationen für Batteriestand, Health und Diagnose
-- serienfähiger, verriegelbarer und fehlstecksicherer Steckverbinder
-- für regelmäßigen Feldwechsel geeignete und dokumentierte Steck-/Kontaktzyklen
-- dokumentierte Lebensdauer und Temperaturbereiche
-- vollständige für Integration, Transport und Produktkonformität erforderliche Dokumentation
-- langfristige Serien- und Ersatzteilverfügbarkeit
-
-Ein Smart-Battery-Protokoll ist kein Selbstzweck. Entscheidend ist, dass die Schnittstelle dokumentiert, robust und langfristig nutzbar ist und den Batteriewechsel nicht künstlich an einen einzelnen kryptographisch gepaarten Pack bindet.
-
-## Betriebsanforderungen
-
-Das Beltpack soll sowohl mobil als auch dauerhaft an externer Stromversorgung betrieben werden können.
-
-Zu klären sind gemeinsam mit dem Batteriehersteller insbesondere:
-
-- zulässiges Verhalten des Packs bei gleichzeitigem Gerätebetrieb und Laden
-- erforderliche Systemarchitektur für echtes Power-Path-/Load-Sharing
-- geeignete Ladecharakteristik und maximale Ladeströme
-- Verhalten bei längerer externer Stromversorgung
-- Möglichkeiten für Battery Care bzw. reduzierte Ladegrenzen zur Lebensdaueroptimierung
-- Vermeidung unnötiger Mikrozyklen im stationären Betrieb
-- Temperaturgrenzen für Laden und Entladen
-- sichere Übergänge zwischen externer Versorgung und Batteriebetrieb
-- sinnvolle Interpretation von State of Charge, State of Health und Zykleninformationen nach einem Packwechsel
-
-Das interne BMS des Packs und die Power-Architektur des Beltpacks sollen klare Verantwortungsgrenzen besitzen. Schutzfunktionen des Packs werden nicht unnötig neu entwickelt; erforderliche System-Power-Funktionen auf dem Carrier bleiben davon getrennt.
+Das Beltpack unterstützt mobilen sowie dauerhaften Betrieb an externer Stromversorgung. Power-Path/Load-Sharing, Ladeverhalten, Battery Care, Vermeidung von Mikrozyklen, thermische Grenzen und Packwechselverhalten werden mit dem Hersteller abgestimmt. Pack-BMS und Carrier-System-Power haben klare Verantwortungsgrenzen.
 
 ## Laufzeit und Leistungsbudget
 
-Die endgültige Mindestenergie in Wh ist noch nicht festgelegt.
+Die endgültige Mindestenergie ist noch nicht festgelegt. Durch den schnellen Feldwechsel muss ein einzelner Pack nicht zwingend eine maximale Schichtdauer abdecken. Die Auswahl basiert auf dem Power Budget und anschließend auf Prototypmessungen.
 
-**REVIEW:** Ziel ist eine für professionelle Einsätze sinnvolle Laufzeit bei möglichst kleinem Gerät. Durch den schnellen Feldwechsel muss ein einzelner Pack nicht zwangsläufig eine maximale Schichtdauer abdecken. Die Auswahl soll auf einem realistischen Leistungsbudget und anschließend auf Messungen am Radxa-/Carrier-Prototyp beruhen, nicht auf maximal möglicher Akkukapazität.
-
-Für die Vorauswahl sind insbesondere zwei Klassen interessant:
-
-- etwa **19 Wh** als besonders kompakte Klasse
-- etwa **25 Wh** als kompakte Klasse mit zusätzlicher Laufzeitreserve
-
-Größere Packs bleiben möglich, müssen ihren zusätzlichen Bauraum und ihr Gewicht jedoch durch einen realen Produktnutzen rechtfertigen.
+Aktuell ist etwa **19 Wh** als kompakte Standardklasse interessant. 25 Wh bleibt Vergleichspunkt. Parallel soll eine deutlich größere, aber schnittstellenkompatible Extended-Klasse untersucht werden.
 
 ## Referenzkandidat: vri BASE LINE
 
-**CANDIDATE:** Die vri BASE LINE der VRI GmbH Batterie-Technik in Ellwangen wird als bevorzugter Referenzkandidat untersucht.
+**CANDIDATE:** Die vri BASE LINE der VRI GmbH Batterie-Technik in Ellwangen ist bevorzugter Referenzkandidat. Besonders interessant sind aktuell der 1S/21700 88054 201 512 (~19,1 Wh) und als Vergleich der 2S/18650 88030 502 512 (~25,2 Wh). Die endgültige Auswahl berücksichtigt Wandlerwirkungsgrad, Lastprofil, Laufzeit, USB-Host-Reserve, Thermik, Gewicht, Bauraum, Wartbarkeit und Feldwechsel.
 
-Nach öffentlich verfügbaren Herstellerangaben sind derzeit insbesondere interessant:
+## Hersteller-Gespräch
 
-### 1S/21700 — Produkt 88054 201 512
+Neben 1S/2S, Lastprofil, BMS-/Carrier-Verantwortung, Laden, Battery Care, Fuel Gauge, Steckzyklen, Konformität, Lifecycle, Mustern und externem Laden soll VRI ausdrücklich prüfen:
 
-- 3,60 V
-- 5,30 Ah / ca. 19,1 Wh
-- 79 × 22,50 mm
-- SMBus
-- Molex Micro-Fit, 5-polig
-- maximaler Ladestrom 5,15 A
-- maximaler Entladestrom 7,00 A
-- NTC
-- Second Protection
-- 800 Zyklen bei DOD 80 % laut Hersteller
-- Hersteller nennt UN38.3, IEC62133:2017 und UL62133
-
-### 2S/18650 — Produkt 88030 502 512
-
-- 7,20 V
-- 3,50 Ah / ca. 25,2 Wh
-- 73 × 37,30 × 18,80 mm
-- I²C
-- Molex Micro-Fit, 5-polig
-- maximaler Ladestrom 3,38 A
-- maximaler Entladestrom 5,00 A
-- NTC
-- Second Protection
-- 800 Zyklen bei DOD 80 % laut Hersteller
-- Hersteller nennt UN38.3, IEC62133:2017 und UL62133
-
-Die endgültige Wahl zwischen 1S und 2S erfolgt ausdrücklich nicht allein nach Kapazität. Zu bewerten sind Gesamtwirkungsgrad der Systemversorgung, notwendige Power-Conversion, reale Lastprofile, Laufzeit, USB-Host-Leistungsreserve, Thermik, Gewicht, Bauraum, Wartbarkeit und Geschwindigkeit des Feldwechsels.
-
-## Fragen für das Hersteller-Gespräch
-
-Für ein erstes technisches Gespräch mit VRI bzw. einem alternativen Pack-Hersteller sollen insbesondere folgende Punkte geklärt werden:
-
-1. Welcher bestehende Standardpack ist für ein dauerhaft produziertes mobiles Kommunikationsgerät mit unserem Lastprofil am sinnvollsten?
-2. Ist für die Anwendung 1S/21700 oder 2S/18650 systemisch vorzuziehen und warum?
-3. Welche realen Dauer- und Spitzenlastprofile empfiehlt bzw. erlaubt der Hersteller?
-4. Welche Aufgaben übernimmt das Pack-BMS vollständig und welche Lade-/Power-Path-Funktionen müssen auf dem Carrier verbleiben?
-5. Wie soll gleichzeitiger Betrieb und Laden elektrisch realisiert werden?
-6. Welche Strategie empfiehlt VRI für häufigen bzw. dauerhaften Netzbetrieb und maximale Batterielebensdauer?
-7. Lassen sich reduzierte Ladegrenzen/Battery-Care sinnvoll realisieren und über welche Schnittstelle?
-8. Welche Fuel-Gauge-/Health-/Cycle-Daten sind über SMBus bzw. I²C verfügbar und wie sind sie dokumentiert?
-9. Wie verhält sich der Pack nach physischem Austausch gegenüber dem Host; sind Pairing, Initialisierung oder spezielle Lernvorgänge erforderlich?
-10. Ist der bestehende Pack mechanisch und hinsichtlich der Steckzyklen für regelmäßigen schnellen Endanwenderwechsel geeignet?
-11. Welche Anforderungen stellt der Hersteller an mechanische Befestigung, Stoß-/Vibrationsschutz, Belüftung und thermische Umgebung?
-12. Welche vollständigen Prüf-, Transport- und Konformitätsunterlagen werden für die Integration in unser Endprodukt bereitgestellt?
-13. Welche Serienverfügbarkeit, Product-Lifecycle-Zusagen, MOQ und Preisstaffeln sind möglich?
-14. Wie wird eine Ersatzteilversorgung über die regulatorisch und kommerziell erforderliche Lebensdauer sichergestellt?
-15. Können Muster der 1S/21700- und 2S/18650-Varianten für mechanische und elektrische Prototypentests bereitgestellt werden?
-16. Falls ein Standardpack nahezu, aber nicht vollständig passt: Welche Anpassungen sind möglich, ohne die Vorteile einer bereits entwickelten und zertifizierten BASE-LINE-Lösung unnötig aufzugeben?
-17. Welche mechanische Kontaktierung bzw. welcher Steckverbinder ist für häufigen Feldwechsel empfehlenswert, falls der am Standardpack vorhandene Anschluss dafür nicht optimal ist?
-18. Gibt es eine Herstellerlösung oder empfohlene Architektur zum externen Laden einzelner bzw. mehrerer Packs außerhalb des Beltpacks?
+1. Ist eine Packfamilie mit einem kompakten Standardpack um etwa 19 Wh und einem deutlich größeren Extended Pack auf derselben elektrischen Host-Schnittstelle möglich?
+2. Können Spannungsklasse, Pinbelegung und Kommunikationsschnittstelle gleich bleiben?
+3. Kann dieselbe mechanische Kontakt-/Verriegelungszone verwendet werden, sodass der größere Pack lediglich stärker aufträgt bzw. einen größeren Batterierücken bildet?
+4. Welche vorhandene BASE-LINE- oder abgeleitete Lösung läge für eine Extended-Klasse um ungefähr 30–35 Wh nahe?
+5. Welche Auswirkungen hätte eine solche Packfamilie auf Zertifizierung, MOQ, Lifecycle, Ladegeräte und Ersatzteilhaltung?
 
 ## Entscheidungsregel
 
-Der bevorzugte Battery Pack ist nicht der Pack mit der höchsten Kapazität, sondern der kleinste serienreife Pack, der mit ausreichender Reserve die realen elektrischen, thermischen, Laufzeit-, Wartbarkeits- und Lebensdaueranforderungen des Beltpacks erfüllt. Ein schneller und robuster Feldwechsel ist Teil dieser Bewertung.
+Der bevorzugte Standardpack ist der kleinste serienreife Pack, der mit ausreichender Reserve die realen Anforderungen erfüllt. Eine Packfamilie aus Standard- und Extended-Kapazität wird nur verfolgt, wenn sie **keine relevante zusätzliche Komplexität im Beltpack** erzeugt.
 
 > **Battery capacity is a requirement, not a design goal. Product size, serviceability and reliable runtime are optimized together.**
-
-> **Nicht maximale Akkukapazität, sondern maximale Einsatzbereitschaft.**
-
-## Quellen / Herstellerinformationen
-
-Die konkreten Daten der vri BASE LINE sind vor einer Serienentscheidung anhand der jeweils aktuellen Herstellerdatenblätter und der direkten technischen Abstimmung mit VRI zu verifizieren. Öffentlich zugängliche Produktseite: https://www.vri-gmbh.de/produkte-loesungen/vri-baseline
