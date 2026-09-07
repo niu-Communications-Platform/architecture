@@ -14,6 +14,8 @@
 - Factory/Device Identity
 - Factory-/Recovery-Grundsätze
 - zentrale Software-Komponentengrenzen
+- mechanischer und elektrischer Akkuwechsel durch den Endnutzer gemäß ADR-0004
+- Repairability-Granularity und Entscheidung über mechanisch belastete I/O-Tochterplatinen
 
 ## Praktisch zu validieren
 
@@ -26,6 +28,11 @@
 - [ ] paralleles USB Audio + USB Ethernet/Wi-Fi
 - [ ] Network Handover mit Messung der Intercom-Unterbrechung
 - [ ] Power-Path / Battery Care / Thermik / Laufzeit
+- [ ] Endnutzer kann vollständigen Akku mit zulässigen Werkzeugen sicher entfernen und ersetzen
+- [ ] Akkuwechsel erfordert weder Löten noch Wärme/Lösungsmittel und beschädigt Gerät/Akku nicht
+- [ ] kompatibler Ersatzakku funktioniert ohne Software-Pairing oder künstliche Einschränkung
+- [ ] Battery-Health-/Learning-State verhält sich nach Akkuwechsel korrekt
+- [ ] mechanische Entscheidung zu austauschbaren I/O-/Connector-Boards abgeschlossen
 - [ ] ATECC608C TrustFLEX Profil, KeyProvider und Lock-Policy
 - [ ] A/B OTA, READY-Markierung und automatischer Rollback
 - [ ] RK3566 Maskrom Recovery
