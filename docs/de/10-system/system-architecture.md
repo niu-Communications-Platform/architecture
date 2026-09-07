@@ -49,6 +49,23 @@ Als plattformweite Gerätekomponente ist ein `niu-device-agent` vorgesehen. Vera
 
 Talkkonnect bleibt primär Intercom-Engine und soll nicht zum allgemeinen Gerätemanager werden.
 
+## Hard-Power-Loss-Toleranz
+
+**DECIDED:** Abrupter Verlust der Versorgung ist ein zulässiger Betriebs- und Fehlerfall. Das gilt insbesondere für die schnelle Entnahme des austauschbaren Akkus sowie für Hard-Off und unerwarteten Spannungsverlust.
+
+Das System muss so entworfen werden, dass wiederholter Hard Power Loss weder die Geräteidentität noch kritische Konfiguration dauerhaft beschädigt und das Gerät beim nächsten Start selbstständig in einen konsistenten Zustand zurückkehrt.
+
+Daraus folgen insbesondere:
+
+- power-loss-sichere persistente Zustandsänderungen;
+- Minimierung unnötiger Flash-/eMMC-Schreibvorgänge;
+- A/B-OTA mit Validierung und Rollback auch bei Unterbrechung während des Updates;
+- keine ausschließliche Ablage unverzichtbarer Factory-/Identity-Daten auf SBC-Storage;
+- definierte Recovery-Pfade für beschädigte Runtime-/Cache-Daten;
+- praktische wiederholte Power-Cut-Tests einschließlich ungünstiger Zeitpunkte während Konfigurations- und Updatevorgängen.
+
+Ein geordneter Shutdown bleibt der Normalfall. Die Integrität des Produkts darf jedoch nicht von ihm abhängen.
+
 ## Architekturphase
 
 Aktueller Meilenstein ist **P0 Architecture Gate**. Vor dem Prototyp werden teure Hardware-Lock-ins ausreichend geklärt; danach laufen theoretische Architektur und praktische Validierung parallel.
