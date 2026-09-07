@@ -27,13 +27,43 @@ German is the canonical language of the architecture documentation.
 - `docs/de/` contains canonical descriptive architecture documentation.
 - `adr/de/` contains canonical Architecture Decision Records.
 - `docs/en/` and `adr/en/` contain maintained English translations.
-- English and German versions link to each other.
+- English and German versions visibly link to each other in both directions.
 - In case of discrepancies, the canonical German version prevails.
-- English translations should identify their German source and translation status in document metadata where that convention is used.
 
 New architecture documentation and new ADRs are written in substance first in the canonical German version. The English version is then derived from it as a maintained translation.
 
 Code, APIs, identifiers, schemas and technical interface names remain English unless there is a specific reason otherwise.
+
+### Required language metadata
+
+For paired documentation pages under `docs/`:
+
+German version:
+
+```yaml
+language: de
+canonical: true
+status: current
+last_reviewed: YYYY-MM-DD
+translation: <relative path to the English version>
+```
+
+English version:
+
+```yaml
+language: en
+canonical: false
+status: current
+last_reviewed: YYYY-MM-DD
+source: <relative path to the German version>
+translation_status: current
+```
+
+ADRs use the same language/canonical model, with `date: YYYY-MM-DD` instead of `last_reviewed`. `translation_status` may be `current`, `outdated`, or `not-translated` where required.
+
+The paths in `translation` and `source` must resolve to the actual counterpart. Both documents must additionally contain a visible Markdown link to each other; metadata alone does not replace the language link.
+
+The workflow `.github/workflows/validate-docs.yml` runs `scripts/validate-docs.py` and checks these machine-verifiable conventions on pushes to `main` and on pull requests.
 
 ## Repository areas
 
@@ -94,8 +124,8 @@ When adding a new document:
 2. update the relevant German navigation if the document should be discoverable from that level;
 3. create or update the maintained English translation;
 4. update the corresponding English navigation;
-5. preserve links between canonical and translated documents;
-6. ensure the English version is marked as a translation and the German version as canonical.
+5. add metadata and visible language links between canonical source and translation;
+6. make sure the documentation validator passes.
 
 Navigation must reflect the actual repository hierarchy. Directory-level entries link to directories; document-level entries link to documents.
 
