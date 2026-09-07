@@ -54,3 +54,21 @@ The general model is:
 `Device UUID → Owner → Deployment → Provisioning Authority → Trust Domain`
 
 A higher provisioning revision never compensates for missing trust in the signer.
+
+## Open repair and official nıu attestation
+
+**DECIDED:** nıu does not regulate what an owner may technically do with their device. The security boundary is what the official nıu Trust Domain cryptographically attests to.
+
+Opening, diagnosing, repairing, reimaging, installing custom software, and using custom Trust Roots or services should generally be possible and documentable. Physical access or knowledge of the open implementation, however, does not authorize issuance or renewal of official nıu Device Certificates, modification of the Factory Registry, or creation of other nıu attestations.
+
+Principle:
+
+> **Anyone may repair or modify the device. Only nıu may attest that a device belongs to the official nıu trust domain.**
+
+Independent repair does not automatically terminate existing trust status. As long as the existing Identity Anchor remains intact and the Device Identity can still be reliably proven cryptographically, the repair itself does not create a reason for new attestation.
+
+If the Identity Anchor can no longer be reliably proven or must be replaced, restoration of official nıu trust status becomes an Identity Recovery/recertification operation. For the first product generation, the physical device is intended to be sent to nıu as the manufacturer for this purpose. nıu verifies the device and identity association, performs the required Factory/EOL and security checks, and may then issue a new official attestation or update the Registry in a controlled manner.
+
+The specific semantics of Secure Element replacement — in particular whether the Device UUID is retained or changed, how the Root Key changes, and whether an Identity Epoch is used — will be decided separately and remain open at this time.
+
+Loss of or opting out of official nıu trust does not prevent the owner from continuing to operate the device with custom software, a custom PKI, or a custom Trust Domain.
