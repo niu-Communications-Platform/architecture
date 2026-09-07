@@ -1,12 +1,3 @@
----
-language: en
-canonical: false
-status: current
-last_reviewed: 2026-09-07
-source: ../../de/40-audio/audio-architecture.md
-translation_status: current
----
-
 # Audio Architecture
 
 [Deutsch — canonical](../../de/40-audio/audio-architecture.md) | **English**
