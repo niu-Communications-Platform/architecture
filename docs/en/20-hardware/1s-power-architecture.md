@@ -8,6 +8,22 @@
 
 This document turns the preferred 1S direction for Prototype 1 into a testable power architecture. It is **not a series approval of individual ICs**. The architecture separates the production battery pack, USB-C POWER input, continuous stationary operation, regulated 5 V system power, and the ACCESSORY USB host port.
 
+## Battery Pack ↔ Carrier responsibility boundary
+
+**DECIDED:** nıu does **not** develop the Battery Pack or its internal Battery Management System (BMS). The beltpack uses a production-ready, documented battery pack from a specialist manufacturer. The pack remains an independent battery system with the protection, monitoring and fuel-gauge functions intended by its manufacturer.
+
+> **The Battery Pack owns battery safety and cell management. The Carrier owns system power and charging integration. The Carrier must never substitute or bypass the Battery Pack's protection functions.**
+
+The Battery Pack/manufacturer owns the cells and cell configuration, internal protection/BMS, cell over/undervoltage protection, pack over-current/short-circuit protection, internal temperature monitoring and protection limits, balancing where required, fuel-gauge/state data where provided, pack safety logic, allowed charge/discharge limits, and agreed pack compliance/transport/lifecycle documentation.
+
+The nıu Carrier owns only device-side integration: USB-C input power and PD negotiation, system power path/load sharing, generation/distribution of system rails, ACCESSORY-port supply/protection, charging **within manufacturer-specified and approved limits**, reduction or pausing of charging based on available input/system state, battery-care product policy within approved limits, evaluation of pack-provided status/fuel-gauge/temperature information, and user/diagnostic presentation.
+
+**DECIDED:** The Carrier must not replace or bypass pack protection. No bare cells as the regular product component, custom nıu cell protection/BMS, custom balancing, replacement cell-safety algorithms, bypass of pack over-current/temperature/voltage shutdowns, charge parameters outside manufacturer approval, or proprietary battery pairing merely for lock-in are part of the architecture.
+
+The Carrier charger/power-path controller is therefore **not a substitute for the Pack BMS**. It is the controlled interface between external energy, system load, and the production battery pack.
+
+The schematic is frozen only after pack-manufacturer coordination. VRI or the selected manufacturer must confirm charge termination voltage, allowed charge/discharge current, temperature limits, communications, pack shutdown behavior, and required host reactions. The same boundary applies to a Standard/Extended pack family: the Carrier may recognize approved packs and apply their approved parameters without becoming a battery-pack/BMS developer.
+
 ## System goals
 
 - ~19 Wh 1S Standard Pack as preferred Prototype-1 candidate;
@@ -73,36 +89,19 @@ PD is therefore not introduced as a charging-speed gimmick, but to create clean 
 
 ## PD controller class
 
-**CANDIDATE:** TI TPS25730A is a strong current reference candidate:
-
-- sink-only;
-- USB-IF PD3.2 certified;
-- integrated protected power path;
-- dead-battery support;
-- up to 20 V / 5 A power path;
-- pin-strap configuration;
-- no external EEPROM or custom PD firmware required;
-- optional I²C for status/diagnostics.
-
-It is not yet the selected production MPN. STUSB4500, Infineon EZ-PD BCR and other active sink-only controllers remain comparison candidates.
+**CANDIDATE:** TI TPS25730A is a strong current reference candidate: sink-only, USB-IF PD3.2 certified, integrated protected power path, dead-battery support, up to 20 V / 5 A power path, pin-strap configuration, no external EEPROM or custom PD firmware required, and optional I²C diagnostics. It is not yet the selected production MPN.
 
 ## Charger / power path
 
-**CANDIDATE:** A highly integrated wide-input buck-boost charger with NVDC power path shall be evaluated ahead of a simple 5 V-only 1S charger.
+**CANDIDATE:** A highly integrated wide-input buck-boost charger with NVDC power path shall be evaluated ahead of a simple 5 V-only 1S charger. TI BQ25798 is a reference candidate because it can handle 5 V fallback and higher PD input voltages while prioritizing system load.
 
-TI BQ25798 is a reference candidate because it supports 1S–4S, 3.6–24 V input, up to 5 A charging, integrated buck-boost conversion, BATFET/current sensing/NVDC power path, battery supplement, and ADC/I²C diagnostics.
-
-For nıu, universal 1S–4S support is not the objective. The relevant capability is handling both 5 V fallback and higher PD input voltages while prioritizing the system load.
-
-Final charge settings must come from the selected production pack manufacturer's specification/approval. nıu does not develop a pack BMS.
+Final charge settings must come exclusively from the selected production pack manufacturer's specification/approval. The charger is system-power/charging integration and never replaces the pack-internal BMS.
 
 ## 5V_SYS
 
 The 1S/NVDC node does not remain at a stable Radxa/USB-compatible 5 V. A separate high-power synchronous boost stage therefore generates `5V_SYS`.
 
-**CANDIDATE:** TPS61088 is a useful reference class: 2.7–12 V input, synchronous boost, high switch-current capability, 4.5–12.6 V output, adjustable current limit/frequency, and forced-PWM mode for EMI/audio evaluation. Newer alternatives such as TPS61288 and parts with explicit load disconnect are also evaluated.
-
-Prototype 1 shall validate stable 5 V across the allowed pack range, ~8 W internal design load, the ~13 W system+accessory stress case, load transients, thermal behavior, and audio/EMI impact.
+**CANDIDATE:** TPS61088 is a useful reference class. Prototype 1 shall validate stable 5 V across the allowed pack range, ~8 W internal design load, the ~13 W system+accessory stress case, load transients, thermal behavior, and audio/EMI impact.
 
 ## ACCESSORY USB-C
 
@@ -124,53 +123,33 @@ Requirements include host/DFP role, controlled current limit, over-current detec
 
 **REQUIREMENT:** With adequate external USB-C power, the beltpack must boot and operate with the battery removed.
 
-Prototype 1 must therefore validate the complete no-battery startup path:
-
-`USB-C attach → PD/fallback → charger/power path → SYS_BAT → 5V_SYS → Radxa boot`.
-
-This improves serviceability, stationary operation, and diagnostics.
-
 ## Weak-source behavior
 
-Undersized supplies must not cause boot loops or unstable audio. Priority is:
-
-1. active system load;
-2. stable 5V_SYS;
-3. ACCESSORY port according to policy;
-4. remaining power goes to charging.
-
-Charging current is reduced or paused as required. With a battery installed, temporary battery supplement may support load peaks.
+Undersized supplies must not cause boot loops or unstable audio. Priority is active system load, stable 5V_SYS, ACCESSORY port according to policy, then remaining power to charging. Charging is reduced or paused as required.
 
 ## Power-off boundary
 
-The architecture must support graceful Linux shutdown as the normal path, then disable the main 5 V rail after shutdown. A long hardware hold (existing target ≥8 s) must still be able to remove main power independently of Linux. Abrupt battery removal remains a valid hard-power-loss case.
-
-The exact latch/power-button/load-switch IC is deferred to schematic design; the hardware property is the requirement.
+The architecture must support graceful Linux shutdown as the normal path and a long hardware hold (existing target ≥8 s) that can remove main power independently of Linux. Abrupt battery removal remains a valid hard-power-loss case.
 
 ## Preliminary cost
 
-Current public 1k anchors are approximately:
-
-- BQ25798: ~EUR 2.6;
-- TPS61088: ~EUR 1.3;
-- PD sink controller class: roughly EUR 1–2 as an early public anchor; TPS25730A needs a current series RFQ;
-- plus magnetics, USB-C protection, load switches, current sensing, passives, and local regulators.
-
-A capable 1S+PD architecture therefore still appears fundamentally compatible with the EUR 8–11 Power+USB target if duplicate functionality is avoided.
+A capable 1S+PD architecture remains fundamentally compatible with the EUR 8–11 Power+USB target if duplicate functionality is avoided.
 
 ## Deliberately not included
 
 - no custom battery pack/BMS;
+- no custom cell protection or balancing;
+- no bypass of pack-internal protection functions;
 - no hot-swap bridge energy storage;
 - no PD source function on POWER;
 - no data on POWER;
 - no universal 1S/2S circuit merely for theoretical flexibility;
 - no second main 5 V supply just for ACCESSORY if a protected branch from 5V_SYS is sufficient;
-- no proprietary charger lock-in.
+- no proprietary charger or battery lock-in.
 
 ## Prototype-1 power gate
 
-The 1S direction is only allowed to progress toward series after validating at least: battery-only boot/run; battery-less external-power boot/run; external-power↔battery transitions without unintended reset while battery remains installed; real-world 5 V fallback supplies; PD operation; simultaneous load+charge; limited-source behavior; efficiency at 3.2/3.8/5.5/8/13 W; 5V_SYS regulation/transients; ACCESSORY 0/0.5/1.0 A including OCP/short tests; low-SoC operation; thermal hotspots; audio/EMI under charging/boost/PD/USB load; hardware hard-off; and abrupt battery removal followed by defined reboot.
+The 1S direction may only progress toward series after validating battery-only and battery-less operation, external-power/battery transitions, real-world 5 V fallback and PD supplies, simultaneous load+charge, efficiency and 5V_SYS regulation, ACCESSORY OCP, low-SoC behavior, thermal behavior, audio/EMI, hardware hard-off, abrupt battery removal/recovery, and **compliance with all charge/discharge/temperature limits of the selected production pack while preserving pack-internal protection functions**.
 
 ## Current direction
 
@@ -180,7 +159,7 @@ The 1S direction is only allowed to progress toward series after validating at l
 USB-C POWER Sink with PD + 5V fallback
         ↓
 wide-input buck-boost charger / NVDC power path
-        ↔ 1S production battery pack
+        ↔ 1S production battery pack with own BMS/protection
         ↓
 dedicated synchronous 5V boost
         ↓
@@ -190,3 +169,7 @@ dedicated synchronous 5V boost
 ```
 
 > **USB-PD is not a charging-speed gimmick for the beltpack. It creates power headroom for simultaneous full operation and charging while preserving 5 V USB-C as a compatible fallback.**
+
+The battery responsibility boundary remains unchanged regardless of the specific power IC selection:
+
+> **The Battery Pack owns battery safety and cell management. The Carrier owns system power and specification-compliant charging integration.**
