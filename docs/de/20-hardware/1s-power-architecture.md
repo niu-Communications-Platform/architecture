@@ -8,6 +8,59 @@ Dieses Dokument konkretisiert die bevorzugte 1S-Ausgangstopologie für Prototype
 
 Grundlage sind das bestehende Power Budget, die 1S-vs.-2S-Bewertung und die Entscheidung für einen serienreifen Battery Pack mit eigenem Schutz/BMS.
 
+## Verantwortungsgrenze Battery Pack ↔ Carrier
+
+**DECIDED:** nıu entwickelt **kein Battery Pack und kein packinternes Batteriemanagementsystem (BMS)**. Das Beltpack verwendet einen serienreifen, dokumentierten Battery Pack eines spezialisierten Herstellers. Der Pack bleibt ein eigenständiges Batteriesystem mit den vom Packhersteller vorgesehenen Schutz-, Überwachungs- und Fuel-Gauge-Funktionen.
+
+> **The Battery Pack owns battery safety and cell management. The Carrier owns system power and charging integration. The Carrier must never substitute or bypass the Battery Pack's protection functions.**
+
+### Verantwortung des Battery Packs / Packherstellers
+
+Insbesondere packseitig bleiben:
+
+- Zellen und Zellverschaltung;
+- packinterne Schutzschaltung / BMS;
+- Über-/Unterspannungsschutz der Zelle(n);
+- packinterner Überstrom- und Kurzschlussschutz;
+- packinterne Temperaturüberwachung und Schutzgrenzen;
+- Zell-Balancing, falls die gewählte Packtopologie dies benötigt;
+- Fuel Gauge / packinterne Zustandsdaten, soweit im Serienpack vorgesehen;
+- packinterne Sicherheitslogik;
+- Spezifikation der zulässigen Lade-/Entladeparameter;
+- Pack-Konformitäts-, Transport- und Lifecycle-Dokumentation im vereinbarten Umfang.
+
+### Verantwortung des nıu Carriers / Beltpacks
+
+Der Carrier übernimmt ausschließlich die Geräteintegration des serienreifen Packs, insbesondere:
+
+- USB-C-Eingangsleistung und PD-Verhandlung;
+- Power Path / Load Sharing des Gesamtgeräts;
+- Erzeugung und Verteilung der Systemspannungen;
+- Versorgung und Schutz des ACCESSORY-Ports;
+- Laden des Packs **innerhalb der vom Packhersteller spezifizierten und freigegebenen Grenzen**;
+- Reduzieren oder Pausieren des Ladestroms aufgrund verfügbarer Eingangsleistung oder Systemzustand;
+- Battery-Care-Produktlogik nur innerhalb der freigegebenen Packparameter;
+- Auswertung der vom Pack bereitgestellten Status-/Fuel-Gauge-/Temperaturinformationen, soweit vorhanden;
+- verständliche Darstellung des Energiezustands für Nutzer und Diagnose.
+
+### Harte Architekturgrenzen
+
+**DECIDED:** Der Carrier darf die Schutzfunktionen des Battery Packs weder ersetzen noch umgehen. Insbesondere werden nicht vorgesehen:
+
+- nackte Zellen als reguläre Produktkomponente;
+- eigener nıu-Zellschutz oder eigenes packinternes BMS;
+- eigenes Zell-Balancing;
+- eigene Zell-Sicherheitsalgorithmen als Ersatz für den Packhersteller;
+- Umgehung packinterner Überstrom-, Temperatur- oder Spannungsabschaltungen;
+- Ladeparameter außerhalb der Herstellerfreigabe;
+- proprietäre Akku-Paarung allein zur Kundenbindung.
+
+Der Charger/Power-Path-Controller auf dem Carrier ist damit **kein Ersatz für das Pack-BMS**. Er ist die geregelte Schnittstelle zwischen externer Energie, Systemlast und dem serienreifen Battery Pack.
+
+Die endgültige Schaltung wird erst nach Abstimmung mit dem Packhersteller eingefroren. VRI bzw. der ausgewählte Hersteller muss insbesondere Ladeendspannung, zulässigen Lade-/Entladestrom, Temperaturgrenzen, Kommunikationsschnittstelle, Packabschaltverhalten und erforderliche Host-Reaktionen bestätigen.
+
+Für eine mögliche Standard-/Extended-Packfamilie gilt dieselbe Grenze: Unterschiedliche freigegebene Packs dürfen unterschiedliche zulässige Parameter besitzen; der Carrier kann diese erkennen und spezifikationsgemäß anwenden, ohne selbst Battery-Pack- oder BMS-Entwickler zu werden.
+
 ## Systemziele
 
 - 1S-Standardpack um etwa 19 Wh als bevorzugter Prototype-1-Kandidat;
@@ -106,7 +159,7 @@ TI BQ25798 ist dafür ein Referenzkandidat, weil er:
 
 Für nıu ist dabei nicht die 1–4S-Universalität das Ziel. Relevant ist, dass derselbe Charger-Block 5-V-Fallback und höhere PD-Eingangsspannungen sauber verarbeiten und Systemlast priorisieren kann.
 
-**Wichtig:** Die endgültigen Ladeparameter werden ausschließlich aus der Spezifikation/Freigabe des ausgewählten VRI- oder anderen Serienpacks abgeleitet. nıu entwickelt kein eigenes Pack-BMS.
+**Wichtig:** Die endgültigen Ladeparameter werden ausschließlich aus der Spezifikation/Freigabe des ausgewählten VRI- oder anderen Serienpacks abgeleitet. Der Charger ist System-Power-/Ladeintegration und ersetzt niemals das packinterne BMS.
 
 ## 5V_SYS
 
@@ -210,12 +263,14 @@ Damit erscheint eine leistungsfähige 1S+PD-Architektur **weiterhin grundsätzli
 ## Was bewusst nicht gebaut wird
 
 - kein eigener Battery Pack / kein eigenes Pack-BMS;
+- kein eigener Zellschutz und kein eigenes Zell-Balancing;
+- kein Umgehen packinterner Schutzfunktionen;
 - kein Hot-Swap-Energiespeicher;
 - kein USB-PD Source am POWER-Port;
 - keine Datenfunktion am POWER-Port;
 - keine universelle 1S/2S-Schaltung nur für theoretische Flexibilität;
 - keine zweite 5-V-Hauptversorgung nur für ACCESSORY, wenn ein kontrollierter Abzweig von 5V_SYS ausreicht;
-- keine proprietäre Netzteilkopplung.
+- keine proprietäre Netzteil- oder Akku-Kopplung.
 
 ## Prototype-1-Power-Gate
 
@@ -235,7 +290,8 @@ Die 1S-Architektur darf erst Richtung Serie fortgeführt werden, wenn mindestens
 12. Thermik von Charger, Boost, Induktivitäten, Connectoren und PCB;
 13. Audio-Noise/EMI bei Laden, Boost, PD und USB-Last;
 14. Hard-Off unabhängig vom Linux-Zustand;
-15. Akkuentnahme und anschließender definierter Neustart.
+15. Akkuentnahme und anschließender definierter Neustart;
+16. Nachweis, dass alle Lade-/Entlade-/Temperaturgrenzen des ausgewählten Serienpacks eingehalten werden und packinterne Schutzfunktionen wirksam bleiben.
 
 ## Aktuelle Richtung
 
@@ -245,7 +301,7 @@ Die 1S-Architektur darf erst Richtung Serie fortgeführt werden, wenn mindestens
 USB-C POWER Sink with PD + 5V fallback
         ↓
 wide-input buck-boost charger / NVDC power path
-        ↔ 1S production battery pack
+        ↔ 1S production battery pack with own BMS/protection
         ↓
 dedicated synchronous 5V boost
         ↓
@@ -257,3 +313,7 @@ dedicated synchronous 5V boost
 Der wichtigste neue Architekturpunkt ist damit:
 
 > **USB-PD ist für das Beltpack kein Ladegeschwindigkeits-Gimmick. Es schafft Leistungsreserve für gleichzeitigen Vollbetrieb und Laden, während 5-V-USB-C als kompatibler Fallback erhalten bleibt.**
+
+Und die Batterie-Verantwortungsgrenze bleibt unabhängig von der konkreten Power-IC-Auswahl unverändert:
+
+> **Der Battery Pack verantwortet Batteriesicherheit und Zellmanagement. Der Carrier verantwortet Systemstrom und spezifikationskonforme Ladeintegration.**
