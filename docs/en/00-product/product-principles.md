@@ -40,11 +40,32 @@ Digital sovereignty does not end with access to source code or self-hosting. The
 
 This leads to the following product goal:
 
-**Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation.**
+**Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation → Open Understanding.**
 
-Where technically and legally possible, nıu therefore publishes the information and tools required for qualified independent fault analysis and repair. This includes, in particular, hardware and interface information, diagnostic procedures, repair instructions, relevant test points and expected values, calibration and recovery procedures, and open diagnostic tools.
+Where technically and legally possible, nıu therefore publishes the information and tools required for qualified independent fault analysis and repair. This includes hardware and interface information, diagnostic procedures, repair instructions, relevant test points and expected values, calibration and recovery procedures, and open diagnostic tools.
 
-The openness of diagnostics and repair is strictly separated from the official nıu Trust Domain:
+#### Open Understanding
+
+Open schematics and bills of materials alone do not make a product understandable. Documentation should therefore explain not only **how** the beltpack is built, but also **what its subsystems and important components do, why they are needed, and why the architecture was chosen**.
+
+Two complementary documentation layers are planned:
+
+1. **Engineering & Repair Reference** – precise technical reference for electrical engineers, professional repair shops, and experienced makers: schematics, BOMs with MPNs, pinouts, PCB/signal information, test points and expected values, measurement and diagnostic procedures, exploded views, calibration, replacement/recovery procedures, and relevant factory tests.
+2. **Inside nıu.cp** – didactic and visual documentation for technically curious users, motivated amateurs, and makers. It explains real engineering concepts through the actual product and follows signal, energy, data, and trust paths through the device. Technical terminology is explained rather than avoided.
+
+`Inside nıu.cp` must not become a technically inaccurate simplified version of the engineering documentation. The goal is the same technical truth at a different didactic level: from product purpose through architectural understanding to concrete engineering detail.
+
+Potential topics include how voice becomes digital data and back again; what an audio codec does; how stable system rails are generated from a changing battery voltage; how USB-C and USB Power Delivery negotiate power; how chips communicate over I²C, SPI, and I²S/TDM; how audio travels through Linux, Talkkonnect, Mumble and the network; why ESD protection, secure elements, watchdogs, A/B updates and hardware hard-off exist; and what an apparently insignificant individual component actually prevents.
+
+The documentation may deliberately create curiosity and enthusiasm. The beltpack should not be perceived as a sealed black box, but as a high-quality consumer product whose operation can be understood.
+
+**Not every open hardware design is sensible to assemble by hand.** Fine-pitch SMT packages, multilayer PCBs, high-speed/RF, USB-C/PD, and low-noise audio requirements may require professional assembly. Open Understanding therefore does not promise that every user can build the complete Carrier PCB with a soldering iron. Where repairs, modules, or assemblies are maker-friendly, they should be documented accordingly.
+
+Principle:
+
+> **Open Hardware does not only mean: you may look inside. Open Understanding means: we help you understand what you see.**
+
+The openness of diagnostics and repair remains strictly separated from the official nıu Trust Domain:
 
 > **Diagnostics are open. Trust issuance is not.**
 
