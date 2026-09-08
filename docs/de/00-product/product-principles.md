@@ -38,9 +38,39 @@ Digitale Souveränität endet nicht beim Zugriff auf den Quellcode oder beim Sel
 
 Daraus folgt als Produktziel:
 
-**Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation.**
+**Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation → Open Understanding.**
 
 nıu veröffentlicht deshalb soweit technisch und lizenzrechtlich möglich die Informationen und Werkzeuge, die eine qualifizierte unabhängige Fehleranalyse und Reparatur ermöglichen. Dazu gehören insbesondere Hardware- und Schnittstelleninformationen, Diagnoseverfahren, Reparaturanleitungen, relevante Testpunkte und Sollwerte, Kalibrierungs- und Recovery-Verfahren sowie offene Diagnosetools.
+
+#### Open Understanding
+
+Offene Schaltpläne und Stücklisten allein machen ein Produkt noch nicht verständlich. Die Dokumentation soll deshalb nicht nur offenlegen, **wie** das Beltpack aufgebaut ist, sondern auch erklären, **was die Baugruppen und wesentlichen Bauteile tun, warum sie benötigt werden und warum die Architektur so gewählt wurde**.
+
+Dafür sind langfristig zwei komplementäre Dokumentationsebenen vorgesehen:
+
+1. **Engineering & Repair Reference** – präzise technische Referenz für Elektroingenieure, professionelle Reparaturbetriebe und erfahrene Maker. Dazu gehören Schaltpläne, Stücklisten mit MPNs, Pinouts, PCB-/Signalinformationen, Testpunkte und Sollwerte, Mess- und Diagnoseverfahren, Explosionszeichnungen, Kalibrierung, Austausch- und Recovery-Prozeduren sowie relevante Factory-Tests.
+2. **Inside nıu.cp** – didaktische, visuelle Dokumentation für technisch interessierte Nutzer, motivierte Amateure und Maker. Sie erklärt anhand des realen Produkts grundlegende Konzepte und verfolgt Signal-, Energie-, Daten- und Trust-Pfade durch das Gerät. Fachbegriffe werden erklärt, nicht vermieden.
+
+`Inside nıu.cp` soll keine technisch falsche „vereinfachte Version“ der Engineering-Dokumentation sein. Ziel ist dieselbe technische Wahrheit auf einer anderen didaktischen Ebene: vom Produktnutzen über das Architekturverständnis bis zum konkreten Engineering-Detail.
+
+Beispielthemen sind:
+
+- Wie wird die Stimme vom Mikrofon zu digitalen Daten und wieder zurück?
+- Was ist ein Audio-Codec und warum verwendet das Gerät mehrere Audiowege?
+- Wie entstehen aus einer schwankenden Akkuspannung stabile Systemspannungen?
+- Wie handeln USB-C und USB Power Delivery die Energieversorgung aus?
+- Wie kommunizieren Chips über I²C, SPI und I²S/TDM?
+- Wie gelangen Audio-Daten durch Linux, Talkkonnect, Mumble und das Netzwerk zur Gegenstelle?
+- Warum existieren ESD-Schutz, Secure Element, Watchdogs, A/B-Updates und Hardware-Hard-Off?
+- Welche Aufgabe hat ein scheinbar unscheinbares einzelnes Bauteil und welche Fehler verhindert es?
+
+Die Dokumentation darf dabei ausdrücklich Neugier und Begeisterung erzeugen. Das Beltpack soll nicht als versiegelte Blackbox verstanden werden, sondern als hochwertiges Consumerprodukt, dessen Funktionsweise nachvollziehbar ist.
+
+**Nicht jedes offene Hardwaredesign ist sinnvoll von Hand bestückbar.** Feine SMT-Packages, mehrlagige Leiterplatten, Hochgeschwindigkeits-, HF-, USB-C/PD- und rauscharme Audioanforderungen können professionelle Bestückung erforderlich machen. Open Understanding verspricht deshalb nicht, dass jeder Nutzer die komplette Carrier-PCB mit Lötkolben aufbauen kann. Wo Reparaturen, Module oder Baugruppen maker-tauglich sind, sollen sie jedoch entsprechend dokumentiert werden.
+
+Grundsatz:
+
+> **Open Hardware bedeutet nicht nur: Du darfst hineinsehen. Open Understanding bedeutet: Wir helfen Dir zu verstehen, was Du dort siehst.**
 
 Die Offenheit von Diagnose und Reparatur wird strikt von der offiziellen nıu Trust Domain getrennt:
 
