@@ -29,6 +29,8 @@
 - [ ] USB-C DFP + Hub + VBUS-Schutz unter realer Last
 - [ ] paralleles USB Audio + USB Ethernet/Wi-Fi
 - [ ] Network Handover mit Messung der Intercom-Unterbrechung
+- [ ] Internationale Funkstandards und Regularien für alle vorgesehenen Zielmärkte prüfen; insbesondere zulässige Frequenzbereiche, Sendeleistungen, Duty-Cycle-/Channel-Access-Regeln, regionale Varianten sowie Auswirkungen auf Wi-Fi, Bluetooth und einen möglichen Sub-GHz-/LoRa-Resilience-Kanal
+- [ ] RF-Koexistenz, Antennenabstände und gegenseitige Beeinflussung von Wi-Fi, Bluetooth und möglichem Sub-GHz-Funk praktisch validieren
 - [ ] Power-Path / Battery Care / Thermik / Laufzeit
 - [ ] Endnutzer kann vollständigen Akku in wenigen Sekunden sicher entfernen und ersetzen
 - [ ] Akkuwechsel erfordert weder Löten noch Wärme/Lösungsmittel und beschädigt Gerät/Akku nicht
