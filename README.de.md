@@ -6,10 +6,47 @@ Dieses Repository enthält die produktübergreifende Systemarchitektur, Produkte
 
 Die **deutsche Dokumentation ist die kanonische Quelle** für Architektur- und Produktentscheidungen. Die englische Dokumentation wird als gepflegte Übersetzung für Austausch, Zusammenarbeit und eine spätere internationale Community geführt. Bei Abweichungen gilt die deutsche Fassung.
 
+## Was ist die nıu Communications Platform?
+
+Die nıu Communications Platform (`nıu.cp`) ist eine offene Kommunikationsplattform für professionelle Liveproduktion, Broadcast und Events. Das erste Produkt ist ein tragbares Intercom-/IP-Audio-Beltpack mit **Mumble als nativem Echtzeit-Sprachsystem** und SIP als Interoperabilitätsschicht.
+
+Die Plattform ist auf drei Betriebsmodelle ausgelegt:
+
+- **Bare** — Beltpack mit vom Nutzer bereitgestellter Mumble/Murmur-Infrastruktur;
+- **Base** — Beltpack plus lokale nıu Base für Mumble/Murmur und Management;
+- **Cloud** — Beltpack plus von nıu betriebene Service-Infrastruktur.
+
+Leitidee:
+
+> **Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation → Open Understanding.**
+
+Offene Implementierung und offizielle nıu-Trust-Domain bleiben bewusst getrennt. Dritte dürfen kompatible Systeme und eigene Trust Domains betreiben; private nıu-Trust-Roots sind nicht Teil der Open-Source-Distribution.
+
+## Aktuelles Architekturbild
+
+### Bereits entschieden / in ADRs festgehalten
+
+- **Carrier = physischer Geräteidentitätsanker** — [ADR-0001](adr/de/0001-carrier-is-device-identity-anchor.md)
+- **Network-Handover trennt Transport und Mumble-Session** — [ADR-0002](adr/de/0002-network-handover-session-model.md)
+- **Open Source und Trust Domains sind getrennt** — [ADR-0003](adr/de/0003-open-source-trust-domains.md)
+- **Mumble nativ, SIP als Interoperabilitätsschicht** — [ADR-0004](adr/de/0004-mumble-native-sip-interoperability.md)
+- **Akku durch Endnutzer austauschbar** — [ADR-0005](adr/de/0005-end-user-replaceable-battery.md)
+
+### Aktive Architekturvalidierung
+
+Diese Punkte sind wichtig genug, dass sie das physische Produkt bereits beeinflussen, aber noch **keine akzeptierten Architekturentscheidungen** sind:
+
+- **Compute-Plattform:** austauschbare Radxa-/Raspberry-Compute-Module; Carrier behält Identität, Audio, Power und produktspezifische Hardware.
+- **Compute-unabhängiges USB Audio:** CT7601CH und XMOS XU316 werden als gemeinsame USB-Audio-Grenze validiert.
+- **Secondary Sub-GHz / LoRa Resilience:** ein unabhängiger, MCU-basierter Funkpfad für kleine Presence-, Status-, Call-/Alarm-, Tally- und Recovery-Nachrichten ist ein ernsthafter V1-Hardwarekandidat. Kontinuierliches Audio bleibt IP-basiert. In der Produktentwicklung ist ein lokaler **Direct-LoRa-Star Beltpack ↔ Base** derzeit der stärkste Protokollkandidat; LoRaWAN bleibt Vergleichsoption. **Noch kein ADR.** Siehe [`Q-006`](https://github.com/niu-Communications-Platform/product-development/blob/main/%281%29%20questions/Q-006-secondary-sub-ghz-resilience-radio.de.md).
+- **Physische Beltpack-Architektur:** 105 × 70 mm Core Body mit seitlichem, teilversenktem Wechselakku und freier Core-Rückseite für den Beltclip ist das aktuelle Arbeitsmodell; reale Balance-, Dock- und RF-Validierung steht noch aus.
+
+Die detaillierten Fragen, Experimente, Findings, Supplier-Antworten und verworfenen Wege liegen bewusst im separaten [`product-development`](https://github.com/niu-Communications-Platform/product-development)-Repository und werden erst bei ausreichender Evidenz hierher als stabile Architektur bzw. ADR überführt.
+
 ## Direkt einsteigen
 
 - **[Architekturdokumentation — Deutsch / kanonisch](docs/de/README.md)**
-- **[Architekturdokumentation — English](docs/en/README.md)**
+- **[Architecture documentation — English](docs/en/README.md)**
 - **[Architecture Decision Records (ADRs) — Deutsch / kanonisch](adr/de/README.md)**
 - **[Architecture Decision Records (ADRs) — English](adr/en/README.md)**
 - **[Validierung und Architecture Gates](validation/)**
@@ -39,8 +76,8 @@ Architekturentscheidungen und technische Optionen werden ausdrücklich klassifiz
 - `OPTION` — bewusst vorgesehene Fähigkeit oder spätere Möglichkeit
 - `OPEN` — noch nicht entschieden
 
-Zusätzlich soll festgehalten werden, ob eine Aussage nur theoretisch verifiziert wurde oder praktisch im Prototyp validiert werden muss.
+Zusätzlich wird festgehalten, ob eine Aussage nur theoretisch verifiziert wurde oder praktisch im Prototyp validiert werden muss.
 
 ## Aktuelle Phase
 
-Das Projekt befindet sich in der Architektur- und Prototyp-Vorbereitungsphase. Ziel ist kein vollständiger Product Freeze vor dem ersten Prototyp, sondern ein **Architecture Gate**, das teure Hardware-Lock-ins und vorhersehbare Sackgassen vor Beginn der praktischen Entwicklung beseitigt.
+Das Projekt befindet sich im Übergang von funktionaler Architektur zu **praktischer Architekturvalidierung und physischer Produktarchitektur**. Ziel ist kein vollständiger Product Freeze vor dem ersten Prototyp, sondern ein Architecture Gate, das teure Hardware-Lock-ins und vorhersehbare Sackgassen vor Seriennähe beseitigt.
