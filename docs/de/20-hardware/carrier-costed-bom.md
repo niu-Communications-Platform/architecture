@@ -1,162 +1,139 @@
-# Vorläufige kostenbewertete Carrier-BOM
+# Vorläufige kostenbewertete Product-Core-/Carrier-BOM
 
 **Deutsch (kanonisch)** | [English](../../en/20-hardware/carrier-costed-bom.md)
 
 ## Zweck
 
-Dieses Dokument prüft erstmals quantitativ, ob die geplante Carrier-Architektur des Beltpacks innerhalb des Target-Cost-Modells plausibel ist. Es ist **noch keine freigegebene Serien-BOM**. Konkrete MPNs sind teils Kandidaten; offene Funktionen werden als Engineering Allowance geführt.
+Dieses Dokument hält die **architektonischen Kostenanker des gemeinsamen nıu Product Core** fest. Es ist keine führende Serien-BOM und kein Ersatz für die plattformspezifischen Costed BOMs im `product-development`-Repository.
 
-## Ergebnis in einem Satz
+Seit der Trennung in **CM-Plattform** und **Zero-Plattform** gilt:
 
-**Die geplante Carrier-Architektur erscheint kostenmäßig grundsätzlich tragfähig.** Die bisher konkret recherchierbaren Kern-ICs sind nicht der Kostentreiber. Das größte Kostenrisiko liegt derzeit in Power/USB, Mechanik/Connectoren, PCB/Bestückung und noch offenen Detailbauteilen — nicht in den zwei Audio-Codecs oder dem Secure Element.
+```text
+Common Product Core
++
+CM-spezifischer Carrier   ODER   Zero-spezifischer Carrier
++
+Compute
+=
+vollständiges Beltpack
+```
 
-## Abgrenzung
+Die führenden Szenariokosten liegen in:
 
-Enthalten sind Carrier-Elektronik, Carrier-PCB und deutsche Bestückung/AOI. Nicht enthalten sind Radxa Compute Module, Battery Pack, Hauptgehäuse, Produktverpackung und deutsche Box-Build-Endmontage.
+- `product-development/bom/beltpack-costed-bom.de.md` — Common Core;
+- `product-development/bom/beltpack-cm-platform-costed-bom.de.md` — CM;
+- `product-development/bom/beltpack-zero-platform-costed-bom.de.md` — Zero.
 
-## Kernbauteile mit aktuellem Preisanker
+## Gemeinsame Core-Komponenten mit Preisankern
 
-| Funktion | Kandidat | Menge | aktueller öffentlicher Preisanker | Planwert/Gerät |
-|---|---|---:|---:|---:|
-| Audio Codec | TLV320AIC3204IRHBR | 2 | ca. 2,57 EUR/Stk. bei 1k; Full-Reel teils niedriger | **5,2 EUR** |
-| Speaker Amp | TAS2505IRGER | 1 | ca. 0,87 USD/Stk. bei 1k bei DigiKey | **0,8 EUR** |
-| Secure Element | ATECC608C-TFLXTLS | 1 | Serienvariante RFQ; generische ATECC608B-Familie öffentlich ca. 0,65–0,85 EUR | **1,0 EUR Allowance** |
-| Carrier EEPROM | 24CS64-Klasse | 1 | öffentlich etwa 0,3 EUR in Kleinmenge | **0,3 EUR** |
-| GPIO Expander | MCP23017-Klasse | 1 | öffentlich etwa 1,45 EUR in Einzelmenge; Serienpreis offen | **1,0 EUR Allowance** |
-| RGB LED Driver | PCA9955BTWJ oder funktional äquivalent | 1 | ca. 1,08 EUR bei 1k | **1,1 EUR** |
+| Funktion | Kandidat | Menge | Planwert / Anker |
+|---|---|---:|---:|
+| Audio Codec | TLV320AIC3204IRHBR | 2 | **ca. 5,2 EUR gesamt** |
+| Speaker Amp | TAS2505IRGER | 1 | **ca. 0,8 EUR** |
+| Secure Element | ATECC608C-TFLXTLS class | 1 | **1,0 EUR Allowance** |
+| Carrier EEPROM | 24CS64 class | 1 | **ca. 0,3 EUR** |
+| GPIO Expander | MCP23017 class | 1 | **1,0 EUR Allowance** |
+| RGB LED Driver | PCA9955 class | 1 | **ca. 1,1 EUR** |
 
-Zwischensumme dieser sichtbaren Core-ICs: **ca. 9,4 EUR**.
+Sichtbare Core-IC-Zwischensumme: grob **9,4 EUR**. TrustFLEX-Serienpreis bleibt RFQ.
 
-Wichtig: Der TrustFLEX-Serienpreis muss per RFQ ermittelt werden. Die generischen ATECC608-Preise dienen nur als Plausibilitätsanker und dürfen nicht als Angebot für den provisionierten TrustFLEX-Typ interpretiert werden.
+## Gemeinsame Funktionsblöcke
 
-## USB-Architektur: Kostenwarnung und Lebenszyklusregel
-
-Ein USB-2.0-Hub-Controller der USB2514B-Klasse liegt öffentlich ungefähr im Bereich weniger Euro, der konkrete USB2514BI ist jedoch als **NRND (Not Recommended for New Designs)** gelistet und wird deshalb **nicht** als Serienentscheidung übernommen.
-
-**REVIEW:** Für Prototype 1 und Serie ist ein aktiver, langfristig geeigneter USB-2.0-Hub-Controller auszuwählen. Preisziel für Hub-Controller einschließlich notwendiger Clock-/Konfigurationsbauteile: **≤ 2,5 EUR** bei Serienmenge.
-
-## Funktionsblöcke und Engineering Allowances
-
-| Carrier-Block | Ziel/Planwert EUR | Inhalt |
+| Product-Core-Block | Ziel/Planwert EUR | Hinweis |
 |---|---:|---|
-| 2× Audio Codec | 5,2 | AIC3204-Klasse |
-| Speaker Amp | 0,8 | TAS2505-Klasse |
-| Secure Element | 1,0 | TrustFLEX-Klasse, RFQ offen |
+| 2× Audio Codec | 5,2 | AIC3204 class |
+| Speaker Amp | 0,8 | TAS2505 class |
+| Secure Element | 1,0 | TrustFLEX class |
 | NVM + GPIO + RGB PWM | 2,4 | EEPROM, Expander, LED Driver |
-| Audio Analog Front End | 2,0–3,0 | Bias, Filter, Schutz, Umschaltung/Detect, CTIA/OMTP-Funktion soweit erforderlich |
-| USB Hub + Clock/Config | 2,0–2,8 | finaler aktiver Hub-Typ offen |
-| USB-C Accessory Port Control | 1,5–2,5 | DFP/CC, VBUS current limit, reverse protection, OCP, ESD |
-| USB-C Power Input + Schutz | 0,8–1,5 | Connector-nahe Schutz-/Detect-Funktionen; Charger separat |
-| Power Path / Charger / DC-DC | 4,0–6,0 | stark abhängig von finalem 1S/2S Battery Pack und externer Versorgung |
+| Audio Analog Front End | 2,0–3,0 | Bias, Filter, Schutz, Detect/Umschaltung |
+| USB-C Accessory Port Control | 1,5–2,5 | CC, VBUS limit, reverse protection, OCP, ESD |
+| USB-C Power Input + Schutz | 0,8–1,5 | Connector-nahe Funktionen; Charger separat |
+| Power Path / Charger / DC-DC | 4,0–6,0 | finale Dimensionierung muss CM/Zero-Peaks tragen |
 | Fuel/Power/Temperature Monitoring | 0,5–1,0 | soweit nicht vollständig vom Pack bereitgestellt |
-| Oscillators/Clocking | 0,3–0,7 | soweit benötigt |
-| ESD/EMI/Protection gesamt | 1,0–1,8 | externe Audio-, USB-, Power- und sonstige Ports |
-| Passives/Regulators/Level Shifting/Glue | 2,0–3,0 | aggregierte Allowance |
-| Testpunkte/Factory Interface/kleine Steckverbinder | 0,5–1,0 | DFT-relevante Hardware |
+| Oscillators/Clocking | 0,3–0,7 | soweit produktweit benötigt |
+| ESD/EMI/Protection | 1,0–1,8 | externe Audio-/USB-/Power-Ports |
+| allgemeine Passives/Regulators/Glue | 2,0–3,0 | nur plattformneutrale Anteile |
+| Testpunkte / Factory Interface | 0,5–1,0 | DFT-relevante gemeinsame Hardware |
 
-### Elektronik-Zwischenergebnis
+Diese Werte sind Engineering-Anker. Die führende Common-Core-BOM im Product-Development-Repository verhindert Doppelzählung.
 
-Aus den derzeitigen Preisankern und Allowances ergibt sich für die **Carrier-Elektronik ohne Display, mechanische Bedienelemente, Audio-Wandler, externe Buchsen und PCB-Fertigung** ein Engineering-Korridor von grob:
+## Nicht mehr als gemeinsamer Carrier-Block rechnen
 
-> **ca. 24–30 EUR**
+Folgende Positionen sind **plattformabhängig** und dürfen nicht in einem einzigen universellen Carrier-Budget versteckt werden:
 
-Der obere Bereich ist bewusst konservativ, solange Power-Topologie, USB-Hub und Audio-Umschaltung nicht als Schaltplan vorliegen.
+- Compute Module / SBC;
+- CM-B2B- beziehungsweise Zero-40-Pin-/SBC-Interconnect;
+- Compute→USB-Hub-/CT7601-Datenpfad;
+- Compute-spezifische Power-Einspeisung, Boot/Recovery und Level/Glue;
+- Compute-Mounting und interne Keep-outs;
+- Carrier-PCB;
+- Carrier-PCBA/AOI;
+- Zero/Pi-Zero-spezifische Storage-Deltas.
 
-## Human Interface und mechanisch belastete I/O-Komponenten
+### CM-Plattform
 
-Diese Komponenten sitzen funktional am Carrier bzw. werden mit ihm verbunden, sind im Target-Cost-Modell aber separat sichtbar:
+Radxa CM3, Radxa CM4 und Raspberry Pi CM4 sollen nach Möglichkeit denselben identisch bestückten CM-Carrier über die sichere 2×100-Pin-Schnittmenge nutzen.
+
+### Zero-Plattform
+
+Radxa ZERO 3W und Raspberry Pi Zero 2 W bilden die Zero-Familie. Ein gemeinsamer Carrier ist Ziel, aber die elektrische Gleichheit ist noch nicht vollständig validiert; insbesondere USB und Storage unterscheiden sich.
+
+## USB-Lifecycle-Regel
+
+Ein aktiver USB-Hub kann je nach Plattform nötig sein. Der spezifische USB2514BI bleibt wegen **NRND** keine Serienentscheidung.
+
+**REVIEW:** Plattformweise einen aktiven, langfristig geeigneten USB-2.0-Hub/Interconnect-Pfad definieren. Historischer Zielwert für Hub + Clock/Config: **ca. 2,0–2,8 EUR**, bis konkrete MPNs/Topologien vorliegen.
+
+Dieser Betrag ist **kein Common-Core-Aufschlag** mehr, sondern gehört in die jeweilige Plattform-BOM.
+
+## HMI und mechanisch belastete I/O-Komponenten
+
+Diese Produktfunktionen bleiben grundsätzlich gemeinsam:
 
 | Block | Planwert EUR |
 |---|---:|
 | 1,3–1,5 Zoll TFT | 2,0–3,5 |
 | 4 RGB LEDs + Lichtführung-Anteil | 0,3–0,8 |
-| PTT + Bedienbuttons + Encoder | 1,0–2,0 |
+| PTT + Buttons/Encoder | 1,0–2,0 |
 | interne Mikrofone | 0,5–1,2 |
 | interner Speaker | 0,8–1,5 |
-| MIC / PHONES / TRRS Audio-Buchsen | 1,0–2,0 |
-| 2× USB-C Buchsen | 0,4–1,0 |
-| sonstige interne Steckverbinder | 0,5–1,0 |
+| MIC / PHONES / TRRS | 1,0–2,0 |
+| sichtbare 2× USB-C Buchsen | 0,4–1,0 |
 
-Diese Gruppe liegt damit grob bei **6,5–13 EUR**. Sie muss durch konkrete mechanische Auswahl deutlich enger werden.
+Interne Compute-Befestigung, interne Kabel/Interconnects und PCB-spezifische Mechanik gehören dagegen in CM bzw. Zero.
 
 ## PCB und deutsche Bestückung
 
-Aktuelles Cost Gate:
+Die bisherigen generischen Zielkorridore bleiben nur als Plausibilitätsanker:
 
 - nackte Carrier-PCB: **1,5–3 EUR**;
-- deutsche SMT/THT-Bestückung + AOI: **4–7 EUR**;
-- zusammen: **6–9 EUR Zielbereich**.
+- deutsche SMT/THT-Bestückung + AOI: **4–7 EUR**.
 
-Die tatsächliche Fertigung darf erst nach PCB-Stackup, Abmessungen, Bestückungsseiten, Bauteilanzahl und THT-Anteil seriös kalkuliert werden.
+Sie werden **nicht** mehr als gemeinsamer Kostenblock addiert. CM-Carrier und Zero-Carrier werden separat geroutet, gefertigt und gequotet.
 
-**DFMA:** Jeder manuell zu lötende Draht, jede zusätzliche THT-Buchse und jede zweite Bestückungsseite ist nicht nur BOM-, sondern deutsche Fertigungszeit. Deshalb wird die BOM nicht isoliert vom Montageprozess optimiert.
+## DFMA-Regel
 
-## Konsolidierte Carrier-Sicht
+Jeder manuell zu lötende Draht, jedes zusätzliche Kabel, jede THT-Buchse und jede zweite Bestückungsseite ist deutsche Fertigungszeit. Deshalb wird nicht nur Bauteilpreis, sondern **Total Platform Assembly Cost** verglichen.
 
-Für die wirtschaftliche Bewertung sind drei Ebenen zu unterscheiden:
+## Kostenziel
 
-1. **Core Carrier Electronics:** derzeit ca. **24–30 EUR** Engineering Estimate.
-2. **HMI / Audio Mechanics / External Connectors:** derzeit ca. **6,5–13 EUR**, noch hohe mechanische Unsicherheit.
-3. **Carrier PCB + German PCBA:** **6–9 EUR** Target.
+Gesamtziel des vollständigen Beltpacks bleibt:
 
-Die einfache Summe ergibt aktuell grob **36,5–52 EUR** für die breite, noch unfertige Carrier-nahe Hardware. Das überschreitet am oberen Ende das bisherige aggregierte Ziel und zeigt, wo die Architektur jetzt konkretisiert werden muss.
+- bevorzugte Gesamt-COGS: **≤75 EUR**;
+- akzeptabel: **75–80 EUR**;
+- >94,50 EUR aktuelles Fail-Territory.
 
-Das ist **kein Alarm**, weil die obere Grenze mehrere konservative Allowances und noch nicht optimierte Überlappungen enthält. Es ist aber der erste quantitative Hinweis, dass wir nicht beliebig weitere Hardware ergänzen dürfen.
-
-## Ziel für Schaltplanphase
-
-Bis zum Carrier-Schematic-Freeze soll gelten:
-
-- **Carrier Electronics inkl. Power/USB/Audio/Security:** Ziel **≤ 27 EUR**;
-- **HMI + Audio Mechanics + External Connectors:** Ziel **≤ 10 EUR**;
-- **PCB + deutsche PCBA/AOI:** Ziel **≤ 8 EUR**;
-- **Carrier-nahe Hardware gesamt:** Ziel **≤ 45 EUR**, bevorzugt **≤ 42 EUR**.
-
-Dies ist mit dem Gesamt-COGS-Ziel von 75–80 EUR vereinbar, wenn Compute, Battery, Enclosure, Endmontage und Verpackung ihre jeweiligen Budgets halten.
+Die frühere einfache Carrier-Summe von 36,5–52 EUR darf nicht mehr als eine plattformunabhängige Serienzahl verwendet werden; sie war ein früher breiter Architekturanker und vermischte inzwischen getrennte Common-/Platform-Blöcke.
 
 ## Wichtigste Kostenrisiken
 
-### 1. Power-Architektur
-
-Größter offener Elektronikblock. Die Wahl 1S vs. 2S und die Anforderungen an gleichzeitiges Laden/Betrieb, 5-V-Systemrail und 5-V/1-A-USB-Host beeinflussen Wandlerzahl, Leistungsklasse, Thermik und BOM erheblich.
-
-**Regel:** Keine Power-Topologie finalisieren, bevor VRI-Pack und reale Lastmessungen ausreichend bekannt sind.
-
-### 2. USB
-
-Der externe Universal-Host ist ein wichtiges Produktmerkmal, darf aber nicht zu einer Sammlung redundanter Controller werden. Hub, Type-C-Role/CC, VBUS-Switch und Schutz werden als zusammenhängender Block optimiert.
-
-### 3. Audio-Umschaltung / CTIA-OMTP
-
-Die gewünschte Anschlussflexibilität kann mehr Analogschalter, Detect-Schaltung und Schutz benötigen als die Codecs selbst kosten. Erst der konkrete Schaltplan zeigt, ob die derzeitige Allowance reicht.
-
-### 4. Mechanische Buchsen und Montage
-
-Die nominellen Bauteilpreise sind klein, aber robuste Buchsen, Befestigung, Kabel und Handarbeit können die reale Serienkostenwirkung vervielfachen. Die Entscheidung über eine I/O-Daughterboard-Architektur muss deshalb Kosten, Reparierbarkeit und Montage gemeinsam betrachten.
-
-### 5. Varianten
-
-Nicht bestückte Reserven sind billig, separate Produktvarianten teuer. Future-proofing bevorzugt Pads, Testpunkte, Busreserven und Softwarefähigkeit statt zusätzliche serienmäßig bestückte Hardware ohne V1-Nutzen.
-
-## Was überraschend günstig ist
-
-Die zwei Audio-Codecs sind zusammen im Volumen nur ungefähr ein 5-EUR-Block. Secure Element, EEPROM, GPIO Expander und RGB-LED-Treiber sind ebenfalls keine wirtschaftlichen Showstopper.
-
-Daraus folgt:
-
-> **Wir sollten keine gute Audio-, Identity- oder Diagnosearchitektur für Centbeträge kaputtsparen. Optimiert werden zuerst die großen und arbeitsintensiven Blöcke.**
-
-## Nächste Schritte
-
-1. VRI-Gespräch/RFQ zur Festlegung der realistischen Pack-Spannungsklasse.
-2. Power-Tree für 1S- und 2S-Kandidat auf Blockebene vergleichen und BOM-Differenz berechnen.
-3. aktiven USB-Hub-Kandidaten auswählen; keine NRND-Komponente für neue Serienarchitektur.
-4. USB-C Host-Power-/CC-Architektur konkretisieren.
-5. Audio-Jack-/CTIA-/OMTP-Schaltung konkretisieren.
-6. Display, Buttons/Encoder, Mics, Speaker und Buchsen auf reale MPNs herunterbrechen.
-7. erste KiCad-BOM gegen **≤42–45 EUR Carrier-nahe Hardware** prüfen.
-8. anschließend deutsche EMS-RFQ vorbereiten.
+1. **Compute + Plattformintegration** — aktuell stärkste neue Differenz zwischen CM und Zero.
+2. **Power** — muss Leistungspeaks der finalen Compute-Familie tragen.
+3. **USB** — insbesondere shared-carrier-tauglicher Datenpfad ohne Compute-Rework.
+4. **Mechanik/Interconnect** — B2B versus SBC-Header/Kabel/Mounting.
+5. **Audio-Umschaltung / CTIA-OMTP**.
+6. **deutsche Montage / EOL**.
 
 ## Gate
 
-> **Die Architektur ist aktuell kostenmäßig plausibel, aber der Carrier hat keine unbegrenzte Reserve. Ab jetzt muss jede zusätzliche Hardwarefunktion ihr Budget rechtfertigen.**
+> **Common Core gemeinsam optimieren; CM und Zero getrennt bis zum gleichen funktionalen Endpunkt kalkulieren. Kein Universal-Carrier-Budget und keine Doppelzählung.**
