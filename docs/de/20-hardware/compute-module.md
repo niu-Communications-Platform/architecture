@@ -64,20 +64,34 @@ Kandidaten:
 - Radxa ZERO 3W;
 - Raspberry Pi Zero 2 W.
 
-Beide gehören zur 65×30-mm-Zero-Klasse mit 40-Pin-Erweiterung. Das definiert die gemeinsame Plattformfamilie, aber noch keine vollständige elektrische Drop-in-Kompatibilität.
+Beide gehören zur 65×30-mm-Zero-Klasse mit 40-Pin-Erweiterung.
 
-**TARGET:** Ein gemeinsamer Zero-Carrier mit möglichst identischer Bestückung.
+**DOCUMENTED / VALIDATION PENDING:** F-029 hat alle 40 physischen Header-Positionen 1:1 verglichen und auf der Low-Speed-Ebene **keine harte elektrische Kollision** gefunden. Die gemeinsame Basis ist damit deutlich belastbarer als die reine Formfaktor-Annahme:
+
+- 5 V / 3,3 V / GND auf gemeinsamen Positionen;
+- User-I²C auf Pins 3/5;
+- SPI MOSI/MISO/CLK/CS0 auf 19/21/23/24;
+- PCM/I²S BCLK/LRCK/DIN/DOUT auf 12/35/38/40;
+- übrige Signalpositionen grundsätzlich als 3,3-V-GPIO nutzbar, aber mit unterschiedlichen Nummern/Alt-Funktionen/Pulls;
+- UART 8/10 ist beim ZERO 3W Default-U-Boot-Console und deshalb keine bevorzugte Pflichtschnittstelle;
+- Pins 27/28 werden als HAT-ID-I²C oder DNC behandelt;
+- Pin 26 bleibt wegen widersprüchlicher Radxa-Dokumentation bis zur Klärung/Bench-Validierung außerhalb der Pflicht-Baseline.
+
+**TARGET:** Ein gemeinsamer Zero-Carrier mit möglichst identischer Bestückung nutzt nur diese konservative, verifizierte Low-Speed-Schnittmenge.
 
 Noch zu validieren:
 
-- mechanische Hole-/Keep-out-Kompatibilität;
-- sichere gemeinsame 5-V-/GPIO-/I²C-/SPI-/UART-Schnittmenge;
+- mechanische Header-Pitch-/Hole-/Keep-out-Kompatibilität;
+- reale 5-V-Power-/Backfeed-Auslegung;
 - USB-Interconnect;
 - Storage/Recovery;
 - Power/Shutdown;
+- Bench-Test der gemeinsamen GPIO-/Bus-Schnittmenge;
 - reale Carrier-BOM-Gleichheit.
 
-Beim Radxa ZERO 3W darf der USB2-Pfad über 40-Pin nicht als Serienlösung vorausgesetzt werden, wenn dafür Board-Rework erforderlich ist. Raspberry Pi Zero 2 W führt USB-OTG regulär über Micro-USB. Die Zero-Plattform benötigt deshalb eine Standard-SKU-konforme gemeinsame USB-Strategie.
+Beim Radxa ZERO 3W darf der USB2-Pfad über 40-Pin nicht als Serienlösung vorausgesetzt werden, weil dafür Board-Rework erforderlich ist. Raspberry Pi Zero 2 W führt USB-OTG regulär über Micro-USB. **USB gehört deshalb ausdrücklich nicht zur gemeinsamen Zero-40-Pin-Baseline.** Die Zero-Plattform benötigt einen Standard-SKU-konformen, board-spezifischen kurzen USB-Interconnect zu einer gemeinsamen Carrier-USB-Topologie.
+
+Der aktuelle Radxa ZERO 3W Product Brief Rev. 1.11 nennt Mindestverfügbarkeit bis **September 2030**. Dies ist von der direkten CM3-Zusage bis mindestens September 2033 zu trennen.
 
 ## Storage
 
@@ -155,5 +169,5 @@ Ein Universal-PCB, das gleichzeitig CM- und Zero-Footprints trägt, ist nicht da
 
 - Product-development Q-002: CM versus Zero platform
 - Product-development Q-005 / F-015: CM shared-carrier compatibility
-- Product-development Q-007: Zero shared-carrier compatibility
+- Product-development Q-007 / F-029: Zero shared-carrier compatibility / full 40-pin audit
 - Product-development BOM: Common Core + CM platform + Zero platform
