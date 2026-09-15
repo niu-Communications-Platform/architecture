@@ -1,4 +1,4 @@
-# Compute Module and Production Configuration
+# Compute Platforms and Production Configuration
 
 [Deutsch — canonical](../../de/20-hardware/compute-module.md) | **English**
 
@@ -6,67 +6,156 @@
 
 ## Purpose
 
-This document refines requirements for the beltpack's replaceable compute module and the target Radxa ZERO 3W configuration.
+This document defines the stable hardware boundary between the nıu Product Core and replaceable compute hardware. The concrete production platform remains open; two platform families are actively compared.
 
 ## Architecture
 
-**DECIDED:** The compute module is not the Device Identity anchor. The Carrier carries Device Identity; the compute module is replaceable compute, storage, and networking hardware.
+**DECIDED:** Compute is not the Device Identity anchor. The nıu carrier owns Device Identity, Secure Element, audio, power, HMI, resilience RF and product-specific hardware. Compute remains replaceable processing, storage and networking hardware.
 
-**CANDIDATE:** The RK3566-based Radxa ZERO 3W remains the preferred production candidate. Raspberry Pi Zero 2 W/WH remains a development platform, not the preferred production base.
+**DECIDED:** Two active compute/carrier families are used for production evaluation:
 
-## Official configurations
+```text
+nıu Product Core
+        │
+        ├── CM carrier
+        │   ├── Radxa CM3
+        │   ├── Radxa CM4
+        │   └── Raspberry Pi CM4
+        │
+        └── Zero carrier
+            ├── Radxa ZERO 3W
+            └── Raspberry Pi Zero 2 W
+```
 
-Radxa currently documents ZERO 3W options with 1/2/4/8 GB LPDDR4 and 0/8/16/32/64 GB onboard eMMC. The manufacturer states minimum ZERO 3W availability through September 2033.
+It is **not yet decided** which family and which concrete standard module will win production.
 
-## Target configuration
+## Standard-SKU rule
 
-**CANDIDATE:** **2 GB LPDDR4 + 16 GB onboard eMMC** is the preferred baseline for Prototype 1 and production economics evaluation.
+**DECIDED:** Production architecture uses only regular, unmodified standard SKUs.
 
-Rationale:
+Excluded as required production prerequisites are:
 
-- 1 GB may be sufficient for today's core workload but leaves limited reserve for PipeWire, Talkkonnect/Mumble, Device Agent, network management, UI, diagnostics, OTA/recovery, and future software;
-- 4 GB currently appears unnecessary for the known beltpack workload and would add cost and potentially power without clear product value;
-- 8 GB eMMC is unnecessarily tight for a long-lived Linux product with A/B system, recovery, logs, diagnostics, and update reserve;
-- 16 GB provides materially more layout/update/recovery headroom without jumping to the likely unnecessary 32 GB class;
-- extra storage does not remove the requirement to minimize writes and validate hard-power-loss tolerance.
+- customer-specific compute modules;
+- vendor special variants created only for nıu;
+- resistor/solder rework on purchased SBCs;
+- compute-specific changes that undermine repairability and open procurement.
 
-This is not yet a production release. Prototype 1 must measure real RAM usage, storage occupancy, update slots, boot/recovery behavior, power, and thermals.
+## CM platform
 
-## GPIO header
+Candidates:
 
-**TARGET:** Production should prefer the ZERO 3W variant **without a pre-soldered 40-pin header** where the final Carrier interface permits it. An unnecessary maker header consumes material, height, and space.
+- Radxa CM3;
+- Radxa CM4;
+- Raspberry Pi CM4.
 
-The final ZERO 3W-to-Carrier connection must be serviceable, repeatable, and suitable for series assembly rather than being dictated solely by the development-board header.
+**TARGET:** One identically populated CM carrier should support all three modules through the verified safe 2×100-pin intersection.
 
-## Storage rules
+Rules:
 
-- onboard eMMC is normal runtime storage;
-- microSD is not a production runtime medium;
-- microSD may be used for development/service where mechanically useful;
-- Device Identity and non-reconstructable factory data must not live only on eMMC;
-- A/B OTA, rollback, and recovery must tolerate abrupt power loss;
-- logs and high-frequency writes are constrained;
-- eMMC endurance/storage grade of the concrete production SKU must be clarified with Radxa before release.
+- use only F-015-verified common pins for mandatory functions;
+- the third Radxa connector carries no mandatory nıu baseline function;
+- compute-specific BSPs, device trees and recovery procedures are acceptable;
+- compute-specific carrier population variants should be avoided.
 
-## Cost gate
+Radxa CM3 has a written vendor availability commitment through at least September 2033. Raspberry Pi CM4 is announced through at least January 2034. Lifecycle alone therefore does not currently decide between those two candidates.
 
-Current Compute budget is **EUR 18–22 per unit** in target series volumes.
+## Zero platform
 
-**REVIEW:** If 2 GB + 16 GB eMMC materially exceeds this budget in real 1k/5k/10k quotations, RAM or storage shall not be reduced automatically. OEM pricing, configuration alternatives, and actual product value are reviewed first.
+Candidates:
 
-A cheaper 1 GB/8 GB configuration is acceptable only if prototype measurements demonstrate adequate reserve and A/B/recovery requirements remain unconstrained.
+- Radxa ZERO 3W;
+- Raspberry Pi Zero 2 W.
 
-## Prototype 1 measurements
+Both belong to the 65×30-mm Zero class with a 40-pin expansion footprint/class. This defines a common platform family but does not yet establish full electrical drop-in compatibility.
 
-At minimum measure RAM after boot; RAM with full service stack; peak RAM during network switching/audio/UI/diagnostics/OTA; base-system eMMC occupancy; A/B slot and recovery reserve; log/persistence growth; boot/recovery time; idle/listening/TX/RX/heavy-load power; target-enclosure thermals; and repeated hard power loss including cuts during OTA/config writes.
+**TARGET:** One shared Zero carrier with as much identical population as practical.
+
+Still to validate:
+
+- mechanical hole/keep-out compatibility;
+- safe shared 5 V/GPIO/I²C/SPI/UART intersection;
+- USB interconnect;
+- storage/recovery;
+- power/shutdown;
+- actual carrier-BOM identity.
+
+On Radxa ZERO 3W, the 40-pin USB2 route must not be assumed as a production solution when it requires board rework. Raspberry Pi Zero 2 W normally exposes USB OTG through Micro-USB. The Zero platform therefore needs a standard-SKU-compatible shared USB strategy.
+
+## Storage
+
+### CM
+
+Depending on the standard SKU, onboard eMMC is available and is generally preferred for a long-lived Linux product with A/B OTA, recovery and diagnostics.
+
+### Radxa ZERO 3W
+
+Onboard eMMC is available in standard SKUs and remains the preferred runtime-storage path for this candidate.
+
+### Raspberry Pi Zero 2 W
+
+Pi Zero 2 W has no onboard eMMC and normally uses microSD. If it remains a production candidate, this becomes its own architecture gate:
+
+- qualified production-grade microSD **or** alternative external storage;
+- A/B OTA, rollback and recovery;
+- hard-power-loss tolerance;
+- write-load/endurance strategy.
+
+The prior blanket rule “microSD is not a production runtime medium” therefore no longer applies across all platforms without validation; for the Pi-Zero subvariant it must be confirmed or changed based on evidence.
+
+## RAM / compute rule
+
+Compute is optimized for sufficient product headroom, not maximum specification and not minimum purchase price.
+
+At minimum measure:
+
+1. RAM after boot;
+2. RAM with the full Talkkonnect/PipeWire/nıu service stack;
+3. peak RAM during network switching, audio, UI, diagnostics and OTA;
+4. storage occupancy and A/B/recovery reserve;
+5. boot/recovery time;
+6. idle/listening/TX/RX/heavy-load power;
+7. target-enclosure thermals;
+8. hard power loss including cuts during OTA/config writes.
+
+Special gates:
+
+- 1-GB CM configurations;
+- ZERO 3W 1/2-GB tradeoff;
+- Raspberry Pi Zero 2 W with **512 MB** RAM.
+
+## Cost model
+
+There is no longer one abstract shared compute unit cost. Production economics are calculated per platform to the same functional endpoint:
+
+```text
+Common Product Core
++
+CM-specific carrier/interconnect/PCB/PCBA
++
+CM candidate
+```
+
+versus
+
+```text
+Common Product Core
++
+Zero-specific carrier/interconnect/PCB/PCBA
++
+Zero candidate
+```
+
+The authoritative scenario-cost source is `product-development/bom/`.
 
 ## Decision rule
 
-> **Compute is optimized for sufficient product headroom, not maximum specification and not minimum purchase price.**
+> **First choose the better platform family; then, within that family, choose the smallest standard SKU that credibly satisfies functionality, headroom, lifecycle, repairability and supply requirements.**
 
-The smallest configuration that carries the complete beltpack stack, A/B OTA, recovery, and realistic future software development with credible reserve wins.
+A universal PCB carrying both CM and Zero footprints is not the goal. The target is two possible carrier variants with a maximally shared Product Core.
 
-## Sources
+## Links
 
-- Radxa ZERO 3W product and documentation: https://radxa.com/products/zeros/zero3w/ and https://docs.radxa.com/en/zero/zero3
-- Radxa ZERO 3W Product Brief: manufacturer SKU configuration and minimum-availability information through September 2033.
+- Product-development Q-002: CM versus Zero platform
+- Product-development Q-005 / F-015: CM shared-carrier compatibility
+- Product-development Q-007: Zero shared-carrier compatibility
+- Product-development BOM: Common Core + CM platform + Zero platform
