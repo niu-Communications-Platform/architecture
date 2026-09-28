@@ -32,6 +32,21 @@ A Capability Profile may include playback/capture channels, TDM slots, split-ear
 
 A platform-wide `niu-device-agent` is planned for Identity, Enrollment, Capabilities, Provisioning, Health, OTA, and Registry Heartbeat. Talkkonnect remains primarily the intercom engine and should not become the general device manager.
 
+### Cloud tenant topology
+
+For nıu.cp Cloud, the **Murmur Virtual Server is the standard technical tenant boundary**. A single Murmur process may host multiple virtual servers and therefore multiple Cloud tenants.
+
+The logical mapping is:
+
+- Tenant / customer → Murmur Virtual Server
+- Project / production / workspace → channel or channel tree
+- Role / function → Murmur Group and ACL
+- User / device → authenticated identity
+
+The Cloud Control Plane maintains the mapping `tenant → Murmur node → virtual server`. Administrative Murmur interfaces remain internal and are not exposed directly to tenants. Dedicated processes, containers, or hosts may additionally be used where stronger isolation is required.
+
+Binding architecture decision: [ADR-0006: Murmur Virtual Servers form the cloud tenant boundary](../../../adr/en/0006-cloud-tenant-boundary-murmur-virtual-server.md).
+
 ## Hard power-loss tolerance
 
 **DECIDED:** Abrupt loss of power is an allowed operating and failure condition, particularly for rapid removal of the replaceable battery, hard-off, and unexpected supply loss.
