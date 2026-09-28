@@ -24,6 +24,18 @@ Der Zielablauf umfasst:
 
 Provisioning-Dokumente enthalten u. a. Ziel-UUID, Schema-/Config-Revision, Name, Profile, Netzwerk, Intercom, Audio und Systemparameter. Das Gerät prüft Signer/Trust Domain, Ziel-UUID, Schema, Capabilities und Revision.
 
+## Cloud-Tenant-Provisioning
+
+Für nıu.cp Cloud ist die Tenant-Zuordnung Teil des Service-Provisionings. Beim Anlegen eines Cloud-Tenants erzeugt oder weist die Control Plane einen Murmur Virtual Server eindeutig zu und persistiert mindestens die Zuordnung:
+
+`tenant → Murmur node → virtual server`
+
+Projekte, Produktionen und Rollen werden anschließend innerhalb dieses Tenant-Servers über Channels, Channel Trees, Gruppen und ACLs abgebildet. Geräte und Benutzer erhalten nur die für ihren Tenant und ihre Rolle erforderlichen Serviceparameter; die physische Murmur-Node-Zuordnung bleibt eine interne Control-Plane-Verantwortung.
+
+Administrative Murmur-Schnittstellen werden nicht direkt provisioniert oder an Mandanten exponiert.
+
+Verbindliche Architekturentscheidung: [ADR-0006: Murmur Virtual Server bilden die Cloud-Mandantengrenze](../../../adr/de/0006-cloud-tenant-boundary-murmur-virtual-server.md).
+
 ## Zustände
 
 Zielzustände:
