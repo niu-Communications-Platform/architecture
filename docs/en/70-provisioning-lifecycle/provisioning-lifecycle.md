@@ -26,6 +26,18 @@ The target process includes:
 
 Provisioning documents include, among other things, target UUID, schema/config revision, name, profiles, network, intercom, audio, and system parameters. The device validates signer/Trust Domain, target UUID, schema, Capabilities, and revision.
 
+## Cloud tenant provisioning
+
+For nıu.cp Cloud, tenant assignment is part of service provisioning. When a Cloud tenant is created, the Control Plane creates or uniquely assigns a Murmur Virtual Server and persists at least the mapping:
+
+`tenant → Murmur node → virtual server`
+
+Projects, productions, and roles are then represented within that tenant server through channels, channel trees, groups, and ACLs. Devices and users receive only the service parameters required for their tenant and role; the physical Murmur node assignment remains an internal Control Plane responsibility.
+
+Administrative Murmur interfaces are not provisioned directly to tenants or exposed to them.
+
+Binding architecture decision: [ADR-0006: Murmur Virtual Servers form the cloud tenant boundary](../../../adr/en/0006-cloud-tenant-boundary-murmur-virtual-server.md).
+
 ## States
 
 Target states:
