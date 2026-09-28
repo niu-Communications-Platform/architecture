@@ -49,6 +49,21 @@ Als plattformweite Gerätekomponente ist ein `niu-device-agent` vorgesehen. Vera
 
 Talkkonnect bleibt primär Intercom-Engine und soll nicht zum allgemeinen Gerätemanager werden.
 
+### Cloud-Mandantentopologie
+
+Für nıu.cp Cloud ist der **Murmur Virtual Server die technische Standard-Mandantengrenze**. Ein Murmur-Prozess darf mehrere virtuelle Server und damit mehrere Cloud-Tenants betreiben.
+
+Die logische Zuordnung lautet:
+
+- Tenant / Kunde → Murmur Virtual Server
+- Projekt / Produktion / Arbeitsbereich → Channel bzw. Channel Tree
+- Rolle / Funktion → Murmur Group und ACL
+- Benutzer / Gerät → authentifizierte Identität
+
+Die Cloud Control Plane verwaltet die Zuordnung `tenant → Murmur node → virtual server`. Administrative Murmur-Schnittstellen bleiben intern und werden nicht direkt an Mandanten exponiert. Eigene Prozesse, Container oder Hosts können bei besonderen Isolationsanforderungen zusätzlich eingesetzt werden.
+
+Verbindliche Architekturentscheidung: [ADR-0006: Murmur Virtual Server bilden die Cloud-Mandantengrenze](../../../adr/de/0006-cloud-tenant-boundary-murmur-virtual-server.md).
+
 ## Hard-Power-Loss-Toleranz
 
 **DECIDED:** Abrupter Verlust der Versorgung ist ein zulässiger Betriebs- und Fehlerfall. Das gilt insbesondere für die schnelle Entnahme des austauschbaren Akkus sowie für Hard-Off und unerwarteten Spannungsverlust.
