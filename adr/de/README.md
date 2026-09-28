@@ -11,6 +11,7 @@ Die ADRs dokumentieren einzelne Architekturentscheidungen und vor allem deren Be
 - [`ADR-0003:` Open Source und Trust Domain sind getrennt](0003-open-source-trust-domains.md)
 - [`ADR-0004:` Mumble als natives Echtzeit-Sprachprotokoll, SIP als Interoperabilitätsschicht](0004-mumble-native-sip-interoperability.md)
 - [`ADR-0005:` Der Akku ist durch den Endnutzer austauschbar](0005-end-user-replaceable-battery.md)
+- [`ADR-0006:` Murmur Virtual Server bilden die Cloud-Mandantengrenze](0006-cloud-tenant-boundary-murmur-virtual-server.md)
 
 ## Schema
 
