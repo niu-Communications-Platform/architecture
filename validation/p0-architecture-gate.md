@@ -1,5 +1,7 @@
 # P0 Architecture Gate
 
+**Deutsch (kanonisch)** | [English](p0-architecture-gate.en.md)
+
 **Status:** OPEN  
 **Ziel:** Ausreichende Sicherheit für Prototype 1, ohne einen vollständigen Product Freeze vorzutäuschen.
 
