@@ -1,10 +1,10 @@
 # nıu Communications Platform — Architektur
 
-**Deutsch** | [English](README.md)
+**Deutsch (kanonisch)** | [English](README.md)
 
 Dieses Repository enthält die produktübergreifende Systemarchitektur, Produktentscheidungen, technischen Gestaltungsprinzipien, Architecture Decision Records (ADRs), Validierungspläne und historische Architektur-Snapshots der nıu Communications Platform.
 
-Die **deutsche Dokumentation ist die kanonische Quelle** für Architektur- und Produktentscheidungen. Die englische Dokumentation wird als gepflegte Übersetzung für Austausch, Zusammenarbeit und eine spätere internationale Community geführt. Bei Abweichungen gilt die deutsche Fassung.
+Die **deutsche Dokumentation ist die kanonische Quelle** für Architektur- und Produktentscheidungen. Die englische Dokumentation wird als gepflegte Übersetzung für Austausch, Zusammenarbeit und eine internationale Community geführt. Bei Abweichungen gilt die deutsche Fassung.
 
 ## Was ist die nıu Communications Platform?
 
@@ -20,7 +20,19 @@ Leitidee:
 
 > **Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation → Open Understanding.**
 
-Offene Implementierung und offizielle nıu-Trust-Domain bleiben bewusst getrennt. Dritte dürfen kompatible Systeme und eigene Trust Domains betreiben; private nıu-Trust-Roots sind nicht Teil der Open-Source-Distribution.
+Offene Implementierung und offizielle nıu-Trust-Domain bleiben bewusst getrennt. Dritte dürfen kompatible Implementierungen entwickeln, kommerziell vertreiben und eigene Trust Domains betreiben; private nıu-Trust-Roots sind nicht Teil der Open-Source-Distribution. Produktspezifische Mehrwertfunktionen dürfen proprietär bleiben. Der offizielle nıu.cp-Standard unterliegt weiterhin der nıu.cp-Governance; siehe [ADR-0007](adr/de/0007-open-standard-proprietary-implementations.md).
+
+## Projektstatus
+
+nıu.cp befindet sich in **aktiver Architektur- und Prototypentwicklung**. Dieses Repository ist bewusst als gemeinsame Architektur- und Spezifikationsebene des Projekts öffentlich vorgesehen. Es ist weder eine fertige Produktspezifikation noch ein Product Freeze.
+
+Architekturentscheidungen werden ausdrücklich getroffen und bleiben von Kandidaten und offenen Fragen unterscheidbar. Hardwareabhängige Annahmen sollen, soweit praktisch möglich, an realen Prototypen validiert werden, bevor sie zu stabiler Architektur werden.
+
+## Mitwirken und Lizenz
+
+Unabhängige Implementierungen, technische Reviews, Experimente, Interoperabilitätsarbeit, Dokumentationsverbesserungen und Architekturvorschläge sind willkommen. Das Beitrags- und Governance-Modell steht in **[CONTRIBUTING.de.md](CONTRIBUTING.de.md)**.
+
+Architektur, Spezifikationen, ADRs und Dokumentation stehen grundsätzlich unter **CC BY-SA 4.0**, wie in **[LICENSE.md](LICENSE.md)** beschrieben. Dadurch werden keine Marken-, Zertifizierungs- oder Konformitätsrechte eingeräumt. Sicherheitslücken sollen gemäß **[SECURITY.de.md](SECURITY.de.md)** und nicht über öffentliche Issues gemeldet werden.
 
 ## Aktuelles Architekturbild
 
@@ -31,6 +43,7 @@ Offene Implementierung und offizielle nıu-Trust-Domain bleiben bewusst getrennt
 - **Open Source und Trust Domains sind getrennt** — [ADR-0003](adr/de/0003-open-source-trust-domains.md)
 - **Mumble nativ, SIP als Interoperabilitätsschicht** — [ADR-0004](adr/de/0004-mumble-native-sip-interoperability.md)
 - **Akku durch Endnutzer austauschbar** — [ADR-0005](adr/de/0005-end-user-replaceable-battery.md)
+- **Offener Standard und proprietäre Implementierungen sind getrennt** — [ADR-0007](adr/de/0007-open-standard-proprietary-implementations.md)
 
 ### Aktive Architekturvalidierung
 
@@ -38,10 +51,10 @@ Diese Punkte sind wichtig genug, dass sie das physische Produkt bereits beeinflu
 
 - **Compute-Plattform:** austauschbare Radxa-/Raspberry-Compute-Module; Carrier behält Identität, Audio, Power und produktspezifische Hardware.
 - **Compute-unabhängiges USB Audio:** CT7601CH und XMOS XU316 werden als gemeinsame USB-Audio-Grenze validiert.
-- **Secondary Sub-GHz / LoRa Resilience:** ein unabhängiger, MCU-basierter Funkpfad für kleine Presence-, Status-, Call-/Alarm-, Tally- und Recovery-Nachrichten ist ein ernsthafter V1-Hardwarekandidat. Kontinuierliches Audio bleibt IP-basiert. In der Produktentwicklung ist ein lokaler **Direct-LoRa-Star Beltpack ↔ Base** derzeit der stärkste Protokollkandidat; LoRaWAN bleibt Vergleichsoption. **Noch kein ADR.** Siehe [`Q-006`](https://github.com/niu-Communications-Platform/product-development/blob/main/%281%29%20questions/Q-006-secondary-sub-ghz-resilience-radio.de.md).
+- **Secondary Sub-GHz / LoRa Resilience:** ein unabhängiger, MCU-basierter Funkpfad für kleine Presence-, Status-, Call-/Alarm-, Tally- und Recovery-Nachrichten ist ein ernsthafter V1-Hardwarekandidat. Kontinuierliches Audio bleibt IP-basiert. Ein lokaler **Direct-LoRa-Star Beltpack ↔ Base** ist derzeit der stärkste Protokollkandidat; LoRaWAN bleibt Vergleichsoption. **Noch kein ADR.**
 - **Physische Beltpack-Architektur:** 105 × 70 mm Core Body mit seitlichem, teilversenktem Wechselakku und freier Core-Rückseite für den Beltclip ist das aktuelle Arbeitsmodell; reale Balance-, Dock- und RF-Validierung steht noch aus.
 
-Die detaillierten Fragen, Experimente, Findings, Supplier-Antworten und verworfenen Wege liegen bewusst im separaten [`product-development`](https://github.com/niu-Communications-Platform/product-development)-Repository und werden erst bei ausreichender Evidenz hierher als stabile Architektur bzw. ADR überführt.
+Detaillierte Fragen, Experimente, Findings, Supplier-Antworten und verworfene Wege können während der aktiven Produktentwicklung separat geführt werden. Stabile Erkenntnisse werden in dieses Repository überführt, sobald die Evidenz eine Architekturdokumentation, einen Validierungsnachweis oder einen ADR trägt.
 
 ## Direkt einsteigen
 
@@ -51,6 +64,9 @@ Die detaillierten Fragen, Experimente, Findings, Supplier-Antworten und verworfe
 - **[Architecture Decision Records (ADRs) — English](adr/en/README.md)**
 - **[Validierung und Architecture Gates](validation/)**
 - **[Historische Snapshots und Quellenmaterial](archive/)**
+- **[Mitwirken](CONTRIBUTING.de.md)**
+- **[Security-Meldungen](SECURITY.de.md)**
+- **[Lizenz](LICENSE.md)**
 
 ## Aufgabe dieses Repositories
 
