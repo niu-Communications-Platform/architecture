@@ -1,0 +1,40 @@
+name: Full-history secret scan
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: Scan complete Git history with Gitleaks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out complete repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install pinned Gitleaks CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          GITLEAKS_VERSION="8.28.0"
+          curl --fail --silent --show-error --location \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            --output /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          sudo install -m 0755 /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+
+      - name: Scan all reachable Git history
+        shell: bash
+        run: |
+          set -euo pipefail
+          gitleaks git . \
+            --redact=100 \
+            --no-banner \
+            --verbose
