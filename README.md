@@ -20,7 +20,19 @@ Guiding idea:
 
 > **Open Source → Open Hardware → Open Diagnostics → Open Repair Documentation → Open Understanding.**
 
-Open implementation and the official nıu trust domain remain deliberately separate. Third parties may operate compatible systems and their own trust domains; private nıu trust roots are not part of the open-source distribution.
+Open implementation and the official nıu trust domain remain deliberately separate. Third parties may build and commercially distribute compatible implementations and operate their own trust domains; private nıu trust roots are not part of the open-source distribution. Product-specific added-value features may remain proprietary. The official nıu.cp standard remains subject to nıu.cp governance; see [ADR-0007](adr/en/0007-open-standard-proprietary-implementations.md).
+
+## Project status
+
+nıu.cp is under **active architecture and prototype development**. This repository is intentionally public as the shared architecture and specification layer of the project. It is not a finished product specification and not a Product Freeze.
+
+Architecture decisions are made explicitly and remain distinguishable from candidates and open questions. Hardware-dependent assumptions are expected to be validated on real prototypes before they become stable architecture where practical.
+
+## Contributing and license
+
+Independent implementations, technical review, experiments, interoperability work, documentation improvements and architecture proposals are welcome. See **[CONTRIBUTING.md](CONTRIBUTING.md)** for the contribution and governance model.
+
+Architecture, specifications, ADRs and documentation are generally licensed under **CC BY-SA 4.0** as described in **[LICENSE.md](LICENSE.md)**. This does not grant trademark, certification or conformity rights. Security vulnerabilities should be reported according to **[SECURITY.md](SECURITY.md)** rather than through public issues.
 
 ## Current architecture picture
 
@@ -31,6 +43,7 @@ Open implementation and the official nıu trust domain remain deliberately separ
 - **Open source and trust domains are separate** — [ADR-0003](adr/en/0003-open-source-trust-domains.md)
 - **Mumble native, SIP as interoperability layer** — [ADR-0004](adr/en/0004-mumble-native-sip-interoperability.md)
 - **Battery is end-user replaceable** — [ADR-0005](adr/en/0005-end-user-replaceable-battery.md)
+- **Open standard and proprietary implementations are separate** — [ADR-0007](adr/en/0007-open-standard-proprietary-implementations.md)
 
 ### Active architecture validation
 
@@ -38,10 +51,10 @@ These items already influence the physical product, but are **not yet accepted a
 
 - **Compute platform:** replaceable Radxa/Raspberry compute modules; the carrier retains identity, audio, power and product-specific hardware.
 - **Compute-independent USB audio:** CT7601CH and XMOS XU316 are being validated as a common USB-audio boundary.
-- **Secondary Sub-GHz / LoRa resilience:** an independent MCU-based radio path for small presence, status, call/alarm, tally and recovery messages is a serious V1 hardware candidate. Continuous audio remains IP-based. Product-development work currently favors a local **Direct-LoRa star between Beltpacks and Base** as the strongest protocol candidate; LoRaWAN remains a comparison option. **No ADR yet.** See [`Q-006`](https://github.com/niu-Communications-Platform/product-development/blob/main/%281%29%20questions/Q-006-secondary-sub-ghz-resilience-radio.md).
+- **Secondary Sub-GHz / LoRa resilience:** an independent MCU-based radio path for small presence, status, call/alarm, tally and recovery messages is a serious V1 hardware candidate. Continuous audio remains IP-based. A local **Direct-LoRa star between Beltpacks and Base** is currently the strongest protocol candidate; LoRaWAN remains a comparison option. **No ADR yet.**
 - **Physical beltpack architecture:** a 105 × 70 mm Core Body with a side-mounted partially recessed replaceable battery and a free Core rear for the belt clip is the current working model; real balance, dock and RF validation remain pending.
 
-Detailed questions, experiments, findings, supplier responses and rejected approaches intentionally live in the separate [`product-development`](https://github.com/niu-Communications-Platform/product-development) repository and are promoted here only once the evidence supports stable architecture or an ADR.
+Detailed questions, experiments, findings, supplier responses and rejected approaches may be maintained separately during active product development. Stable findings are promoted into this repository once the evidence supports architecture documentation, validation records or an ADR.
 
 ## Start here
 
@@ -51,6 +64,9 @@ Detailed questions, experiments, findings, supplier responses and rejected appro
 - **[Architecture Decision Records (ADRs) — German / canonical](adr/de/README.md)**
 - **[Validation and architecture gates](validation/)**
 - **[Historical snapshots and source material](archive/)**
+- **[How to contribute](CONTRIBUTING.md)**
+- **[Security reporting](SECURITY.md)**
+- **[License](LICENSE.md)**
 
 ## Repository role
 
